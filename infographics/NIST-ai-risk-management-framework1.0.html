@@ -1,0 +1,794 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NISTのAIリスクマネジメントフレームワーク1.0 - AI Infographics</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        /* ---------- Base ---------- */
+        :root {
+            --primary-1: #2B6CB0;
+            --primary-2: #6B46C1;
+            --accent: #4299E1;
+            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
+            --bg-light: #F7FAFC;
+            --bg-medium: #E2E8F0;
+            --text-dark: #1A202C;
+            --text-muted: #4A5568;
+            /* RGB値も変数化 */
+            --rgb-primary-1: 43, 108, 176;
+            --rgb-primary-2: 107, 70, 193;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "Noto Sans JP", sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        /* ---------- Header ---------- */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 2.4rem;
+            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.07em;
+            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        }
+        
+        .hero img {
+            width: 56px;
+            height: auto;
+        }
+
+        /* Make header link look like normal text */
+        .hero a {
+            color: inherit; /* Inherit color from parent (h1 -> white) */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* ---------- Content Wrapper ---------- */
+        .content-wrapper {
+            max-width: 1000px; /* 少し広げる */
+            margin: 2rem auto;
+            padding: 0 1.6rem;
+        }
+
+        .content {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            padding: 2rem;
+            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        }
+
+        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
+        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
+        .content h1 { /* これはコンテンツのタイトル用 */
+             font-size: 2rem;
+             font-weight: 700;
+             color: var(--text-dark);
+             margin-bottom: 1.5rem;
+         }
+        /* .content h2, .content p, .content img のスタイルは削除 */
+        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-medium);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--primary-1);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1.2rem 1.6rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+             .content h1 { /* レスポンシブ */
+                 font-size: 1.75rem;
+             }
+            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+        }
+    </style>
+    
+    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
+    <style id="content-specific-styles">
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.4;
+            padding: 10px;
+            background-image: 
+                radial-gradient(var(--accent)22 1px, transparent 1px),
+                radial-gradient(var(--accent)22 1px, transparent 1px);
+            background-size: 20px 20px;
+            background-position: 0 0, 10px 10px;
+        }
+        
+        .container {
+            width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px var(--shadow);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            border-bottom: 3px solid var(--fashion-3);
+            position: relative;
+        }
+        
+        @media (min-width: 768px) {
+            body {
+                padding: 20px;
+            }
+            
+            .container {
+                max-width: 1200px;
+            }
+            
+            .header {
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                padding: 20px 30px;
+            }
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: var(--fashion-4);
+            border-radius: 50%;
+        }
+        
+        .title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--fashion-1);
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1.2;
+            position: relative;
+            z-index: 1;
+            margin-bottom: 15px;
+        }
+        
+        @media (min-width: 768px) {
+            .title {
+                font-size: 32px;
+                margin-bottom: 0;
+            }
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: 5px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-color: var(--fashion-2);
+            opacity: 0.3;
+            z-index: -1;
+            transform: rotate(-1deg);
+        }
+        
+        .date-source {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+            color: var(--fashion-1);
+            text-align: left;
+        }
+        
+        @media (min-width: 768px) {
+            .date-source {
+                text-align: right;
+            }
+        }
+        
+        .main-content {
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .main-content {
+                flex-direction: row;
+                flex-wrap: wrap;
+                padding: 20px;
+            }
+        }
+        
+        .column {
+            width: 100%;
+            padding: 10px;
+        }
+        
+        @media (min-width: 768px) {
+            .column {
+                width: 50%;
+                padding: 15px;
+            }
+        }
+        
+        @media (min-width: 1024px) {
+            .column {
+                width: 33.333%;
+                padding: 15px;
+            }
+        }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 8px var(--shadow);
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        @media (min-width: 768px) {
+            .card {
+                padding: 20px;
+            }
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: 20px;
+            width: 40px;
+            height: 10px;
+            background-color: var(--fashion-2);
+            border-radius: 5px;
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--text-heading);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px dotted var(--fashion-3);
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        @media (min-width: 768px) {
+            .section-title {
+                font-size: 18px;
+            }
+        }
+        
+        .section-title i {
+            margin-right: 8px;
+            color: var(--fashion-4);
+        }
+        
+        .section-content {
+            font-size: 14px;
+            margin-bottom: 10px;
+            word-break: break-word;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-3) 60%);
+            font-weight: bold;
+        }
+        
+        .keyword {
+            color: var(--fashion-5);
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .keyword::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background-color: var(--fashion-2);
+            border-radius: 3px;
+        }
+        
+        .note {
+            background-color: rgba(242, 230, 61, 0.2);
+            border-left: 4px solid var(--fashion-3);
+            padding: 10px;
+            margin: 15px 0;
+            font-family: 'Yomogi', cursive;
+            border-radius: 0 8px 8px 0;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            .note {
+                font-size: 14px;
+            }
+        }
+        
+        .icon {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        
+        .arrow-container {
+            position: relative;
+            height: 40px;
+            margin: 10px 0;
+            text-align: center;
+        }
+        
+        .arrow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 2px;
+            background-color: var(--fashion-4);
+        }
+        
+        .arrow::after {
+            content: "";
+            position: absolute;
+            top: -4px;
+            right: 0;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--fashion-4);
+            border-right: 2px solid var(--fashion-4);
+            transform: rotate(45deg);
+        }
+        
+        .bubble {
+            position: relative;
+            background-color: rgba(242, 92, 5, 0.1);
+            border-radius: 20px;
+            padding: 12px;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            .bubble {
+                padding: 15px;
+                margin: 20px 0;
+                font-size: 14px;
+            }
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            border-width: 0 10px 15px 10px;
+            border-style: solid;
+            border-color: transparent transparent rgba(242, 92, 5, 0.1) transparent;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 15px;
+            font-size: 12px;
+            color: var(--fashion-1);
+            border-top: 1px dashed var(--fashion-3);
+        }
+        
+        .handdrawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            padding: 10px;
+            margin: 10px 0;
+            position: relative;
+            font-size: 13px;
+        }
+        
+        @media (min-width: 768px) {
+            .handdrawn-box {
+                padding: 12px;
+                font-size: 14px;
+            }
+        }
+        
+        .handdrawn-box::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--fashion-1);
+            border-radius: 18px;
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .process-container {
+            display: flex;
+            flex-direction: column;
+            margin: 15px 0;
+        }
+        
+        @media (min-width: 768px) {
+            .process-container {
+                margin: 20px 0;
+            }
+        }
+        
+        .process-step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .step-number {
+            min-width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 8px;
+            font-family: 'Kaisei Decol', serif;
+            flex-shrink: 0;
+        }
+        
+        @media (min-width: 768px) {
+            .step-number {
+                min-width: 30px;
+                height: 30px;
+                margin-right: 10px;
+            }
+        }
+        
+        .step-content {
+            flex: 1;
+            position: relative;
+        }
+        
+        .connector {
+            position: absolute;
+            top: 30px;
+            left: 13px;
+            width: 2px;
+            height: 25px;
+            background-color: var(--fashion-3);
+            z-index: -1;
+        }
+        
+        @media (min-width: 768px) {
+            .connector {
+                left: 15px;
+                height: 30px;
+            }
+        }
+        
+        .emoji-icon {
+            font-size: 20px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        
+        @media (min-width: 768px) {
+            .emoji-icon {
+                font-size: 24px;
+                margin-right: 8px;
+            }
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: var(--fashion-2);
+            color: var(--fashion-1);
+            padding: 3px 6px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin: 2px;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        @media (min-width: 768px) {
+            .tag {
+                padding: 3px 8px;
+                font-size: 12px;
+                margin: 3px;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+        <a href="../index.html">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
+            <h1>AIインフォグラフィックス集</h1>
+        </a>
+    </header>
+
+    <!-- ===== Content ===== -->
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="container">
+<div class="header">
+<h1 class="title">NISTのAIリスクマネジメントフレームワーク1.0</h1>
+<div class="date-source">
+<p>ブリーフィング日: 2024年5月15日</p>
+<p>対象: AIシステム関係者</p>
+</div>
+</div>
+<div class="main-content">
+<!-- 左カラム -->
+<div class="column">
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">📋</span>エグゼクティブサマリー
+                    </h2>
+<div class="section-content">
+<p>本文書は<span class="highlight">米国国立標準技術研究所（NIST）</span>が発行した<span class="keyword">AIリスクマネジメントフレームワーク（AI RMF）1.0</span>の主要なテーマと重要なアイデアをまとめたものです。</p>
+</div>
+<div class="note">
+                        AI技術は社会に変革をもたらす大きな可能性を秘める一方で、個人、組織、社会、環境にネガティブな影響を与えるリスクも伴います。
+                    </div>
+<div class="section-content">
+<p>AI RMFは、リスクを<span class="highlight">特定、評価、管理</span>し、<span class="keyword">トラストワージ（信頼に足る）</span>なAIシステムの開発と利用を促進するための包括的なフレームワークです。</p>
+</div>
+<div class="bubble">
+<p>フレームワークは<span class="keyword">リビングドキュメント</span>として位置づけられており、定期的なレビューと更新が予定されています。</p>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">🔍</span>AIリスクの理解と管理の必要性
+                    </h2>
+<div class="handdrawn-box">
+<p>「AI テクノロジーは、商業、健康、交通、サイバーセキュリティ、環境、地球に至るまで、社会と人々の生活を変革する大きな可能性を秘めています。」</p>
+</div>
+<div class="section-content">
+<p>AIのリスクは、<span class="highlight">時間経過による変化、予測困難性、社会技術的な性質</span>など、従来技術とは異なる特性を持ちます。</p>
+<div class="note">
+                            適切なリスク管理がなければ、AIシステムは不公平な結果を増幅・永続化させる可能性があり、適切な管理によって緩和・管理が可能になります。
+                        </div>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">⚖️</span>トラストワージネス（信頼に足る）なAI
+                    </h2>
+<div class="section-content">
+<p>トラストワージネスなAIシステムは、以下の特性を持ちます：</p>
+<div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+<span class="tag">妥当性と信頼性</span>
+<span class="tag">安全性</span>
+<span class="tag">セキュリティとレジリエンス</span>
+<span class="tag">アカウンタビリティと透明性</span>
+<span class="tag">説明可能性と解釈可能性</span>
+<span class="tag">プライバシー強化</span>
+<span class="tag">有害バイアスの管理された公平性</span>
+</div>
+</div>
+<div class="bubble">
+<p>これらの特性は相互に関連しており、AIシステムの使用状況に応じてバランスを取る必要があります。<span class="highlight">アカウンタビリティと透明性</span>は他のすべての特性に関連します。</p>
+</div>
+</div>
+</div>
+<!-- 中央カラム -->
+<div class="column">
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">🏗️</span>AIリスクマネジメントフレームワーク構成
+                    </h2>
+<div class="section-content">
+<div class="handdrawn-box">
+<p><strong>パート1：基礎情報</strong></p>
+<p>AIリスクの枠組み、対象読者、AIのリスクとトラストワージネス、AI RMFの有効性について概説。</p>
+</div>
+<div class="arrow-container">
+<div class="arrow"></div>
+</div>
+<div class="handdrawn-box">
+<p><strong>パート2：コアとプロファイル</strong></p>
+<p>AIリスクを管理するための具体的な機能（GOVERN、MAP、MEASURE、MANAGE）を示す「コア」と、特定状況への適用を示す「プロファイル」で構成。</p>
+</div>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">🔄</span>AI RMFコアの4つの機能
+                    </h2>
+<div class="process-container">
+<div class="process-step">
+<div class="step-number">1</div>
+<div class="step-content">
+<h3 style="color: var(--fashion-4); font-size: 16px;">GOVERN（ガバナンス）</h3>
+<p>AIリスクマネジメントの文化を醸成し、組織全体の方針、プロセス、手順、責任体制を確立する。</p>
+<div class="connector"></div>
+</div>
+</div>
+<div class="process-step">
+<div class="step-number">2</div>
+<div class="step-content">
+<h3 style="color: var(--fashion-4); font-size: 16px;">MAP（マッピング）</h3>
+<p>AIシステムに関連するリスクを特定し、コンテキストを確立する。</p>
+<div class="connector"></div>
+</div>
+</div>
+<div class="process-step">
+<div class="step-number">3</div>
+<div class="step-content">
+<h3 style="color: var(--fashion-4); font-size: 16px;">MEASURE（測定）</h3>
+<p>AIリスクと関連するインパクトを分析、評価、ベンチマーク、モニタリングするためのツール、技法、方法論を用いる。</p>
+<div class="connector"></div>
+</div>
+</div>
+<div class="process-step">
+<div class="step-number">4</div>
+<div class="step-content">
+<h3 style="color: var(--fashion-4); font-size: 16px;">MANAGE（管理）</h3>
+<p>GOVERN、MAP、MEASUREの結果に基づき、AIリスクに優先順位を付け、対応し、リスクリソースを割り当てる。</p>
+</div>
+</div>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">👥</span>AIアクターの多様な役割
+                    </h2>
+<div class="section-content">
+<p>AIのライフサイクル全体には、様々なアクターが関与します：</p>
+<div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+<span class="tag">設計者</span>
+<span class="tag">開発者</span>
+<span class="tag">デプロイヤ</span>
+<span class="tag">評価者</span>
+<span class="tag">運用者</span>
+<span class="tag">エンドユーザー</span>
+<span class="tag">影響を受ける個人・コミュニティ</span>
+<span class="tag">ガバナンス担当者</span>
+<span class="tag">サードパーティ</span>
+</div>
+</div>
+<div class="bubble">
+<p>「リスクマネジメントの成功は、AI アクターの<span class="highlight">連帯責任感</span>にかかっています。」</p>
+</div>
+</div>
+</div>
+<!-- 右カラム -->
+<div class="column">
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">⚠️</span>従来のソフトウェアリスクとの違い
+                    </h2>
+<div class="section-content">
+<p>AIシステム特有のリスク要因：</p>
+<ul style="list-style-type: none; padding-left: 10px; margin-top: 10px;">
+<li>📊 データの品質・代表性</li>
+<li>🔄 データ依存性と複雑性</li>
+<li>📈 学習による性能変化</li>
+<li>⏳ データの陳腐化</li>
+<li>🧩 システム規模と複雑性</li>
+<li>🏭 事前学習済みモデルの使用によるリスク</li>
+<li>🔮 出現特性の予測困難性</li>
+<li>🔒 プライバシーリスクの増大</li>
+<li>🛠️ より頻繁なメンテナンスの必要性</li>
+<li>🔍 不透明性と再現性の懸念</li>
+<li>📝 ソフトウェアテスト基準の未整備</li>
+<li>💻 計算コストと環境影響</li>
+<li>🦋 副作用の予測困難性</li>
+</ul>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">🤝</span>人間とAIの相互作用における考慮事項
+                    </h2>
+<div class="section-content">
+<div class="handdrawn-box">
+<p><span class="keyword">人間の役割と責任</span>の明確化が必要</p>
+</div>
+<div class="note">
+                            システムおよび人間の認知バイアスが意思決定に影響を与える可能性。
+                        </div>
+<p>人間とAIの相互作用の結果は多様であり、特定の条件下では人間のバイアスを増幅させる可能性もあるが、注意深く編成すれば<span class="highlight">相互補完によるパフォーマンス向上</span>が期待できます。</p>
+<div class="bubble">
+<p>AIシステムからの情報の提示方法の複雑さ、個人の知覚やスキルによる影響に注意が必要です。</p>
+</div>
+</div>
+</div>
+<div class="card">
+<h2 class="section-title">
+<span class="emoji-icon">🔮</span>今後の展望と結論
+                    </h2>
+<div class="section-content">
+<p>AI RMFは<span class="keyword">リビングドキュメント</span>として、技術の進歩、理解の深化、AIコミュニティからのフィードバックに基づいて定期的にレビュー、更新、拡張される予定です。</p>
+<div class="note">
+                            AI RMFの有効性評価（トラストワージネス向上への貢献度測定方法を含む）は、AIコミュニティとの協力のもと、今後のNISTの活動の一部となります。
+                        </div>
+<p>NIST AIリスクマネジメントフレームワーク1.0は、組織がAI技術の潜在的なリスクを包括的に理解し、効果的に管理するための<span class="highlight">重要な指針</span>となるものです。</p>
+<div class="bubble">
+<p>AIアクターは、本フレームワークを活用し、それぞれの役割と責任を果たすことで、より<span class="keyword">安全で信頼性の高いAIエコシステム</span>の構築に貢献することが期待されます。</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="footer">
+<p>出典: NISTのAIリスクマネジメントフレームワーク1.0（NIST.AI.100-1.jpn.pdf）のブリーフィング文書 | 2024年5月15日作成</p>
+</div>
+</div>
+            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
+        </div>
+    </div>
+</body>
+</html> 

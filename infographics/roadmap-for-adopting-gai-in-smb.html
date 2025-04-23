@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>米国の中小企業向け 生成AI活用ロードマップ（2025-2027） - AI Infographics</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        /* ---------- Base ---------- */
+        :root {
+            --primary-1: #2B6CB0;
+            --primary-2: #6B46C1;
+            --accent: #4299E1;
+            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
+            --bg-light: #F7FAFC;
+            --bg-medium: #E2E8F0;
+            --text-dark: #1A202C;
+            --text-muted: #4A5568;
+            /* RGB値も変数化 */
+            --rgb-primary-1: 43, 108, 176;
+            --rgb-primary-2: 107, 70, 193;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "Noto Sans JP", sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        /* ---------- Header ---------- */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 2.4rem;
+            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.07em;
+            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        }
+        
+        .hero img {
+            width: 56px;
+            height: auto;
+        }
+
+        /* Make header link look like normal text */
+        .hero a {
+            color: inherit; /* Inherit color from parent (h1 -> white) */
+            text-decoration: none; /* Remove underline */
+        }
+
+        /* ---------- Content Wrapper ---------- */
+        .content-wrapper {
+            max-width: 1000px; /* 少し広げる */
+            margin: 2rem auto;
+            padding: 0 1.6rem;
+        }
+
+        .content {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            padding: 2rem;
+            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        }
+
+        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
+        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
+        .content h1 { /* これはコンテンツのタイトル用 */
+             font-size: 2rem;
+             font-weight: 700;
+             color: var(--text-dark);
+             margin-bottom: 1.5rem;
+         }
+        /* .content h2, .content p, .content img のスタイルは削除 */
+        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-medium);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--primary-1);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1.2rem 1.6rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+             .content h1 { /* レスポンシブ */
+                 font-size: 1.75rem;
+             }
+            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+        }
+    </style>
+    
+    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
+    <style id="content-specific-styles">
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            line-height: 1.4;
+            color: var(--gray-700);
+            background-color: #f8f9fa;
+            background-image: 
+                radial-gradient(rgba(242, 230, 61, 0.05) 2px, transparent 2px),
+                radial-gradient(rgba(242, 196, 61, 0.05) 2px, transparent 2px);
+            background-size: 40px 40px;
+            background-position: 0 0, 20px 20px;
+            padding: 10px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(5px);
+            border-radius: 16px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            width: 100%;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-4), var(--fashion-5));
+        }
+        
+        header {
+            display: flex;
+            flex-direction: column;
+            margin-bottom: 20px;
+            position: relative;
+        }
+        
+        h1 {
+            font-family: 'Yomogi', cursive;
+            font-size: 28px;
+            font-weight: bold;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+            word-break: break-word;
+            hyphens: auto;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='4' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0,2 Q 5,0 10,2 T 20,2 T 30,2 T 40,2 T 50,2 T 60,2 T 70,2 T 80,2 T 90,2 T 100,2' stroke='%23F25C05' fill='none' stroke-width='2'/%3E%3C/svg%3E") repeat-x;
+            background-size: 100px 4px;
+        }
+        
+        .date-source {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+            color: var(--gray-600);
+            text-align: left;
+            margin-top: 5px;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+        
+        .column {
+            flex: 1 1 100%;
+            min-width: 280px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(180deg, var(--fashion-3), var(--fashion-4));
+            border-radius: 3px 0 0 3px;
+        }
+        
+        h2 {
+            font-family: 'Yomogi', cursive;
+            font-size: 20px;
+            color: var(--fashion-1);
+            margin-bottom: 15px;
+            padding-left: 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        
+        h2::before {
+            content: "✨";
+            font-size: 18px;
+        }
+        
+        h3 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--blue-800);
+            margin: 20px 0 10px;
+            position: relative;
+            padding-left: 22px;
+        }
+        
+        h3::before {
+            content: "📌";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        p {
+            font-size: 14px;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, rgba(242, 230, 61, 0.4) 40%);
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        
+        .note {
+            background-color: rgba(242, 196, 61, 0.1);
+            border-left: 3px solid var(--fashion-3);
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Zen Kurenaido', sans-serif;
+            position: relative;
+        }
+        
+        .note::before {
+            content: "💡";
+            position: absolute;
+            left: -10px;
+            top: -12px;
+            font-size: 20px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 15px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+            background: white;
+            min-width: 600px;
+        }
+        
+        th {
+            background-color: var(--fashion-1);
+            color: white;
+            text-align: left;
+            padding: 10px;
+            font-family: 'Zen Kurenaido', sans-serif;
+            position: relative;
+            white-space: nowrap;
+        }
+        
+        td {
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            vertical-align: top;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(242, 230, 61, 0.05);
+        }
+        
+        tr:hover {
+            background-color: rgba(242, 196, 61, 0.1);
+        }
+        
+        .phase-title {
+            font-weight: bold;
+            position: relative;
+            padding-left: 20px;
+            white-space: nowrap;
+        }
+        
+        .phase-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 15px;
+            height: 15px;
+            background-image: url("data:image/svg+xml,%3Csvg width='15' height='15' viewBox='0 0 15 15' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7.5 1C3.91 1 1 3.91 1 7.5C1 11.09 3.91 14 7.5 14C11.09 14 14 11.09 14 7.5C14 3.91 11.09 1 7.5 1ZM8 11H7V7H8V11ZM7.5 5.5C7.22 5.5 7 5.28 7 5C7 4.72 7.22 4.5 7.5 4.5C7.78 4.5 8 4.72 8 5C8 5.28 7.78 5.5 7.5 5.5Z' fill='%23F25C05'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+        
+        .arrow {
+            position: relative;
+            padding-left: 20px;
+            font-style: italic;
+        }
+        
+        .arrow::before {
+            content: "➡️";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        ul {
+            list-style: none;
+            padding-left: 5px;
+            margin: 10px 0;
+        }
+        
+        li {
+            position: relative;
+            padding-left: 20px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 6px;
+            width: 12px;
+            height: 12px;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' viewBox='0 0 12 12' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M4.5 8.5L2 6L1 7L4.5 10.5L11 4L10 3L4.5 8.5Z' fill='%23F25C05'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .bullet {
+            margin-right: 5px;
+            color: var(--fashion-4);
+        }
+        
+        .handwritten {
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .info-tag {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(242, 196, 61, 0.15);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px 4px 2px 0;
+            color: var(--fashion-5);
+            border: 1px dashed var(--fashion-3);
+        }
+        
+        .checklist-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+        
+        .checkbox {
+            min-width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            margin-top: 2px;
+            background-image: url("data:image/svg+xml,%3Csvg width='20' height='20' viewBox='0 0 20 20' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='1' y='1' width='18' height='18' rx='3' stroke='%23F25C05' stroke-width='2' stroke-dasharray='3 2'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .banner {
+            position: relative;
+            background: linear-gradient(90deg, rgba(242, 196, 61, 0.2), rgba(242, 196, 61, 0.05));
+            padding: 15px 20px;
+            margin: 20px 0;
+            border-radius: 8px;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+        }
+        
+        .banner::before {
+            content: "";
+            position: absolute;
+            left: 10px;
+            top: -10px;
+            width: 30px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg width='30' height='30' viewBox='0 0 30 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='15' cy='15' r='13' fill='white' stroke='%23F25C05' stroke-width='2' stroke-dasharray='4 2'/%3E%3Cpath d='M9 15L13 19L21 11' stroke='%23F25C05' stroke-width='2'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .connection-line {
+            position: relative;
+        }
+        
+        .connection-line::after {
+            content: "";
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            width: 2px;
+            height: 30px;
+            background-image: url("data:image/svg+xml,%3Csvg width='2' height='30' viewBox='0 0 2 30' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 0V30' stroke='%23593C47' stroke-dasharray='3 3'/%3E%3C/svg%3E");
+            background-repeat: repeat-y;
+        }
+        
+        .small-text {
+            font-size: 12px;
+            color: var(--gray-600);
+        }
+        
+        footer {
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--fashion-3);
+            font-size: 12px;
+            color: var(--gray-600);
+            text-align: center;
+        }
+        
+        .citation {
+            font-size: 10px;
+            color: #666;
+            margin-top: 2px;
+        }
+        
+        /* モバイル対応の強化 */
+        @media (max-width: 1024px) {
+            .column {
+                flex: 1 1 100%;
+            }
+            
+            .content {
+                flex-direction: column;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 5px;
+            }
+            
+            .container {
+                padding: 12px;
+                border-radius: 10px;
+            }
+            
+            h1 {
+                font-size: 22px;
+            }
+            
+            h2 {
+                font-size: 18px;
+            }
+            
+            h3 {
+                font-size: 16px;
+            }
+            
+            .table-container {
+                margin: 10px 0;
+            }
+            
+            table {
+                font-size: 12px;
+            }
+            
+            th, td {
+                padding: 6px 8px;
+            }
+            
+            .card {
+                padding: 12px;
+                margin-bottom: 10px;
+            }
+            
+            .banner {
+                padding: 12px 15px;
+                font-size: 14px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 20px;
+            }
+            
+            .card {
+                padding: 10px;
+            }
+            
+            p, li {
+                font-size: 13px;
+            }
+            
+            .checklist-item {
+                padding: 6px 10px;
+            }
+            
+            .info-tag {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+            
+            footer {
+                margin-top: 20px;
+                padding-top: 10px;
+            }
+            
+            .citation {
+                font-size: 9px;
+            }
+        }
+    </style>
+    
+</head>
+<body>
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+        <a href="../index.html">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
+            <h1>AIインフォグラフィックス集</h1>
+        </a>
+    </header>
+
+    <!-- ===== Content ===== -->
+    <div class="content-wrapper">
+        <div class="content">
+            <div class="container">
+<header>
+<div>
+<h1>米国の中小企業向け 生成AI活用ロードマップ（2025-2027）</h1>
+<div class="date-source">2025年4月23日｜グラフィックレコーディング資料</div>
+</div>
+</header>
+<div class="content">
+<div class="column">
+<div class="card">
+<h2>生成AI活用ロードマップ</h2>
+<p>米国の中小企業向け 生成AI活用フェーズ（2025-2027）</p>
+<div class="table-container">
+<table>
+<tr>
+<th>フェーズ</th>
+<th>期間目安</th>
+<th>目的 &amp; 成果</th>
+</tr>
+<tr>
+<td class="phase-title">0. 準備 &amp; ガバナンス</td>
+<td>0-3 か月</td>
+<td>
+                                    ①AI導入方針策定<br/>
+                                    ②リスク管理体制確立
+                                </td>
+</tr>
+<tr>
+<td class="phase-title">1. クイックウィン導入</td>
+<td>0-6 か月</td>
+<td>
+                                    ①即効性ある業務効率化<br/>
+                                    ②ROI実証
+                                </td>
+</tr>
+<tr>
+<td class="phase-title">2. 業務システム統合</td>
+<td>3-12 か月</td>
+<td>
+                                    ①基幹データと連携したAIエージェント化<br/>
+                                    ②部門横断の活用
+                                </td>
+</tr>
+<tr>
+<td class="phase-title">3. 全社スケール &amp; 最適化</td>
+<td>12-24 か月</td>
+<td>
+                                    ①部門ごとのPoCを全社展開<br/>
+                                    ②セキュアな独自モデル運用
+                                </td>
+</tr>
+<tr>
+<td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
+<td>2 年〜</td>
+<td>
+                                    ①AIファースト組織構造<br/>
+                                    ②新サービス創出
+                                </td>
+</tr>
+</table>
+</div>
+<div class="banner">
+<strong>ポイント：</strong>生成AIが生む価値の8割は <span class="highlight">「既存プロセスの再設計」</span> で顕在化します。初期は"魔法の箱"としてではなく <span class="highlight">明確な業務課題</span> を入口に据えると失敗確率が激減します。
+                    </div>
+</div>
+<div class="card">
+<h3>成功させる 5 つの鍵 🔑</h3>
+<ul>
+<li><strong>"痛みの大きい業務" を入口にする</strong> – 例：見積書作成、サポートTicket返答</li>
+<li><strong>プロンプト≠魔法</strong> – 再現性を担保するテンプレ化＋統制</li>
+<li><strong>人間の責任分界点を明確に</strong> – Human-in-the-loop フローを設計</li>
+<li><strong>小さく作り、数字で測る</strong> – KPI達成で次の投資を社内合意</li>
+<li><strong>法務・情シスを最初から巻き込む</strong> – 州法/業界規制を踏まえたデータ設計</li>
+</ul>
+</div>
+</div>
+<div class="column">
+<div class="card">
+<h2>主要ユースケース別ヒント</h2>
+<p class="handwritten">2025年版 分野別・最新活用方法 💡</p>
+<div class="table-container">
+<table>
+<tr>
+<th>領域</th>
+<th>代表タスク</th>
+<th>使える代表サービス</th>
+</tr>
+<tr>
+<td><span class="info-tag">カスタマーサポート</span></td>
+<td>24/7チャット、英⽇バイリンガル応対</td>
+<td>Zendesk AI、Intercom Fin AI、OpenAI Assistants</td>
+</tr>
+<tr>
+<td><span class="info-tag">マーケティング</span></td>
+<td>広告コピー、画像／動画生成</td>
+<td>Jasper、Canva Magic Studio、Synthesia</td>
+</tr>
+<tr>
+<td><span class="info-tag">営業</span></td>
+<td>パーソナライズ提案書、CRM自動入力</td>
+<td>Microsoft Copilot for Dynamics、HubSpot AI</td>
+</tr>
+<tr>
+<td><span class="info-tag">バックオフィス</span></td>
+<td>請求書OCR→会計仕訳、自動勤怠アラート</td>
+<td>Rippling Pulse AI、Zoho Books Zia</td>
+</tr>
+<tr>
+<td><span class="info-tag">プロダクト開発</span></td>
+<td>コード補完、UIモック生成</td>
+<td>GitHub Copilot Enterprise、Figma AI</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="card">
+<h2>詳細ロードマップ：代表ユースケース＆KPI</h2>
+<div class="table-container">
+<table>
+<tr>
+<th>フェーズ</th>
+<th>代表ユースケース</th>
+<th>主要ツール / 技術</th>
+<th>KPI例</th>
+</tr>
+<tr>
+<td class="phase-title">0. 準備 &amp; ガバナンス</td>
+<td>- 全社AIポリシー策定<br/>- PoC候補選定</td>
+<td>NIST AI RMF 1.0（G-M-M-M）ガイドライン</td>
+<td>- 社内AIポリシー策定完了<br/>- PoC候補3件</td>
+</tr>
+<tr>
+<td class="phase-title">1. クイックウィン導入</td>
+<td>- FAQ/社内ヘルプチャットボット<br/>- マーケコピー生成<br/>- ドキュメント要約</td>
+<td>ChatGPT Teams / Microsoft 365 Copilot（GPT-4o搭載・Agent Store）</td>
+<td>- 工数削減 &gt; 15%<br/>- 販促メールCVR +3%</td>
+</tr>
+<tr>
+<td class="phase-title">2. 業務システム統合</td>
+<td>- CRM連動営業メール自動化<br/>- 請求書の自動チェック &amp; 仕訳</td>
+<td>Azure OpenAI + RAG<br/>Zapier／n8n ワークフロー連携</td>
+<td>- E-mail生産性 +5-15%<br/>- ペーパーワーク処理時間-25%</td>
+</tr>
+<tr>
+<td class="phase-title">3. 全社スケール &amp; 最適化</td>
+<td>- 私有クラウド上のカスタムLLM<br/>- データ分析レポート自動生成</td>
+<td>AWS Bedrock / Vertex AI<br/>Vector DB（Pinecone 等）</td>
+<td>- AI利用率 &gt; 60% 社員<br/>- 年間ROI &gt; 300%</td>
+</tr>
+<tr>
+<td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
+<td>- マルチエージェントで自律処理<br/>- AI共同開発型新製品</td>
+<td>マルチエージェントFW（LangChain, CrewAI 等）</td>
+<td>- AI起点売上比率 &gt; 20%</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="column">
+<div class="card">
+<h2>法規制・リスク対策チェックリスト</h2>
+<p class="handwritten">米国 SMB向け 📋</p>
+<div class="table-container">
+<table>
+<tr>
+<th>観点</th>
+<th>具体策</th>
+</tr>
+<tr>
+<td><span class="info-tag">連邦ガイドライン</span></td>
+<td>NIST AI RMF準拠：Govern→Map→Measure→Manage</td>
+</tr>
+<tr>
+<td><span class="info-tag">州法（CAなど）</span></td>
+<td><em>CA AI Transparency Act</em>：深偽造ラベル付け・AI検出ツール義務 (2025/01/01施行)</td>
+</tr>
+<tr>
+<td><span class="info-tag">プライバシー</span></td>
+<td>CCPA/CPRA対応。従業員&lt;50人でも「機密データ大量処理」時は対象</td>
+</tr>
+<tr>
+<td><span class="info-tag">著作権</span></td>
+<td>生成物の商用利用規約確認。OpenAI・Adobe・GoogleのIP補償範囲を要チェック</td>
+</tr>
+<tr>
+<td><span class="info-tag">モデル安全</span></td>
+<td>NIST AI 800-1 （Dual-Use Foundation Models）で濫用リスク分析</td>
+</tr>
+</table>
+</div>
+<h3>予算感 (社員50名・年商$10M想定)</h3>
+<div class="table-container">
+<table>
+<tr>
+<th>項目</th>
+<th>初期コスト</th>
+<th>年間運用</th>
+</tr>
+<tr>
+<td>SaaSサブスクリプション<br/>(Copilot, ChatGPT Teams)</td>
+<td>$20-$30/ユーザ/月</td>
+<td>同左</td></tr></table></div></div></div></div></div>
+            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
+        </div>
+    </div>
+</body>
+</html> 
