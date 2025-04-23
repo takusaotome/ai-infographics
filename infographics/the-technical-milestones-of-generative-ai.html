@@ -56,6 +56,12 @@
             height: auto;
         }
 
+        /* Make header link look like normal text */
+        .hero a {
+            color: inherit; /* Inherit color from parent (h1 -> white) */
+            text-decoration: none; /* Remove underline */
+        }
+
         /* ---------- Content Wrapper ---------- */
         .content-wrapper {
             max-width: 1000px; /* 少し広げる */
@@ -228,7 +234,7 @@
     
     .important {
       font-weight: bold;
-      color: var(--accent-red);
+      color: var(--primary-1);
     }
     
     /* 引用 */
@@ -267,8 +273,10 @@
 <body>
     <!-- ===== Hero ===== -->
     <header class="hero">
-        <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
-        <h1>AIインフォグラフィックス集</h1>
+        <a href="../index.html">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
+            <h1>AIインフォグラフィックス集</h1>
+        </a>
     </header>
 
     <!-- ===== Content ===== -->
