@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NISTのAIリスクマネジメントフレームワーク1.0 - AI Infographics</title>
+    <title>NISTのAIリスクマネジメントフレームワーク1.0 - AIインフォグラフィックス集</title>
     <link rel="icon" type="image/png" href="../images/ai-logo.png">
     <style>
-        /* ---------- Base ---------- */
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
         :root {
-            --primary-1: #2B6CB0;
-            --primary-2: #6B46C1;
-            --accent: #4299E1;
-            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
-            --bg-light: #F7FAFC;
-            --bg-medium: #E2E8F0;
-            --text-dark: #1A202C;
-            --text-muted: #4A5568;
-            /* RGB値も変数化 */
-            --rgb-primary-1: 43, 108, 176;
-            --rgb-primary-2: 107, 70, 193;
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -28,105 +27,200 @@
         }
         
         body {
-            font-family: "Noto Sans JP", sans-serif;
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
             color: var(--text-dark);
-            background: var(--bg-light);
-            line-height: 1.6;
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
         }
 
-        /* ---------- Header ---------- */
-        .hero {
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 1.2rem;
-            padding: 1.8rem 2.4rem;
-            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
         }
         
-        .hero h1 {
-            font-size: clamp(1.6rem, 5vw, 2.4rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.07em;
-            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
         
-        .hero img {
-            width: 56px;
-            height: auto;
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
-        /* Make header link look like normal text */
-        .hero a {
-            color: inherit; /* Inherit color from parent (h1 -> white) */
-            text-decoration: none; /* Remove underline */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
         }
 
-        /* ---------- Content Wrapper ---------- */
-        .content-wrapper {
-            max-width: 1000px; /* 少し広げる */
-            margin: 2rem auto;
-            padding: 0 1.6rem;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .content {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
-            padding: 2rem;
-            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--fashion-2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
-        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
-        .content h1 { /* これはコンテンツのタイトル用 */
-             font-size: 2rem;
-             font-weight: 700;
-             color: var(--text-dark);
-             margin-bottom: 1.5rem;
-         }
-        /* .content h2, .content p, .content img のスタイルは削除 */
-        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 1.2rem;
-            background: var(--bg-medium);
-            color: var(--text-dark);
+        .footer-social a {
+            color: var(--fashion-2);
             text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
             border-radius: 4px;
-            transition: all 0.2s;
+            background-color: rgba(255,255,255,0.1);
         }
 
-        .back-link:hover {
-            background: var(--primary-1);
-            color: #fff;
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1.2rem 1.6rem;
+            .fixed-header h1 {
+                font-size: 20px;
             }
             
-            .content-wrapper {
-                padding: 0 1rem;
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
             }
-            
-            .content {
-                padding: 1.5rem;
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
             }
-            
-             .content h1 { /* レスポンシブ */
-                 font-size: 1.75rem;
-             }
-            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
-    
-    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
-    <style id="content-specific-styles">
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NISTのAIリスクマネジメントフレームワーク1.0</title>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-heading: #1e40af;
+            --bg-light: #f8fafc;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
         
         * {
             box-sizing: border-box;
@@ -141,8 +235,8 @@
             line-height: 1.4;
             padding: 10px;
             background-image: 
-                radial-gradient(var(--accent)22 1px, transparent 1px),
-                radial-gradient(var(--accent)22 1px, transparent 1px);
+                radial-gradient(#F2E63D22 1px, transparent 1px),
+                radial-gradient(#F25C0522 1px, transparent 1px);
             background-size: 20px 20px;
             background-position: 0 0, 10px 10px;
         }
@@ -566,229 +660,268 @@
             }
         }
     </style>
-    
 </head>
 <body>
-    <!-- ===== Hero ===== -->
-    <header class="hero">
-        <a href="../index.html">
-            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
-            <h1>AIインフォグラフィックス集</h1>
-        </a>
-    </header>
-
-    <!-- ===== Content ===== -->
-    <div class="content-wrapper">
-        <div class="content">
-            <div class="container">
-<div class="header">
-<h1 class="title">NISTのAIリスクマネジメントフレームワーク1.0</h1>
-<div class="date-source">
-<p>ブリーフィング日: 2024年5月15日</p>
-<p>対象: AIシステム関係者</p>
-</div>
-</div>
-<div class="main-content">
-<!-- 左カラム -->
-<div class="column">
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">📋</span>エグゼクティブサマリー
+    <div class="container">
+        <div class="header">
+            <h1 class="title">NISTのAIリスクマネジメントフレームワーク1.0</h1>
+            <div class="date-source">
+                <p>ブリーフィング日: 2024年5月15日</p>
+                <p>対象: AIシステム関係者</p>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <!-- 左カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">📋</span>エグゼクティブサマリー
                     </h2>
-<div class="section-content">
-<p>本文書は<span class="highlight">米国国立標準技術研究所（NIST）</span>が発行した<span class="keyword">AIリスクマネジメントフレームワーク（AI RMF）1.0</span>の主要なテーマと重要なアイデアをまとめたものです。</p>
-</div>
-<div class="note">
+                    <div class="section-content">
+                        <p>本文書は<span class="highlight">米国国立標準技術研究所（NIST）</span>が発行した<span class="keyword">AIリスクマネジメントフレームワーク（AI RMF）1.0</span>の主要なテーマと重要なアイデアをまとめたものです。</p>
+                    </div>
+                    
+                    <div class="note">
                         AI技術は社会に変革をもたらす大きな可能性を秘める一方で、個人、組織、社会、環境にネガティブな影響を与えるリスクも伴います。
                     </div>
-<div class="section-content">
-<p>AI RMFは、リスクを<span class="highlight">特定、評価、管理</span>し、<span class="keyword">トラストワージ（信頼に足る）</span>なAIシステムの開発と利用を促進するための包括的なフレームワークです。</p>
-</div>
-<div class="bubble">
-<p>フレームワークは<span class="keyword">リビングドキュメント</span>として位置づけられており、定期的なレビューと更新が予定されています。</p>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">🔍</span>AIリスクの理解と管理の必要性
+                    
+                    <div class="section-content">
+                        <p>AI RMFは、リスクを<span class="highlight">特定、評価、管理</span>し、<span class="keyword">トラストワージ（信頼に足る）</span>なAIシステムの開発と利用を促進するための包括的なフレームワークです。</p>
+                    </div>
+                    
+                    <div class="bubble">
+                        <p>フレームワークは<span class="keyword">リビングドキュメント</span>として位置づけられており、定期的なレビューと更新が予定されています。</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">🔍</span>AIリスクの理解と管理の必要性
                     </h2>
-<div class="handdrawn-box">
-<p>「AI テクノロジーは、商業、健康、交通、サイバーセキュリティ、環境、地球に至るまで、社会と人々の生活を変革する大きな可能性を秘めています。」</p>
-</div>
-<div class="section-content">
-<p>AIのリスクは、<span class="highlight">時間経過による変化、予測困難性、社会技術的な性質</span>など、従来技術とは異なる特性を持ちます。</p>
-<div class="note">
+                    <div class="handdrawn-box">
+                        <p>「AI テクノロジーは、商業、健康、交通、サイバーセキュリティ、環境、地球に至るまで、社会と人々の生活を変革する大きな可能性を秘めています。」</p>
+                    </div>
+                    
+                    <div class="section-content">
+                        <p>AIのリスクは、<span class="highlight">時間経過による変化、予測困難性、社会技術的な性質</span>など、従来技術とは異なる特性を持ちます。</p>
+                        
+                        <div class="note">
                             適切なリスク管理がなければ、AIシステムは不公平な結果を増幅・永続化させる可能性があり、適切な管理によって緩和・管理が可能になります。
                         </div>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">⚖️</span>トラストワージネス（信頼に足る）なAI
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">⚖️</span>トラストワージネス（信頼に足る）なAI
                     </h2>
-<div class="section-content">
-<p>トラストワージネスなAIシステムは、以下の特性を持ちます：</p>
-<div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
-<span class="tag">妥当性と信頼性</span>
-<span class="tag">安全性</span>
-<span class="tag">セキュリティとレジリエンス</span>
-<span class="tag">アカウンタビリティと透明性</span>
-<span class="tag">説明可能性と解釈可能性</span>
-<span class="tag">プライバシー強化</span>
-<span class="tag">有害バイアスの管理された公平性</span>
-</div>
-</div>
-<div class="bubble">
-<p>これらの特性は相互に関連しており、AIシステムの使用状況に応じてバランスを取る必要があります。<span class="highlight">アカウンタビリティと透明性</span>は他のすべての特性に関連します。</p>
-</div>
-</div>
-</div>
-<!-- 中央カラム -->
-<div class="column">
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">🏗️</span>AIリスクマネジメントフレームワーク構成
+                    <div class="section-content">
+                        <p>トラストワージネスなAIシステムは、以下の特性を持ちます：</p>
+                        <div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                            <span class="tag">妥当性と信頼性</span>
+                            <span class="tag">安全性</span>
+                            <span class="tag">セキュリティとレジリエンス</span>
+                            <span class="tag">アカウンタビリティと透明性</span>
+                            <span class="tag">説明可能性と解釈可能性</span>
+                            <span class="tag">プライバシー強化</span>
+                            <span class="tag">有害バイアスの管理された公平性</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bubble">
+                        <p>これらの特性は相互に関連しており、AIシステムの使用状況に応じてバランスを取る必要があります。<span class="highlight">アカウンタビリティと透明性</span>は他のすべての特性に関連します。</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中央カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">🏗️</span>AIリスクマネジメントフレームワーク構成
                     </h2>
-<div class="section-content">
-<div class="handdrawn-box">
-<p><strong>パート1：基礎情報</strong></p>
-<p>AIリスクの枠組み、対象読者、AIのリスクとトラストワージネス、AI RMFの有効性について概説。</p>
-</div>
-<div class="arrow-container">
-<div class="arrow"></div>
-</div>
-<div class="handdrawn-box">
-<p><strong>パート2：コアとプロファイル</strong></p>
-<p>AIリスクを管理するための具体的な機能（GOVERN、MAP、MEASURE、MANAGE）を示す「コア」と、特定状況への適用を示す「プロファイル」で構成。</p>
-</div>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">🔄</span>AI RMFコアの4つの機能
+                    <div class="section-content">
+                        <div class="handdrawn-box">
+                            <p><strong>パート1：基礎情報</strong></p>
+                            <p>AIリスクの枠組み、対象読者、AIのリスクとトラストワージネス、AI RMFの有効性について概説。</p>
+                        </div>
+                        
+                        <div class="arrow-container">
+                            <div class="arrow"></div>
+                        </div>
+                        
+                        <div class="handdrawn-box">
+                            <p><strong>パート2：コアとプロファイル</strong></p>
+                            <p>AIリスクを管理するための具体的な機能（GOVERN、MAP、MEASURE、MANAGE）を示す「コア」と、特定状況への適用を示す「プロファイル」で構成。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">🔄</span>AI RMFコアの4つの機能
                     </h2>
-<div class="process-container">
-<div class="process-step">
-<div class="step-number">1</div>
-<div class="step-content">
-<h3 style="color: var(--fashion-4); font-size: 16px;">GOVERN（ガバナンス）</h3>
-<p>AIリスクマネジメントの文化を醸成し、組織全体の方針、プロセス、手順、責任体制を確立する。</p>
-<div class="connector"></div>
-</div>
-</div>
-<div class="process-step">
-<div class="step-number">2</div>
-<div class="step-content">
-<h3 style="color: var(--fashion-4); font-size: 16px;">MAP（マッピング）</h3>
-<p>AIシステムに関連するリスクを特定し、コンテキストを確立する。</p>
-<div class="connector"></div>
-</div>
-</div>
-<div class="process-step">
-<div class="step-number">3</div>
-<div class="step-content">
-<h3 style="color: var(--fashion-4); font-size: 16px;">MEASURE（測定）</h3>
-<p>AIリスクと関連するインパクトを分析、評価、ベンチマーク、モニタリングするためのツール、技法、方法論を用いる。</p>
-<div class="connector"></div>
-</div>
-</div>
-<div class="process-step">
-<div class="step-number">4</div>
-<div class="step-content">
-<h3 style="color: var(--fashion-4); font-size: 16px;">MANAGE（管理）</h3>
-<p>GOVERN、MAP、MEASUREの結果に基づき、AIリスクに優先順位を付け、対応し、リスクリソースを割り当てる。</p>
-</div>
-</div>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">👥</span>AIアクターの多様な役割
+                    <div class="process-container">
+                        <div class="process-step">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <h3 style="color: var(--fashion-4); font-size: 16px;">GOVERN（ガバナンス）</h3>
+                                <p>AIリスクマネジメントの文化を醸成し、組織全体の方針、プロセス、手順、責任体制を確立する。</p>
+                                <div class="connector"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <h3 style="color: var(--fashion-4); font-size: 16px;">MAP（マッピング）</h3>
+                                <p>AIシステムに関連するリスクを特定し、コンテキストを確立する。</p>
+                                <div class="connector"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <h3 style="color: var(--fashion-4); font-size: 16px;">MEASURE（測定）</h3>
+                                <p>AIリスクと関連するインパクトを分析、評価、ベンチマーク、モニタリングするためのツール、技法、方法論を用いる。</p>
+                                <div class="connector"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="process-step">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <h3 style="color: var(--fashion-4); font-size: 16px;">MANAGE（管理）</h3>
+                                <p>GOVERN、MAP、MEASUREの結果に基づき、AIリスクに優先順位を付け、対応し、リスクリソースを割り当てる。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">👥</span>AIアクターの多様な役割
                     </h2>
-<div class="section-content">
-<p>AIのライフサイクル全体には、様々なアクターが関与します：</p>
-<div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
-<span class="tag">設計者</span>
-<span class="tag">開発者</span>
-<span class="tag">デプロイヤ</span>
-<span class="tag">評価者</span>
-<span class="tag">運用者</span>
-<span class="tag">エンドユーザー</span>
-<span class="tag">影響を受ける個人・コミュニティ</span>
-<span class="tag">ガバナンス担当者</span>
-<span class="tag">サードパーティ</span>
-</div>
-</div>
-<div class="bubble">
-<p>「リスクマネジメントの成功は、AI アクターの<span class="highlight">連帯責任感</span>にかかっています。」</p>
-</div>
-</div>
-</div>
-<!-- 右カラム -->
-<div class="column">
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">⚠️</span>従来のソフトウェアリスクとの違い
+                    <div class="section-content">
+                        <p>AIのライフサイクル全体には、様々なアクターが関与します：</p>
+                        <div style="display: flex; flex-wrap: wrap; margin-top: 10px;">
+                            <span class="tag">設計者</span>
+                            <span class="tag">開発者</span>
+                            <span class="tag">デプロイヤ</span>
+                            <span class="tag">評価者</span>
+                            <span class="tag">運用者</span>
+                            <span class="tag">エンドユーザー</span>
+                            <span class="tag">影響を受ける個人・コミュニティ</span>
+                            <span class="tag">ガバナンス担当者</span>
+                            <span class="tag">サードパーティ</span>
+                        </div>
+                    </div>
+                    
+                    <div class="bubble">
+                        <p>「リスクマネジメントの成功は、AI アクターの<span class="highlight">連帯責任感</span>にかかっています。」</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">⚠️</span>従来のソフトウェアリスクとの違い
                     </h2>
-<div class="section-content">
-<p>AIシステム特有のリスク要因：</p>
-<ul style="list-style-type: none; padding-left: 10px; margin-top: 10px;">
-<li>📊 データの品質・代表性</li>
-<li>🔄 データ依存性と複雑性</li>
-<li>📈 学習による性能変化</li>
-<li>⏳ データの陳腐化</li>
-<li>🧩 システム規模と複雑性</li>
-<li>🏭 事前学習済みモデルの使用によるリスク</li>
-<li>🔮 出現特性の予測困難性</li>
-<li>🔒 プライバシーリスクの増大</li>
-<li>🛠️ より頻繁なメンテナンスの必要性</li>
-<li>🔍 不透明性と再現性の懸念</li>
-<li>📝 ソフトウェアテスト基準の未整備</li>
-<li>💻 計算コストと環境影響</li>
-<li>🦋 副作用の予測困難性</li>
-</ul>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">🤝</span>人間とAIの相互作用における考慮事項
+                    <div class="section-content">
+                        <p>AIシステム特有のリスク要因：</p>
+                        <ul style="list-style-type: none; padding-left: 10px; margin-top: 10px;">
+                            <li>📊 データの品質・代表性</li>
+                            <li>🔄 データ依存性と複雑性</li>
+                            <li>📈 学習による性能変化</li>
+                            <li>⏳ データの陳腐化</li>
+                            <li>🧩 システム規模と複雑性</li>
+                            <li>🏭 事前学習済みモデルの使用によるリスク</li>
+                            <li>🔮 出現特性の予測困難性</li>
+                            <li>🔒 プライバシーリスクの増大</li>
+                            <li>🛠️ より頻繁なメンテナンスの必要性</li>
+                            <li>🔍 不透明性と再現性の懸念</li>
+                            <li>📝 ソフトウェアテスト基準の未整備</li>
+                            <li>💻 計算コストと環境影響</li>
+                            <li>🦋 副作用の予測困難性</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">🤝</span>人間とAIの相互作用における考慮事項
                     </h2>
-<div class="section-content">
-<div class="handdrawn-box">
-<p><span class="keyword">人間の役割と責任</span>の明確化が必要</p>
-</div>
-<div class="note">
+                    <div class="section-content">
+                        <div class="handdrawn-box">
+                            <p><span class="keyword">人間の役割と責任</span>の明確化が必要</p>
+                        </div>
+                        
+                        <div class="note">
                             システムおよび人間の認知バイアスが意思決定に影響を与える可能性。
                         </div>
-<p>人間とAIの相互作用の結果は多様であり、特定の条件下では人間のバイアスを増幅させる可能性もあるが、注意深く編成すれば<span class="highlight">相互補完によるパフォーマンス向上</span>が期待できます。</p>
-<div class="bubble">
-<p>AIシステムからの情報の提示方法の複雑さ、個人の知覚やスキルによる影響に注意が必要です。</p>
-</div>
-</div>
-</div>
-<div class="card">
-<h2 class="section-title">
-<span class="emoji-icon">🔮</span>今後の展望と結論
+                        
+                        <p>人間とAIの相互作用の結果は多様であり、特定の条件下では人間のバイアスを増幅させる可能性もあるが、注意深く編成すれば<span class="highlight">相互補完によるパフォーマンス向上</span>が期待できます。</p>
+                        
+                        <div class="bubble">
+                            <p>AIシステムからの情報の提示方法の複雑さ、個人の知覚やスキルによる影響に注意が必要です。</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="emoji-icon">🔮</span>今後の展望と結論
                     </h2>
-<div class="section-content">
-<p>AI RMFは<span class="keyword">リビングドキュメント</span>として、技術の進歩、理解の深化、AIコミュニティからのフィードバックに基づいて定期的にレビュー、更新、拡張される予定です。</p>
-<div class="note">
+                    <div class="section-content">
+                        <p>AI RMFは<span class="keyword">リビングドキュメント</span>として、技術の進歩、理解の深化、AIコミュニティからのフィードバックに基づいて定期的にレビュー、更新、拡張される予定です。</p>
+                        
+                        <div class="note">
                             AI RMFの有効性評価（トラストワージネス向上への貢献度測定方法を含む）は、AIコミュニティとの協力のもと、今後のNISTの活動の一部となります。
                         </div>
-<p>NIST AIリスクマネジメントフレームワーク1.0は、組織がAI技術の潜在的なリスクを包括的に理解し、効果的に管理するための<span class="highlight">重要な指針</span>となるものです。</p>
-<div class="bubble">
-<p>AIアクターは、本フレームワークを活用し、それぞれの役割と責任を果たすことで、より<span class="keyword">安全で信頼性の高いAIエコシステム</span>の構築に貢献することが期待されます。</p>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="footer">
-<p>出典: NISTのAIリスクマネジメントフレームワーク1.0（NIST.AI.100-1.jpn.pdf）のブリーフィング文書 | 2024年5月15日作成</p>
-</div>
-</div>
-            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
+                        
+                        <p>NIST AIリスクマネジメントフレームワーク1.0は、組織がAI技術の潜在的なリスクを包括的に理解し、効果的に管理するための<span class="highlight">重要な指針</span>となるものです。</p>
+                        
+                        <div class="bubble">
+                            <p>AIアクターは、本フレームワークを活用し、それぞれの役割と責任を果たすことで、より<span class="keyword">安全で信頼性の高いAIエコシステム</span>の構築に貢献することが期待されます。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>出典: NISTのAIリスクマネジメントフレームワーク1.0（NIST.AI.100-1.jpn.pdf）のブリーフィング文書 | 2024年5月15日作成</p>
         </div>
     </div>
+</body>
+</html>
+
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
 </body>
 </html> 

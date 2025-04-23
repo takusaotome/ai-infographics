@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>米国の中小企業向け 生成AI活用ロードマップ（2025-2027） - AI Infographics</title>
+    <title>米国の中小企業向け 生成AI活用ロードマップ（2025-2027） - AIインフォグラフィックス集</title>
     <link rel="icon" type="image/png" href="../images/ai-logo.png">
     <style>
-        /* ---------- Base ---------- */
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
         :root {
-            --primary-1: #2B6CB0;
-            --primary-2: #6B46C1;
-            --accent: #4299E1;
-            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
-            --bg-light: #F7FAFC;
-            --bg-medium: #E2E8F0;
-            --text-dark: #1A202C;
-            --text-muted: #4A5568;
-            /* RGB値も変数化 */
-            --rgb-primary-1: 43, 108, 176;
-            --rgb-primary-2: 107, 70, 193;
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -28,105 +27,200 @@
         }
         
         body {
-            font-family: "Noto Sans JP", sans-serif;
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
             color: var(--text-dark);
-            background: var(--bg-light);
-            line-height: 1.6;
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
         }
 
-        /* ---------- Header ---------- */
-        .hero {
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 1.2rem;
-            padding: 1.8rem 2.4rem;
-            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
         }
         
-        .hero h1 {
-            font-size: clamp(1.6rem, 5vw, 2.4rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.07em;
-            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
         
-        .hero img {
-            width: 56px;
-            height: auto;
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
-        /* Make header link look like normal text */
-        .hero a {
-            color: inherit; /* Inherit color from parent (h1 -> white) */
-            text-decoration: none; /* Remove underline */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
         }
 
-        /* ---------- Content Wrapper ---------- */
-        .content-wrapper {
-            max-width: 1000px; /* 少し広げる */
-            margin: 2rem auto;
-            padding: 0 1.6rem;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .content {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
-            padding: 2rem;
-            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--fashion-2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
-        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
-        .content h1 { /* これはコンテンツのタイトル用 */
-             font-size: 2rem;
-             font-weight: 700;
-             color: var(--text-dark);
-             margin-bottom: 1.5rem;
-         }
-        /* .content h2, .content p, .content img のスタイルは削除 */
-        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 1.2rem;
-            background: var(--bg-medium);
-            color: var(--text-dark);
+        .footer-social a {
+            color: var(--fashion-2);
             text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
             border-radius: 4px;
-            transition: all 0.2s;
+            background-color: rgba(255,255,255,0.1);
         }
 
-        .back-link:hover {
-            background: var(--primary-1);
-            color: #fff;
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1.2rem 1.6rem;
+            .fixed-header h1 {
+                font-size: 20px;
             }
             
-            .content-wrapper {
-                padding: 0 1rem;
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
             }
-            
-            .content {
-                padding: 1.5rem;
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
             }
-            
-             .content h1 { /* レスポンシブ */
-                 font-size: 1.75rem;
-             }
-            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
-    
-    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
-    <style id="content-specific-styles">
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>米国の中小企業向け 生成AI活用ロードマップ（2025-2027）</title>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --blue-800: #1e40af;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
         
         * {
             box-sizing: border-box;
@@ -608,225 +702,244 @@
             }
         }
     </style>
-    
 </head>
 <body>
-    <!-- ===== Hero ===== -->
-    <header class="hero">
-        <a href="../index.html">
-            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
-            <h1>AIインフォグラフィックス集</h1>
-        </a>
-    </header>
-
-    <!-- ===== Content ===== -->
-    <div class="content-wrapper">
+    <div class="container">
+        <header>
+            <div>
+                <h1>米国の中小企業向け 生成AI活用ロードマップ（2025-2027）</h1>
+                <div class="date-source">2025年4月23日｜グラフィックレコーディング資料</div>
+            </div>
+        </header>
+        
         <div class="content">
-            <div class="container">
-<header>
-<div>
-<h1>米国の中小企業向け 生成AI活用ロードマップ（2025-2027）</h1>
-<div class="date-source">2025年4月23日｜グラフィックレコーディング資料</div>
-</div>
-</header>
-<div class="content">
-<div class="column">
-<div class="card">
-<h2>生成AI活用ロードマップ</h2>
-<p>米国の中小企業向け 生成AI活用フェーズ（2025-2027）</p>
-<div class="table-container">
-<table>
-<tr>
-<th>フェーズ</th>
-<th>期間目安</th>
-<th>目的 &amp; 成果</th>
-</tr>
-<tr>
-<td class="phase-title">0. 準備 &amp; ガバナンス</td>
-<td>0-3 か月</td>
-<td>
-                                    ①AI導入方針策定<br/>
+            <div class="column">
+                <div class="card">
+                    <h2>生成AI活用ロードマップ</h2>
+                    <p>米国の中小企業向け 生成AI活用フェーズ（2025-2027）</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>フェーズ</th>
+                                <th>期間目安</th>
+                                <th>目的 &amp; 成果</th>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">0. 準備 &amp; ガバナンス</td>
+                                <td>0-3 か月</td>
+                                <td>
+                                    ①AI導入方針策定<br>
                                     ②リスク管理体制確立
                                 </td>
-</tr>
-<tr>
-<td class="phase-title">1. クイックウィン導入</td>
-<td>0-6 か月</td>
-<td>
-                                    ①即効性ある業務効率化<br/>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">1. クイックウィン導入</td>
+                                <td>0-6 か月</td>
+                                <td>
+                                    ①即効性ある業務効率化<br>
                                     ②ROI実証
                                 </td>
-</tr>
-<tr>
-<td class="phase-title">2. 業務システム統合</td>
-<td>3-12 か月</td>
-<td>
-                                    ①基幹データと連携したAIエージェント化<br/>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">2. 業務システム統合</td>
+                                <td>3-12 か月</td>
+                                <td>
+                                    ①基幹データと連携したAIエージェント化<br>
                                     ②部門横断の活用
                                 </td>
-</tr>
-<tr>
-<td class="phase-title">3. 全社スケール &amp; 最適化</td>
-<td>12-24 か月</td>
-<td>
-                                    ①部門ごとのPoCを全社展開<br/>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">3. 全社スケール &amp; 最適化</td>
+                                <td>12-24 か月</td>
+                                <td>
+                                    ①部門ごとのPoCを全社展開<br>
                                     ②セキュアな独自モデル運用
                                 </td>
-</tr>
-<tr>
-<td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
-<td>2 年〜</td>
-<td>
-                                    ①AIファースト組織構造<br/>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
+                                <td>2 年〜</td>
+                                <td>
+                                    ①AIファースト組織構造<br>
                                     ②新サービス創出
                                 </td>
-</tr>
-</table>
-</div>
-<div class="banner">
-<strong>ポイント：</strong>生成AIが生む価値の8割は <span class="highlight">「既存プロセスの再設計」</span> で顕在化します。初期は"魔法の箱"としてではなく <span class="highlight">明確な業務課題</span> を入口に据えると失敗確率が激減します。
+                            </tr>
+                        </table>
                     </div>
-</div>
-<div class="card">
-<h3>成功させる 5 つの鍵 🔑</h3>
-<ul>
-<li><strong>"痛みの大きい業務" を入口にする</strong> – 例：見積書作成、サポートTicket返答</li>
-<li><strong>プロンプト≠魔法</strong> – 再現性を担保するテンプレ化＋統制</li>
-<li><strong>人間の責任分界点を明確に</strong> – Human-in-the-loop フローを設計</li>
-<li><strong>小さく作り、数字で測る</strong> – KPI達成で次の投資を社内合意</li>
-<li><strong>法務・情シスを最初から巻き込む</strong> – 州法/業界規制を踏まえたデータ設計</li>
-</ul>
-</div>
-</div>
-<div class="column">
-<div class="card">
-<h2>主要ユースケース別ヒント</h2>
-<p class="handwritten">2025年版 分野別・最新活用方法 💡</p>
-<div class="table-container">
-<table>
-<tr>
-<th>領域</th>
-<th>代表タスク</th>
-<th>使える代表サービス</th>
-</tr>
-<tr>
-<td><span class="info-tag">カスタマーサポート</span></td>
-<td>24/7チャット、英⽇バイリンガル応対</td>
-<td>Zendesk AI、Intercom Fin AI、OpenAI Assistants</td>
-</tr>
-<tr>
-<td><span class="info-tag">マーケティング</span></td>
-<td>広告コピー、画像／動画生成</td>
-<td>Jasper、Canva Magic Studio、Synthesia</td>
-</tr>
-<tr>
-<td><span class="info-tag">営業</span></td>
-<td>パーソナライズ提案書、CRM自動入力</td>
-<td>Microsoft Copilot for Dynamics、HubSpot AI</td>
-</tr>
-<tr>
-<td><span class="info-tag">バックオフィス</span></td>
-<td>請求書OCR→会計仕訳、自動勤怠アラート</td>
-<td>Rippling Pulse AI、Zoho Books Zia</td>
-</tr>
-<tr>
-<td><span class="info-tag">プロダクト開発</span></td>
-<td>コード補完、UIモック生成</td>
-<td>GitHub Copilot Enterprise、Figma AI</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="card">
-<h2>詳細ロードマップ：代表ユースケース＆KPI</h2>
-<div class="table-container">
-<table>
-<tr>
-<th>フェーズ</th>
-<th>代表ユースケース</th>
-<th>主要ツール / 技術</th>
-<th>KPI例</th>
-</tr>
-<tr>
-<td class="phase-title">0. 準備 &amp; ガバナンス</td>
-<td>- 全社AIポリシー策定<br/>- PoC候補選定</td>
-<td>NIST AI RMF 1.0（G-M-M-M）ガイドライン</td>
-<td>- 社内AIポリシー策定完了<br/>- PoC候補3件</td>
-</tr>
-<tr>
-<td class="phase-title">1. クイックウィン導入</td>
-<td>- FAQ/社内ヘルプチャットボット<br/>- マーケコピー生成<br/>- ドキュメント要約</td>
-<td>ChatGPT Teams / Microsoft 365 Copilot（GPT-4o搭載・Agent Store）</td>
-<td>- 工数削減 &gt; 15%<br/>- 販促メールCVR +3%</td>
-</tr>
-<tr>
-<td class="phase-title">2. 業務システム統合</td>
-<td>- CRM連動営業メール自動化<br/>- 請求書の自動チェック &amp; 仕訳</td>
-<td>Azure OpenAI + RAG<br/>Zapier／n8n ワークフロー連携</td>
-<td>- E-mail生産性 +5-15%<br/>- ペーパーワーク処理時間-25%</td>
-</tr>
-<tr>
-<td class="phase-title">3. 全社スケール &amp; 最適化</td>
-<td>- 私有クラウド上のカスタムLLM<br/>- データ分析レポート自動生成</td>
-<td>AWS Bedrock / Vertex AI<br/>Vector DB（Pinecone 等）</td>
-<td>- AI利用率 &gt; 60% 社員<br/>- 年間ROI &gt; 300%</td>
-</tr>
-<tr>
-<td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
-<td>- マルチエージェントで自律処理<br/>- AI共同開発型新製品</td>
-<td>マルチエージェントFW（LangChain, CrewAI 等）</td>
-<td>- AI起点売上比率 &gt; 20%</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="column">
-<div class="card">
-<h2>法規制・リスク対策チェックリスト</h2>
-<p class="handwritten">米国 SMB向け 📋</p>
-<div class="table-container">
-<table>
-<tr>
-<th>観点</th>
-<th>具体策</th>
-</tr>
-<tr>
-<td><span class="info-tag">連邦ガイドライン</span></td>
-<td>NIST AI RMF準拠：Govern→Map→Measure→Manage</td>
-</tr>
-<tr>
-<td><span class="info-tag">州法（CAなど）</span></td>
-<td><em>CA AI Transparency Act</em>：深偽造ラベル付け・AI検出ツール義務 (2025/01/01施行)</td>
-</tr>
-<tr>
-<td><span class="info-tag">プライバシー</span></td>
-<td>CCPA/CPRA対応。従業員&lt;50人でも「機密データ大量処理」時は対象</td>
-</tr>
-<tr>
-<td><span class="info-tag">著作権</span></td>
-<td>生成物の商用利用規約確認。OpenAI・Adobe・GoogleのIP補償範囲を要チェック</td>
-</tr>
-<tr>
-<td><span class="info-tag">モデル安全</span></td>
-<td>NIST AI 800-1 （Dual-Use Foundation Models）で濫用リスク分析</td>
-</tr>
-</table>
-</div>
-<h3>予算感 (社員50名・年商$10M想定)</h3>
-<div class="table-container">
-<table>
-<tr>
-<th>項目</th>
-<th>初期コスト</th>
-<th>年間運用</th>
-</tr>
-<tr>
-<td>SaaSサブスクリプション<br/>(Copilot, ChatGPT Teams)</td>
-<td>$20-$30/ユーザ/月</td>
-<td>同左</td></tr></table></div></div></div></div></div>
-            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
-        </div>
+                    
+                    <div class="banner">
+                        <strong>ポイント：</strong>生成AIが生む価値の8割は <span class="highlight">「既存プロセスの再設計」</span> で顕在化します。初期は"魔法の箱"としてではなく <span class="highlight">明確な業務課題</span> を入口に据えると失敗確率が激減します。
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>成功させる 5 つの鍵 🔑</h3>
+                    <ul>
+                        <li><strong>"痛みの大きい業務" を入口にする</strong> – 例：見積書作成、サポートTicket返答</li>
+                        <li><strong>プロンプト≠魔法</strong> – 再現性を担保するテンプレ化＋統制</li>
+                        <li><strong>人間の責任分界点を明確に</strong> – Human-in-the-loop フローを設計</li>
+                        <li><strong>小さく作り、数字で測る</strong> – KPI達成で次の投資を社内合意</li>
+                        <li><strong>法務・情シスを最初から巻き込む</strong> – 州法/業界規制を踏まえたデータ設計</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2>主要ユースケース別ヒント</h2>
+                    <p class="handwritten">2025年版 分野別・最新活用方法 💡</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>領域</th>
+                                <th>代表タスク</th>
+                                <th>使える代表サービス</th>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">カスタマーサポート</span></td>
+                                <td>24/7チャット、英⽇バイリンガル応対</td>
+                                <td>Zendesk AI、Intercom Fin AI、OpenAI Assistants</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">マーケティング</span></td>
+                                <td>広告コピー、画像／動画生成</td>
+                                <td>Jasper、Canva Magic Studio、Synthesia</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">営業</span></td>
+                                <td>パーソナライズ提案書、CRM自動入力</td>
+                                <td>Microsoft Copilot for Dynamics、HubSpot AI</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">バックオフィス</span></td>
+                                <td>請求書OCR→会計仕訳、自動勤怠アラート</td>
+                                <td>Rippling Pulse AI、Zoho Books Zia</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">プロダクト開発</span></td>
+                                <td>コード補完、UIモック生成</td>
+                                <td>GitHub Copilot Enterprise、Figma AI</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2>詳細ロードマップ：代表ユースケース＆KPI</h2>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>フェーズ</th>
+                                <th>代表ユースケース</th>
+                                <th>主要ツール / 技術</th>
+                                <th>KPI例</th>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">0. 準備 &amp; ガバナンス</td>
+                                <td>- 全社AIポリシー策定<br>- PoC候補選定</td>
+                                <td>NIST AI RMF 1.0（G-M-M-M）ガイドライン</td>
+                                <td>- 社内AIポリシー策定完了<br>- PoC候補3件</td>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">1. クイックウィン導入</td>
+                                <td>- FAQ/社内ヘルプチャットボット<br>- マーケコピー生成<br>- ドキュメント要約</td>
+                                <td>ChatGPT Teams / Microsoft 365 Copilot（GPT-4o搭載・Agent Store）</td>
+                                <td>- 工数削減 > 15%<br>- 販促メールCVR +3%</td>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">2. 業務システム統合</td>
+                                <td>- CRM連動営業メール自動化<br>- 請求書の自動チェック &amp; 仕訳</td>
+                                <td>Azure OpenAI + RAG<br>Zapier／n8n ワークフロー連携</td>
+                                <td>- E-mail生産性 +5-15%<br>- ペーパーワーク処理時間-25%</td>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">3. 全社スケール &amp; 最適化</td>
+                                <td>- 私有クラウド上のカスタムLLM<br>- データ分析レポート自動生成</td>
+                                <td>AWS Bedrock / Vertex AI<br>Vector DB（Pinecone 等）</td>
+                                <td>- AI利用率 > 60% 社員<br>- 年間ROI > 300%</td>
+                            </tr>
+                            <tr>
+                                <td class="phase-title">4. ビジネス変革 &amp; 新規価値</td>
+                                <td>- マルチエージェントで自律処理<br>- AI共同開発型新製品</td>
+                                <td>マルチエージェントFW（LangChain, CrewAI 等）</td>
+                                <td>- AI起点売上比率 > 20%</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2>法規制・リスク対策チェックリスト</h2>
+                    <p class="handwritten">米国 SMB向け 📋</p>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>観点</th>
+                                <th>具体策</th>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">連邦ガイドライン</span></td>
+                                <td>NIST AI RMF準拠：Govern→Map→Measure→Manage</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">州法（CAなど）</span></td>
+                                <td><em>CA AI Transparency Act</em>：深偽造ラベル付け・AI検出ツール義務 (2025/01/01施行)</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">プライバシー</span></td>
+                                <td>CCPA/CPRA対応。従業員<50人でも「機密データ大量処理」時は対象</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">著作権</span></td>
+                                <td>生成物の商用利用規約確認。OpenAI・Adobe・GoogleのIP補償範囲を要チェック</td>
+                            </tr>
+                            <tr>
+                                <td><span class="info-tag">モデル安全</span></td>
+                                <td>NIST AI 800-1 （Dual-Use Foundation Models）で濫用リスク分析</td>
+                            </tr>
+                        </table>
+                    </div>
+
+                    <h3>予算感 (社員50名・年商$10M想定)</h3>
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>項目</th>
+                                <th>初期コスト</th>
+                                <th>年間運用</th>
+                            </tr>
+                            <tr>
+                                <td>SaaSサブスクリプション<br>(Copilot, ChatGPT Teams)</td>
+                                <td>$20-$30/ユーザ/月</td>
+                                <td>同左</td>
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
 </body>
 </html> 

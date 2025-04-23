@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NISTジェネレーティブAIリスク管理フレームワーク - AI Infographics</title>
+    <title>📊 ジェネレーティブAIのリスク管理フレームワーク - AIインフォグラフィックス集</title>
     <link rel="icon" type="image/png" href="../images/ai-logo.png">
     <style>
-        /* ---------- Base ---------- */
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
         :root {
-            --primary-1: #2B6CB0;
-            --primary-2: #6B46C1;
-            --accent: #4299E1;
-            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
-            --bg-light: #F7FAFC;
-            --bg-medium: #E2E8F0;
-            --text-dark: #1A202C;
-            --text-muted: #4A5568;
-            /* RGB値も変数化 */
-            --rgb-primary-1: 43, 108, 176;
-            --rgb-primary-2: 107, 70, 193;
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -28,105 +27,201 @@
         }
         
         body {
-            font-family: "Noto Sans JP", sans-serif;
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
             color: var(--text-dark);
-            background: var(--bg-light);
-            line-height: 1.6;
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
         }
 
-        /* ---------- Header ---------- */
-        .hero {
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 1.2rem;
-            padding: 1.8rem 2.4rem;
-            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
         }
         
-        .hero h1 {
-            font-size: clamp(1.6rem, 5vw, 2.4rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.07em;
-            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
         
-        .hero img {
-            width: 56px;
-            height: auto;
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
-        /* Make header link look like normal text */
-        .hero a {
-            color: inherit; /* Inherit color from parent (h1 -> white) */
-            text-decoration: none; /* Remove underline */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
         }
 
-        /* ---------- Content Wrapper ---------- */
-        .content-wrapper {
-            max-width: 1000px; /* 少し広げる */
-            margin: 2rem auto;
-            padding: 0 1.6rem;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .content {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
-            padding: 2rem;
-            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--fashion-2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
-        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
-        .content h1 { /* これはコンテンツのタイトル用 */
-             font-size: 2rem;
-             font-weight: 700;
-             color: var(--text-dark);
-             margin-bottom: 1.5rem;
-         }
-        /* .content h2, .content p, .content img のスタイルは削除 */
-        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 1.2rem;
-            background: var(--bg-medium);
-            color: var(--text-dark);
+        .footer-social a {
+            color: var(--fashion-2);
             text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
             border-radius: 4px;
-            transition: all 0.2s;
+            background-color: rgba(255,255,255,0.1);
         }
 
-        .back-link:hover {
-            background: var(--primary-1);
-            color: #fff;
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1.2rem 1.6rem;
+            .fixed-header h1 {
+                font-size: 20px;
             }
             
-            .content-wrapper {
-                padding: 0 1rem;
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
             }
-            
-            .content {
-                padding: 1.5rem;
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
             }
-            
-             .content h1 { /* レスポンシブ */
-                 font-size: 1.75rem;
-             }
-            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
-    
-    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
-    <style id="content-specific-styles">
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NISTジェネレーティブAIリスク管理フレームワーク</title>
+    <style>
         @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-heading: #1e40af;
+            --text-subtitle: #475569;
+            --bg-light: #f8fafc;
+            --shadow: rgba(0,0,0,0.1);
+        }
         
         body {
             font-family: 'Kaisei Decol', serif;
@@ -597,38 +692,119 @@
             }
         }
     </style>
-    
 </head>
 <body>
-    <!-- ===== Hero ===== -->
-    <header class="hero">
-        <a href="../index.html">
-            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
-            <h1>AIインフォグラフィックス集</h1>
-        </a>
-    </header>
-
-    <!-- ===== Content ===== -->
-    <div class="content-wrapper">
-        <div class="content">
-            <div class="container">
-<!-- 装飾要素 -->
-<div class="decoration deco-1">🤖</div>
-<div class="decoration deco-2">🛡️</div>
-<!-- ヘッダー -->
-<div class="header">
-<h1 class="title">📊 ジェネレーティブAIのリスク管理フレームワーク</h1>
-<div class="date-source">
-                📅 発行日: 2024年7月<br/>
+    <div class="container">
+        <!-- 装飾要素 -->
+        <div class="decoration deco-1">🤖</div>
+        <div class="decoration deco-2">🛡️</div>
+        
+        <!-- ヘッダー -->
+        <div class="header">
+            <h1 class="title">📊 ジェネレーティブAIのリスク管理フレームワーク</h1>
+            <div class="date-source">
+                📅 発行日: 2024年7月<br>
                 🏛️ 発行機関: 米国国立標準技術研究所 (NIST)
             </div>
-</div>
-<!-- コンテンツ（3カラム） -->
+        </div>
+        
+        <!-- コンテンツ（3カラム） -->
 
                             「虚偽とは、GAIシステムがプロンプトに応答して、誤ったまたは虚偽の内容を生成し、自信を持って提示する現象を指します。」
                         </div>
-            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
+                        <p>別名: <span class="keyword">ハルシネーション</span>、<span class="keyword">捏造</span></p>
+                        <p>⚠️ <span class="highlight">GAIを擬人化する「ハルシネーション」という用語自体がリスクとなり得る</span></p>
+                        <div class="bubble">
+                            <p>💡 「虚偽は、生成モデルがトレーニングデータの統計的分布を近似する出力を生成するという設計上の自然な結果です。」</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div class="column">
+                <div class="section">
+                    <h2 class="section-title">🛠️ リスク管理フレームワークの機能</h2>
+                    <div class="flow">
+                        <div class="flow-item">ガバナンス<br>Govern</div>
+                        <div class="flow-item">マッピング<br>Map</div>
+                        <div class="flow-item">測定<br>Measure</div>
+                        <div class="flow-item">管理<br>Manage</div>
+                    </div>
+                    <div class="hand-drawn">
+                        <p>各機能に沿って、GAIに関連するリスクを管理するための<span class="highlight">具体的なアクション</span>が表形式で提示されています。</p>
+                        <p>例: <span class="keyword">GV-1.3-003</span> 高度なモデル開発前にCBRN情報やサイバー能力の誤用可能性を評価するテスト計画と対応ポリシーを確立する</p>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">🔄 信頼できるAIの特性</h2>
+                    <div class="card glass">
+                        <ul class="icon-list">
+                            <li><span class="highlight">安全 (Safe)</span></li>
+                            <li><span class="highlight">説明可能かつ解釈可能 (Explainable and Interpretable)</span></li>
+                            <li><span class="highlight">責任ある (Accountable and Transparent)</span></li>
+                            <li><span class="highlight">公正かつ有害なバイアスが管理されている (Fair with Harmful Bias Managed)</span></li>
+                            <li><span class="highlight">プライバシーが強化されている (Privacy Enhanced)</span></li>
+                            <li><span class="highlight">セキュアかつレジリエント (Secure and Resilient)</span></li>
+                            <li><span class="highlight">有効かつ信頼できる (Valid and Reliable)</span></li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">🧪 プレデプロイメントテストの重要性</h2>
+                    <div class="box">
+                        <p>GAIシステムの多様な利用方法とコンテキストから、<span class="keyword">堅牢なTEVV（テスト、評価、検証、妥当性確認）プロセス</span>が重要</p>
+                        <div class="arrow">↓</div>
+                        <p>GAIに特化した新しいTEVVアプローチが開発されるまでは<span class="highlight-orange">「プレデプロイメントテスト」</span>の実践が推奨</p>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title">📋 重要なポイント</h2>
+                    <div class="card">
+                        <ul class="icon-list">
+                            <li>コンテンツの来歴管理（Content Provenance）はGAIコンテンツの信頼性確保に重要</li>
+                            <li>組織はGAIシステムのリスクレベルを評価し、リスク許容度に基づく管理策を講じる</li>
+                            <li>第三者提供のGAIコンポーネントやデータのリスクも契約やSLAに反映</li>
+                            <li>AIアクター間の連携・情報共有と利害関係者からのフィードバックが不可欠</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- フッター -->
+        <div class="footer">
+            <p>出典: NIST.AI.600-1.pdf（NIST Trustworthy and Responsible AI - AI Risk Management Framework: Generative Artificial Intelligence Profile）</p>
+            <p>注: 上記内容は概要です。詳細な推奨事項については、元の文書を参照してください。</p>
         </div>
     </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
 </body>
 </html> 

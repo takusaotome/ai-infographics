@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>生成AIが到達した技術的マイルストーンと受託開発会社の未来 - AI Infographics</title>
+    <title>生成AIが到達した技術的マイルストーンと受託開発会社の未来 - AIインフォグラフィックス集</title>
     <link rel="icon" type="image/png" href="../images/ai-logo.png">
     <style>
-        /* ---------- Base ---------- */
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
         :root {
-            --primary-1: #2B6CB0;
-            --primary-2: #6B46C1;
-            --accent: #4299E1;
-            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
-            --bg-light: #F7FAFC;
-            --bg-medium: #E2E8F0;
-            --text-dark: #1A202C;
-            --text-muted: #4A5568;
-            /* RGB値も変数化 */
-            --rgb-primary-1: 43, 108, 176;
-            --rgb-primary-2: 107, 70, 193;
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
         }
         
         * {
@@ -28,105 +27,199 @@
         }
         
         body {
-            font-family: "Noto Sans JP", sans-serif;
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
             color: var(--text-dark);
-            background: var(--bg-light);
-            line-height: 1.6;
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
         }
 
-        /* ---------- Header ---------- */
-        .hero {
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
             display: flex;
+            justify-content: flex-start;
             align-items: center;
-            gap: 1.2rem;
-            padding: 1.8rem 2.4rem;
-            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
         }
         
-        .hero h1 {
-            font-size: clamp(1.6rem, 5vw, 2.4rem);
-            font-weight: 700;
-            color: #fff;
-            letter-spacing: 0.07em;
-            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
         }
         
-        .hero img {
-            width: 56px;
-            height: auto;
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
         }
 
-        /* Make header link look like normal text */
-        .hero a {
-            color: inherit; /* Inherit color from parent (h1 -> white) */
-            text-decoration: none; /* Remove underline */
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
         }
 
-        /* ---------- Content Wrapper ---------- */
-        .content-wrapper {
-            max-width: 1000px; /* 少し広げる */
-            margin: 2rem auto;
-            padding: 0 1.6rem;
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
-        .content {
-            background: #fff;
-            border-radius: 8px;
-            box-shadow: 0 1px 3px rgba(0,0,0,.1);
-            padding: 2rem;
-            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--fashion-2);
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
-        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
-        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
-        .content h1 { /* これはコンテンツのタイトル用 */
-             font-size: 2rem;
-             font-weight: 700;
-             color: var(--text-dark);
-             margin-bottom: 1.5rem;
-         }
-        /* .content h2, .content p, .content img のスタイルは削除 */
-        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
 
-        .back-link {
-            display: inline-block;
-            margin-top: 2rem;
-            padding: 0.8rem 1.2rem;
-            background: var(--bg-medium);
-            color: var(--text-dark);
+        .footer-social a {
+            color: var(--fashion-2);
             text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
             border-radius: 4px;
-            transition: all 0.2s;
+            background-color: rgba(255,255,255,0.1);
         }
 
-        .back-link:hover {
-            background: var(--primary-1);
-            color: #fff;
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.2);
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            .hero {
-                padding: 1.2rem 1.6rem;
+            .fixed-header h1 {
+                font-size: 20px;
             }
             
-            .content-wrapper {
-                padding: 0 1rem;
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
             }
-            
-            .content {
-                padding: 1.5rem;
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
             }
-            
-             .content h1 { /* レスポンシブ */
-                 font-size: 1.75rem;
-             }
-            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
         }
     </style>
-    
-    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
-    <style id="content-specific-styles">
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生成AIが到達した技術的マイルストーンと受託開発会社の未来</title>
+  <style>
     @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --color-1: #593C47;
+      --color-2: #F2E63D;
+      --color-3: #F2C53D;
+      --color-4: #F25C05;
+      --color-5: #F24405;
+      --text-main: #334155;
+      --text-heading: #1e40af;
+      --text-sub: #475569;
+    }
     
     * {
       box-sizing: border-box;
@@ -150,7 +243,7 @@
     /* ヘッダー */
     .header {
       margin-bottom: 2rem;
-      border-bottom: 2px dashed var(--bg-medium);
+      border-bottom: 2px dashed var(--color-3);
       padding-bottom: 1rem;
     }
     
@@ -158,11 +251,11 @@
       font-family: 'Kaisei Decol', serif;
       font-size: 28px;
       font-weight: 700;
-      color: var(--text-dark);
-      
-      
-      -webkit-
-      
+      color: var(--color-1);
+      background: linear-gradient(to right, var(--color-2), var(--color-3));
+      background-clip: text;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
       display: inline-block;
       margin-bottom: 0.5rem;
     }
@@ -179,7 +272,7 @@
       border-radius: 8px;
       padding: 1.5rem;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-      border-left: 4px solid var(--accent);
+      border-left: 4px solid var(--color-4);
     }
     
     .section-title {
@@ -207,7 +300,7 @@
     }
     
     th {
-      background-color: rgba(var(--rgb-primary-1), 0.05);
+      background-color: rgba(242, 198, 61, 0.2);
       font-weight: 700;
     }
     
@@ -223,26 +316,26 @@
     
     /* 強調 */
     .highlight {
-      background-color: rgba(var(--rgb-primary-1), 0.1);
+      background-color: rgba(242, 198, 61, 0.3);
       padding: 0 3px;
     }
     
     .highlight-alt {
-      background-color: rgba(var(--rgb-primary-2), 0.1);
+      background-color: rgba(242, 92, 5, 0.2);
       padding: 0 3px;
     }
     
     .important {
       font-weight: bold;
-      color: var(--primary-1);
+      color: var(--color-5);
     }
     
     /* 引用 */
     blockquote {
       margin: 1rem 0;
       padding: 1rem;
-      background-color: rgba(var(--rgb-primary-1), 0.05);
-      border-left: 3px solid var(--bg-medium);
+      background-color: rgba(242, 230, 61, 0.1);
+      border-left: 3px solid var(--color-3);
       font-style: italic;
     }
     
@@ -263,254 +356,280 @@
     .footer {
       margin-top: 2rem;
       padding-top: 1rem;
-      border-top: 1px dashed var(--bg-medium);
+      border-top: 1px dashed var(--color-3);
       text-align: center;
       color: var(--text-sub);
     }
   </style>
-    
 </head>
 <body>
-    <!-- ===== Hero ===== -->
-    <header class="hero">
-        <a href="../index.html">
-            <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
-            <h1>AIインフォグラフィックス集</h1>
-        </a>
-    </header>
-
-    <!-- ===== Content ===== -->
-    <div class="content-wrapper">
-        <div class="content">
-            <div class="container">
-<div class="header">
-<h1 class="header-title">生成AIが到達した技術的マイルストーンと受託開発会社の未来</h1>
-<div class="header-date">📅 2025年4月23日</div>
-</div>
-<!-- マイルストーン -->
-<div class="section">
-<h2 class="section-title">🚀 生成AIが到達した技術的マイルストーン</h2>
-<table>
-<thead>
-<tr>
-<th>年</th>
-<th>主な進化</th>
-<th>インパクト</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>2023</td>
-<td>GPT-4、Gemini 1.0（マルチタスク言語特化）</td>
-<td>テキスト生成の品質が<span class="highlight">商用利用域へ</span></td>
-</tr>
-<tr>
-<td>2024</td>
-<td>GPT-4 Turbo/Gemini 1.5（32k+コンテキスト）</td>
-<td>要件定義書・コードベース全体を<span class="highlight">1プロンプトで扱えるように</span></td>
-</tr>
-<tr>
-<td>2025</td>
-<td>GPT-4o・Gemini 2.5（完全ネイティブ・マルチモーダル、推論特化）</td>
-<td>画像／音声／コード混合のシステム設計・自動テスト・UIモックが<span class="highlight">同一モデルで生成可能</span></td>
-</tr>
-<tr>
-<td>2025</td>
-<td>SWE-bench正答率 69%（2023年4.4%）</td>
-<td><span class="highlight-alt">「既存コード＋バグレポート→自動修正」</span>の現実解が見えた</td>
-</tr>
-</tbody>
-</table>
-</div>
-<div class="grid">
-<!-- バリューチェーン構造転換 -->
-<div class="section">
-<h2 class="section-title">🔄 技術進化がもたらすバリューチェーンの構造転換</h2>
-<h3>要件定義フェーズ</h3>
-<p><span class="important">LLM-Agent</span>が顧客インタビューを自動文字起こし→要件クラスタリング→矛盾検知</p>
-<ul>
-<li>800人月のERP刷新案件で、ヒアリング工数が平均<span class="highlight">37%削減</span>（大手SI社PoC）</li>
-<li>音声・図・表をワンショットで扱うGPT-4oの登場により、手戻り要因となる暗黙知のテキスト化が自動化</li>
-</ul>
-<h3>設計・コーディングフェーズ</h3>
-<ul>
-<li>GitHub調査：米国開発者の<span class="highlight">92%</span>がAIコーディングツールを使用</li>
-<li>SWE-benchスコア向上により、<span class="important">「Bug → 回帰テスト自動生成 → 修正PR」</span>まではLLMで完結</li>
-<li>プログラマー=<span class="highlight-alt">"プロンプト・オーケストレーター"</span>化。コードを書くより"AIに書かせる枠組み"を設計する職能が主流に</li>
-</ul>
-<h3>テスト・運用フェーズ</h3>
-<ul>
-<li>テストケース自動生成と本番ログからのシナリオ抽出で<span class="important">AI-Ops</span>が標準機能化</li>
-<li>SREの役割は"サービスレベル SLO⇄モデル出力品質"を結び付ける<span class="highlight-alt">AI SLOエンジニア</span>へ拡張</li>
-</ul>
-</div>
-<!-- シナリオ -->
-<div class="section">
-<h2 class="section-title">🔮 ITシステム受託開発会社に訪れる4つのシナリオ</h2>
-<table>
-<thead>
-<tr>
-<th>シナリオ</th>
-<th>2030年売上構造</th>
-<th>必須能力</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="important">① 効率追求SI</span> (Lean Integrator)</td>
-<td>人月課金 50% → 成果課金 50%</td>
-<td>AIコーディングOps、自社LLMOps基盤</td>
-</tr>
-<tr>
-<td><span class="important">② AIネイティブソリューションアーキテクト</span></td>
-<td>自社AI製品 40%</td>
-<td>ドメインLLM微調整、評価指標設計</td>
-</tr>
-<tr>
-<td><span class="important">③ プラットフォーム化</span> (PaaS/Vertical SaaS)</td>
-<td>サブスク 60%</td>
-<td>マルチテナントSaaS設計、FinOps</td>
-</tr>
-<tr>
-<td><span class="important">④ 規制&amp;ガバナンス・スペシャリスト</span></td>
-<td>コンサル 40%</td>
-<td>AI倫理、法規制適合、監査自動化</td>
-</tr>
-</tbody>
-</table>
-<p>収益源が<span class="highlight-alt">"工数×レート"から"成果×リスクシェア"</span>へシフト。IDCはAI関連支出が2027年に300億ドル超と予測し、IT支出全体の成長率を1.7倍上回ると試算。</p>
-</div>
-<!-- ビジネスモデル変革 -->
-<div class="section">
-<h2 class="section-title">📈 ビジネスモデル変革ロードマップ</h2>
-<ol>
-<li>
-<strong>Step 0: 現行効率化</strong><br/>
-            期間: 0-6ヶ月<br/>
-            KPI: 案件粗利+5pt<br/>
+  <div class="container">
+    <div class="header">
+      <h1 class="header-title">生成AIが到達した技術的マイルストーンと受託開発会社の未来</h1>
+      <div class="header-date">📅 2025年4月23日</div>
+    </div>
+    
+    <!-- マイルストーン -->
+    <div class="section">
+      <h2 class="section-title">🚀 生成AIが到達した技術的マイルストーン</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>年</th>
+            <th>主な進化</th>
+            <th>インパクト</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>2023</td>
+            <td>GPT-4、Gemini 1.0（マルチタスク言語特化）</td>
+            <td>テキスト生成の品質が<span class="highlight">商用利用域へ</span></td>
+          </tr>
+          <tr>
+            <td>2024</td>
+            <td>GPT-4 Turbo/Gemini 1.5（32k+コンテキスト）</td>
+            <td>要件定義書・コードベース全体を<span class="highlight">1プロンプトで扱えるように</span></td>
+          </tr>
+          <tr>
+            <td>2025</td>
+            <td>GPT-4o・Gemini 2.5（完全ネイティブ・マルチモーダル、推論特化）</td>
+            <td>画像／音声／コード混合のシステム設計・自動テスト・UIモックが<span class="highlight">同一モデルで生成可能</span></td>
+          </tr>
+          <tr>
+            <td>2025</td>
+            <td>SWE-bench正答率 69%（2023年4.4%）</td>
+            <td><span class="highlight-alt">「既存コード＋バグレポート→自動修正」</span>の現実解が見えた</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <div class="grid">
+      <!-- バリューチェーン構造転換 -->
+      <div class="section">
+        <h2 class="section-title">🔄 技術進化がもたらすバリューチェーンの構造転換</h2>
+        
+        <h3>要件定義フェーズ</h3>
+        <p><span class="important">LLM-Agent</span>が顧客インタビューを自動文字起こし→要件クラスタリング→矛盾検知</p>
+        <ul>
+          <li>800人月のERP刷新案件で、ヒアリング工数が平均<span class="highlight">37%削減</span>（大手SI社PoC）</li>
+          <li>音声・図・表をワンショットで扱うGPT-4oの登場により、手戻り要因となる暗黙知のテキスト化が自動化</li>
+        </ul>
+        
+        <h3>設計・コーディングフェーズ</h3>
+        <ul>
+          <li>GitHub調査：米国開発者の<span class="highlight">92%</span>がAIコーディングツールを使用</li>
+          <li>SWE-benchスコア向上により、<span class="important">「Bug → 回帰テスト自動生成 → 修正PR」</span>まではLLMで完結</li>
+          <li>プログラマー=<span class="highlight-alt">"プロンプト・オーケストレーター"</span>化。コードを書くより"AIに書かせる枠組み"を設計する職能が主流に</li>
+        </ul>
+        
+        <h3>テスト・運用フェーズ</h3>
+        <ul>
+          <li>テストケース自動生成と本番ログからのシナリオ抽出で<span class="important">AI-Ops</span>が標準機能化</li>
+          <li>SREの役割は"サービスレベル SLO⇄モデル出力品質"を結び付ける<span class="highlight-alt">AI SLOエンジニア</span>へ拡張</li>
+        </ul>
+      </div>
+      
+      <!-- シナリオ -->
+      <div class="section">
+        <h2 class="section-title">🔮 ITシステム受託開発会社に訪れる4つのシナリオ</h2>
+        <table>
+          <thead>
+            <tr>
+              <th>シナリオ</th>
+              <th>2030年売上構造</th>
+              <th>必須能力</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="important">① 効率追求SI</span> (Lean Integrator)</td>
+              <td>人月課金 50% → 成果課金 50%</td>
+              <td>AIコーディングOps、自社LLMOps基盤</td>
+            </tr>
+            <tr>
+              <td><span class="important">② AIネイティブソリューションアーキテクト</span></td>
+              <td>自社AI製品 40%</td>
+              <td>ドメインLLM微調整、評価指標設計</td>
+            </tr>
+            <tr>
+              <td><span class="important">③ プラットフォーム化</span> (PaaS/Vertical SaaS)</td>
+              <td>サブスク 60%</td>
+              <td>マルチテナントSaaS設計、FinOps</td>
+            </tr>
+            <tr>
+              <td><span class="important">④ 規制&ガバナンス・スペシャリスト</span></td>
+              <td>コンサル 40%</td>
+              <td>AI倫理、法規制適合、監査自動化</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <p>収益源が<span class="highlight-alt">"工数×レート"から"成果×リスクシェア"</span>へシフト。IDCはAI関連支出が2027年に300億ドル超と予測し、IT支出全体の成長率を1.7倍上回ると試算。</p>
+      </div>
+      
+      <!-- ビジネスモデル変革 -->
+      <div class="section">
+        <h2 class="section-title">📈 ビジネスモデル変革ロードマップ</h2>
+        <ol>
+          <li>
+            <strong>Step 0: 現行効率化</strong><br>
+            期間: 0-6ヶ月<br>
+            KPI: 案件粗利+5pt<br>
             投資: GitHub Copilot/Gemini Code PT導入、内部LLMエバリュエーション基盤
           </li>
-<li>
-<strong>Step 1: ハイブリッド課金</strong><br/>
-            期間: 6-18ヶ月<br/>
-            KPI: 成果課金売上比率 &gt; 25%<br/>
+          <li>
+            <strong>Step 1: ハイブリッド課金</strong><br>
+            期間: 6-18ヶ月<br>
+            KPI: 成果課金売上比率 > 25%<br>
             投資: <span class="highlight">"要件→UIモック→テストコード"</span>自動生成パイプライン構築
           </li>
-<li>
-<strong>Step 2: AIネイティブ化</strong><br/>
-            期間: 18-36ヶ月<br/>
-            KPI: 社内AI比率 &gt; 50%<br/>
+          <li>
+            <strong>Step 2: AIネイティブ化</strong><br>
+            期間: 18-36ヶ月<br>
+            KPI: 社内AI比率 > 50%<br>
             投資: ドメイン特化LLMファインチューニング、データネットワーク効果の確立
           </li>
-<li>
-<strong>Step 3: プラットフォーム化</strong><br/>
-            期間: 3-5年<br/>
-            KPI: ストック比率 &gt; 60%<br/>
+          <li>
+            <strong>Step 3: プラットフォーム化</strong><br>
+            期間: 3-5年<br>
+            KPI: ストック比率 > 60%<br>
             投資: 自社PaaS/SaaS化、マーケットプレイス開放、パートナー収益分配
           </li>
-</ol>
-</div>
-<!-- 組織ケイパビリティ -->
-<div class="section">
-<h2 class="section-title">🏢 必要とされる組織ケイパビリティ</h2>
-<ul>
-<li>
-<strong>AI-Driven PMO</strong><br/>
+        </ol>
+      </div>
+      
+      <!-- 組織ケイパビリティ -->
+      <div class="section">
+        <h2 class="section-title">🏢 必要とされる組織ケイパビリティ</h2>
+        <ul>
+          <li>
+            <strong>AI-Driven PMO</strong><br>
             "Backlog ✕ モデル評価 ✕ リスク"を統合管理
           </li>
-<li>
-<strong>Prompt/Agent Engineering Guild</strong><br/>
+          <li>
+            <strong>Prompt/Agent Engineering Guild</strong><br>
             全社横断でPrompt Patternとツールチェインを標準化
           </li>
-<li>
-<strong>Data &amp; Compliance Office</strong><br/>
+          <li>
+            <strong>Data & Compliance Office</strong><br>
             規制（EU AI Act、米AI Bill）と安全性指標をコードレベルで組み込み
           </li>
-<li>
-<strong>Continuous Learning Platform</strong><br/>
+          <li>
+            <strong>Continuous Learning Platform</strong><br>
             社員のプロファイルに応じてLLMがスキルパスを生成（LMS連携）
           </li>
-</ul>
-</div>
-</div>
-<!-- リスクとガードレール -->
-<div class="section">
-<h2 class="section-title">⚠️ リスクとガードレール</h2>
-<table>
-<thead>
-<tr>
-<th>リスク</th>
-<th>典型事例</th>
-<th>対策</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><span class="important">知財侵害</span></td>
-<td>モデルが学習時に吸収したコード片の無断利用</td>
-<td>SBOMとAI出力ハッシュでトレース／契約でAI利用範囲を明記</td>
-</tr>
-<tr>
-<td><span class="important">品質漂流</span></td>
-<td>生成コードが非決定的で再現性欠如</td>
-<td><span class="highlight-alt">"モデルバージョン・データバージョン・テスト結果"の3点VersionLock</span></td>
-</tr>
-<tr>
-<td><span class="important">責任所在</span></td>
-<td>バグ責任がAIか人か不明瞭</td>
-<td>契約上"AI出力のレビュー義務"を発注側／受注側で分担定義</td>
-</tr>
-<tr>
-<td><span class="important">データ主権</span></td>
-<td>生成過程に個人情報が混入</td>
-<td>リダクション→Synthetic Dataによる微調整、欧州域内推論</td>
-</tr>
-</tbody>
-</table>
-</div>
-<!-- アクションプラン -->
-<div class="section">
-<h2 class="section-title">🛠️ 実務的アクションプラン（2025 Q2-Q4 具体策）</h2>
-<ol>
-<li>
-<strong>PoCパッケージ化</strong><br/>
+        </ul>
+      </div>
+    </div>
+    
+    <!-- リスクとガードレール -->
+    <div class="section">
+      <h2 class="section-title">⚠️ リスクとガードレール</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>リスク</th>
+            <th>典型事例</th>
+            <th>対策</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="important">知財侵害</span></td>
+            <td>モデルが学習時に吸収したコード片の無断利用</td>
+            <td>SBOMとAI出力ハッシュでトレース／契約でAI利用範囲を明記</td>
+          </tr>
+          <tr>
+            <td><span class="important">品質漂流</span></td>
+            <td>生成コードが非決定的で再現性欠如</td>
+            <td><span class="highlight-alt">"モデルバージョン・データバージョン・テスト結果"の3点VersionLock</span></td>
+          </tr>
+          <tr>
+            <td><span class="important">責任所在</span></td>
+            <td>バグ責任がAIか人か不明瞭</td>
+            <td>契約上"AI出力のレビュー義務"を発注側／受注側で分担定義</td>
+          </tr>
+          <tr>
+            <td><span class="important">データ主権</span></td>
+            <td>生成過程に個人情報が混入</td>
+            <td>リダクション→Synthetic Dataによる微調整、欧州域内推論</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    
+    <!-- アクションプラン -->
+    <div class="section">
+      <h2 class="section-title">🛠️ 実務的アクションプラン（2025 Q2-Q4 具体策）</h2>
+      <ol>
+        <li>
+          <strong>PoCパッケージ化</strong><br>
           「2週間・定額」で<span class="highlight-alt">現行コードのAI自動リファクタ診断サービス</span>提供 → 失敗しても宣伝効果。
         </li>
-<li>
-<strong>LLMOps内製ベース</strong><br/>
+        <li>
+          <strong>LLMOps内製ベース</strong><br>
           LangSmith / PromptLayer + Terraform CDK で再現性パイプラインをコード化。
         </li>
-<li>
-<strong>成果指標の再設計</strong><br/>
+        <li>
+          <strong>成果指標の再設計</strong><br>
           営業 ⇒ "人月"ではなく<span class="highlight-alt">リードタイム削減率</span>と<span class="highlight-alt">欠陥率保証</span>で提案。
         </li>
-<li>
-<strong>パートナーエコシステム強化</strong><br/>
+        <li>
+          <strong>パートナーエコシステム強化</strong><br>
           Anthropic・OpenAI・Google Vertexの3社と同時AWAF（AI With AI Funding）契約を結び、顧客に選択肢を持たせる。
         </li>
-<li>
-<strong>人材ポートフォリオの刷新</strong><br/>
-          新卒採用 → "モデル評価/AIテスト"比率30%まで増枠。<br/>
+        <li>
+          <strong>人材ポートフォリオの刷新</strong><br>
+          新卒採用 → "モデル評価/AIテスト"比率30%まで増枠。<br>
           中堅育成 → "AI統合アーキテクト"認定制度を自社で開始。
         </li>
-</ol>
-</div>
-<!-- 結論 -->
-<div class="section">
-<h2 class="section-title">🎯 結論</h2>
-<p>生成AIの爆発的進化は、ITシステム受託開発会社を<span class="highlight-alt">「人月ビジネス」から「AIレバレッジ型プロダクト＆サービスビジネス」へ</span>強制的に脱皮させる。</p>
-<p><span class="important">人的労働を前提とする利益モデルを温存したまま</span>生成AIを"生産性向上ツール"程度にとどめれば、<span class="highlight-alt">価格破壊と淘汰</span>に呑まれる。</p>
-<p>一方、AIの中枢にドメイン知を注入し、<span class="important">成果連動型契約＋SaaS化</span>を同時に推し進める企業は、市場拡張のプラットフォーム側に回り、<span class="highlight-alt">ストック収益とデータネットワーク効果</span>を同時に取り込める立場へと跳躍できる。</p>
-<blockquote>
+      </ol>
+    </div>
+    
+    <!-- 結論 -->
+    <div class="section">
+      <h2 class="section-title">🎯 結論</h2>
+      <p>生成AIの爆発的進化は、ITシステム受託開発会社を<span class="highlight-alt">「人月ビジネス」から「AIレバレッジ型プロダクト＆サービスビジネス」へ</span>強制的に脱皮させる。</p>
+      
+      <p><span class="important">人的労働を前提とする利益モデルを温存したまま</span>生成AIを"生産性向上ツール"程度にとどめれば、<span class="highlight-alt">価格破壊と淘汰</span>に呑まれる。</p>
+      
+      <p>一方、AIの中枢にドメイン知を注入し、<span class="important">成果連動型契約＋SaaS化</span>を同時に推し進める企業は、市場拡張のプラットフォーム側に回り、<span class="highlight-alt">ストック収益とデータネットワーク効果</span>を同時に取り込める立場へと跳躍できる。</p>
+      
+      <blockquote>
         「コードを書く会社」から「AIに問題を解かせ、その価値を顧客に還元する会社」へ——それが2025年以降の勝ち筋である。
       </blockquote>
-</div>
-<div class="footer">
+    </div>
+    
+    <div class="footer">
       グラフィックレコーディング・インフォグラフィック | 作成日: 2025年4月23日
     </div>
-</div>
-            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
-        </div>
+  </div>
+</body>
+</html>
     </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
 </body>
 </html> 
