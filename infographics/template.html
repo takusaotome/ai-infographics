@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{%TITLE%} - AI Infographics</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        /* ---------- Base ---------- */
+        :root {
+            --primary-1: #2B6CB0;
+            --primary-2: #6B46C1;
+            --accent: #4299E1;
+            --accent-red: #E53E3E; /* 追加: 赤系のアクセント */
+            --bg-light: #F7FAFC;
+            --bg-medium: #E2E8F0;
+            --text-dark: #1A202C;
+            --text-muted: #4A5568;
+            /* RGB値も変数化 */
+            --rgb-primary-1: 43, 108, 176;
+            --rgb-primary-2: 107, 70, 193;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: "Noto Sans JP", sans-serif;
+            color: var(--text-dark);
+            background: var(--bg-light);
+            line-height: 1.6;
+        }
+
+        /* ---------- Header ---------- */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 2.4rem;
+            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
+        }
+        
+        .hero h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.07em;
+            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        }
+        
+        .hero img {
+            width: 56px;
+            height: auto;
+        }
+
+        /* ---------- Content Wrapper ---------- */
+        .content-wrapper {
+            max-width: 1000px; /* 少し広げる */
+            margin: 2rem auto;
+            padding: 0 1.6rem;
+        }
+
+        .content {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            padding: 2rem;
+            /* コンテンツ内の基本的なマージンやパディングは維持しても良い */
+        }
+
+        /* h1, h2, p, img などの基本スタイルは維持しても良いが、 */
+        /* コンテンツ固有スタイルと衝突する場合は削除または調整 */
+        .content h1 { /* これはコンテンツのタイトル用 */
+             font-size: 2rem;
+             font-weight: 700;
+             color: var(--text-dark);
+             margin-bottom: 1.5rem;
+         }
+        /* .content h2, .content p, .content img のスタイルは削除 */
+        /* 必要であれば generate_pages.py でコンテンツから抽出したスタイルに含める */
+
+        .back-link {
+            display: inline-block;
+            margin-top: 2rem;
+            padding: 0.8rem 1.2rem;
+            background: var(--bg-medium);
+            color: var(--text-dark);
+            text-decoration: none;
+            border-radius: 4px;
+            transition: all 0.2s;
+        }
+
+        .back-link:hover {
+            background: var(--primary-1);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1.2rem 1.6rem;
+            }
+            
+            .content-wrapper {
+                padding: 0 1rem;
+            }
+            
+            .content {
+                padding: 1.5rem;
+            }
+            
+             .content h1 { /* レスポンシブ */
+                 font-size: 1.75rem;
+             }
+            /* レスポンシブなコンテンツ詳細スタイルは削除 */
+        }
+    </style>
+    
+    <!-- コンテンツ固有スタイル挿入用プレースホルダー -->
+    <style id="content-specific-styles">{%CONTENT_STYLES%}</style>
+    
+</head>
+<body>
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+        <img src="../images/ai-logo.png" alt="AI Infographics Logo" />
+        <h1>AIインフォグラフィックス集</h1>
+    </header>
+
+    <!-- ===== Content ===== -->
+    <div class="content-wrapper">
+        <div class="content">
+            {%CONTENT%}
+            <a href="../index.html" class="back-link">← インフォグラフィックス一覧に戻る</a>
+        </div>
+    </div>
+</body>
+</html> 

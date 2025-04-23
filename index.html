@@ -3,21 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AIインフォグラフィックス集</title>
+    <title>AI Infographics</title>
     <link rel="icon" type="image/png" href="images/ai-logo.png">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
-        
+        /* ---------- Base ---------- */
         :root {
-            --fashion-1: #593C47;
-            --fashion-2: #F2E63D;
-            --fashion-3: #F2C53D;
-            --fashion-4: #F25C05;
-            --fashion-5: #F24405;
-            --text-dark: #334155;
-            --text-title: #1e40af;
-            --bg-light: #fff;
-            --shadow: rgba(0, 0, 0, 0.1);
+            --primary-1: #2B6CB0;
+            --primary-2: #6B46C1;
+            --accent: #4299E1;
+            --bg-light: #F7FAFC;
+            --bg-medium: #E2E8F0;
+            --text-dark: #1A202C;
+            --text-muted: #4A5568;
         }
         
         * {
@@ -27,298 +24,206 @@
         }
         
         body {
-            font-family: 'Kaisei Decol', serif;
-            background-color: #f8f9fa;
+            font-family: "Noto Sans JP", sans-serif;
             color: var(--text-dark);
-            line-height: 1.4;
-            padding: 0;
-            margin: 0;
+            background: var(--bg-light);
+        }
+
+        /* ---------- Header ---------- */
+        .hero {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            padding: 1.8rem 2.4rem;
+            background: linear-gradient(90deg, var(--primary-1), var(--primary-2));
         }
         
-        .container {
+        .hero h1 {
+            font-size: clamp(1.6rem, 5vw, 2.4rem);
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.07em;
+            text-shadow: 0 1px 3px rgba(0,0,0,.25);
+        }
+        
+        .hero img {
+            width: 56px;
+            height: auto;
+        }
+
+        /* ---------- Search ---------- */
+        .search-wrapper {
+            max-width: 720px;
+            margin: 2.5rem auto;
+            padding: 0 1.6rem;
+        }
+        
+        .search-box {
             width: 100%;
+            padding: 1.2rem 1.4rem;
+            border: 2px solid #CBD5E0;
+            border-radius: 8px;
+            font-size: 1rem;
+            transition: border-color .2s;
+            background: #fff;
+        }
+        
+        .search-box:focus {
+            outline: none;
+            border-color: var(--primary-1);
+            box-shadow: 0 0 0 3px rgba(43,108,176,.35);
+        }
+        
+        .search-box::placeholder {
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ---------- Categories ---------- */
+        .categories-wrapper {
             max-width: 1200px;
             margin: 0 auto;
-            background-color: var(--bg-light);
-            border-radius: 16px;
-            box-shadow: 0 4px 12px var(--shadow);
+            padding: 0 1.6rem 3rem;
+        }
+
+        .category-section {
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,.1);
+            margin-bottom: 2rem;
             overflow: hidden;
         }
 
-        .fixed-header {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            z-index: 1000;
-            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
-            padding: 10px 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            min-height: fit-content;
+        .category-header {
+            padding: 1.2rem 1.6rem;
+            background: var(--bg-medium);
+            border-bottom: 1px solid #CBD5E0;
         }
 
-        .fixed-header:hover {
-            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
-        }
-
-        .fixed-header-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: flex-start;
-            align-items: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .header-logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            object-fit: cover;
-            flex-shrink: 0;
-        }
-
-        .fixed-header h1 {
-            font-family: 'Zen Kurenaido', sans-serif;
-            font-size: 24px;
-            font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            background: linear-gradient(to right, white, var(--fashion-2));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            margin: 0;
-            pointer-events: none;
-            flex: 1;
-        }
-
-        .main-content {
-            margin-top: 120px;
-            padding: 20px;
-        }
-
-        .search-container {
-            position: sticky;
-            top: 80px;
-            z-index: 900;
-            background: rgba(255, 255, 255, 0.95);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-
-        .search-container-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            text-align: center;
-        }
-
-        .search-input {
-            width: 100%;
-            padding: 12px;
-            font-size: 16px;
-            border: 2px dashed var(--fashion-1);
-            border-radius: 8px;
-            font-family: 'Yomogi', cursive;
-            background-color: rgba(255, 255, 255, 0.8);
-            transition: all 0.3s ease;
-        }
-
-        .search-input:focus {
-            outline: none;
-            border-color: var(--fashion-4);
-            box-shadow: 0 0 0 2px rgba(242, 92, 5, 0.2);
-        }
-
-        .categories-container {
-            display: block;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        .footer {
-            text-align: center;
-            padding: 20px;
-            font-size: 14px;
-            color: var(--fashion-1);
-            border-top: 2px dashed var(--fashion-3);
-            font-family: 'Yomogi', cursive;
-            background: linear-gradient(135deg, rgba(89, 59, 70, 0.1), rgba(242, 68, 5, 0.1));
-        }
-        
-        .footer-content {
-            max-width: 1200px;
-            margin: 0 auto;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 20px;
-        }
-        
-        .footer-text {
-            font-family: 'Zen Kurenaido', sans-serif;
-            font-size: 18px;
-            color: var(--fashion-4);
-            font-weight: bold;
-            text-shadow: 1px 1px 2px rgba(255, 255, 255, 0.8);
-        }
-        
-        @media (max-width: 768px) {
-            .fixed-header {
-                padding: 10px;
-            }
-
-            .fixed-header h1 {
-                font-size: 20px;
-            }
-
-            .header-logo {
-                width: 32px;
-                height: 32px;
-            }
-
-            .search-container {
-                margin-top: calc(80px + 1em);
-                padding: 0 10px;
-            }
-
-            .search-input {
-                font-size: 14px;
-                padding: 8px 12px;
-            }
-
-            .main-content {
-                margin-top: 100px;
-                padding: 10px;
-            }
-
-            .categories-container {
-                grid-template-columns: 1fr;
-                padding: 10px;
-            }
-        }
-
-        .categories-container section {
-            margin-bottom: 2em;
-            padding: 1em;
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-
-        .categories-container h2 {
-            color: var(--fashion-1);
-            border-bottom: 2px dashed var(--fashion-3);
-            padding-bottom: 0.5em;
-            margin-bottom: 1em;
-            font-family: 'Zen Kurenaido', sans-serif;
+        .category-header h2 {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--text-dark);
         }
 
         .infographics-list {
             list-style: none;
-            padding: 0;
+            padding: 1.6rem;
         }
 
         .infographics-list li {
-            margin-bottom: 0.5em;
+            margin-bottom: 0.8rem;
         }
 
         .infographics-list a {
+            display: block;
+            padding: 0.8rem 1rem;
             color: var(--text-dark);
             text-decoration: none;
-            display: block;
-            padding: 0.5em;
             border-radius: 4px;
-            transition: all 0.3s ease;
+            transition: all 0.2s;
         }
 
         .infographics-list a:hover {
-            background-color: rgba(242, 92, 5, 0.1);
-            color: var(--fashion-4);
-            transform: translateX(5px);
+            background: var(--bg-medium);
+            color: var(--primary-1);
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 1.2rem 1.6rem;
+            }
+            
+            .categories-wrapper {
+                padding: 0 1rem 2rem;
+            }
+            
+            .category-section {
+                margin-bottom: 1.5rem;
+            }
         }
     </style>
 </head>
 <body>
-    <div class="fixed-header" onclick="window.location.href='index.html'">
-        <div class="fixed-header-content">
-            <img src="images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
-            <h1 class="ja">AIインフォグラフィックス集</h1>
-            <h1 class="en hidden">AI Infographics Collection</h1>
-        </div>
+    <!-- ===== Hero ===== -->
+    <header class="hero">
+        <img src="images/ai-logo.png" alt="AI Infographics Logo" />
+        <h1>AIインフォグラフィックス集</h1>
+    </header>
+
+    <!-- ===== Search ===== -->
+    <div class="search-wrapper">
+        <input type="search" class="search-box" placeholder="キーワードで検索…" onkeyup="filterContent(this.value)" />
     </div>
 
-    <div class="search-container">
-        <div class="search-container-content">
-            <input type="text" class="search-input" placeholder="キーワードで検索..." onkeyup="filterContent(this.value)">
-        </div>
-    </div>
-
-    <div class="main-content">
-        <div class="categories-container">
-            <section id="machine-learning-basics">
+    <!-- ===== Categories ===== -->
+    <div class="categories-wrapper">
+        <section class="category-section" id="machine-learning-basics">
+            <div class="category-header">
                 <h2>機械学習の基礎</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="deep-learning">
+        <section class="category-section" id="deep-learning">
+            <div class="category-header">
                 <h2>ディープラーニング</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="nlp">
+        <section class="category-section" id="nlp">
+            <div class="category-header">
                 <h2>自然言語処理</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="computer-vision">
+        <section class="category-section" id="computer-vision">
+            <div class="category-header">
                 <h2>コンピュータビジョン</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="ai-ethics">
+        <section class="category-section" id="ai-ethics">
+            <div class="category-header">
                 <h2>AI倫理と責任</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="ai-applications">
+        <section class="category-section" id="ai-applications">
+            <div class="category-header">
                 <h2>AIの応用事例</h2>
-                <ul class="infographics-list">
-                    <!-- コンテンツはここに追加 -->
-                </ul>
-            </section>
+            </div>
+            <ul class="infographics-list">
+                <!-- コンテンツはここに追加 -->
+            </ul>
+        </section>
 
-            <section id="ai-future">
+        <section class="category-section" id="ai-future">
+            <div class="category-header">
                 <h2>未来のAIトレンド</h2>
-                <ul class="infographics-list">
-                    <li>
-                        <a href="infographics/the-technical-milestones-of-generative-ai.html">
-                            生成AIの技術的マイルストーン
-                        </a>
-                    </li>
-                </ul>
-            </section>
-        </div>
-    </div>
-
-    <div class="footer">
-        <div class="footer-content">
-            <div class="footer-text">AI Infographics</div>
-        </div>
+            </div>
+            <ul class="infographics-list">
+                <li>
+                    <a href="infographics/the-technical-milestones-of-generative-ai.html">
+                        生成AIの技術的マイルストーン
+                    </a>
+                </li>
+            </ul>
+        </section>
     </div>
 
     <script>
