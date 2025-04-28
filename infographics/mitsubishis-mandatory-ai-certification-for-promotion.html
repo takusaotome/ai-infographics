@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三菱商事 AI資格義務化の衝撃 - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>三菱商事 AI資格義務化の衝撃 - グラフィックレコーディング</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --text-subtitle: #475569;
+            --bg-light: #f8fafc;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 16px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background: linear-gradient(90deg, var(--fashion-2), var(--fashion-3), var(--fashion-4), var(--fashion-5));
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--fashion-3);
+            padding-bottom: 15px;
+        }
+        
+        .title-area {
+            flex: 1;
+        }
+        
+        .main-title {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(2px 2px 1px rgba(0,0,0,0.1));
+            display: inline-block;
+        }
+        
+        .subtitle {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--text-subtitle);
+            margin-bottom: 5px;
+        }
+        
+        .date-source {
+            font-size: 14px;
+            color: var(--text-subtitle);
+            text-align: right;
+            background-color: rgba(242, 198, 61, 0.2);
+            padding: 8px 12px;
+            border-radius: 8px;
+            display: inline-block;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            position: relative;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, transparent, var(--fashion-3), transparent);
+            z-index: -1;
+            border-radius: 14px;
+            opacity: 0.5;
+        }
+        
+        .key-point {
+            background-color: rgba(242, 230, 61, 0.15);
+            border: 2px dashed var(--fashion-4);
+            margin-bottom: 30px;
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--text-title);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--fashion-3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .icon {
+            display: inline-block;
+            margin-right: 5px;
+            font-size: 20px;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 40%);
+            padding: 0 2px;
+            font-weight: bold;
+        }
+        
+        .important {
+            color: var(--fashion-5);
+            font-weight: bold;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        .table th, .table td {
+            border: 1px solid #ddd;
+            padding: 8px 12px;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: rgba(89, 60, 71, 0.1);
+            color: var(--fashion-1);
+            font-weight: bold;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: rgba(242, 230, 61, 0.1);
+        }
+        
+        .arrow {
+            position: relative;
+            padding-left: 20px;
+        }
+        
+        .arrow::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .checklist {
+            list-style: none;
+            padding-left: 5px;
+        }
+        
+        .checklist li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 10px;
+        }
+        
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 5px;
+            color: var(--fashion-4);
+            font-weight: bold;
+            font-size: 18px;
+        }
+        
+        .bubble {
+            position: relative;
+            background-color: rgba(242, 92, 5, 0.1);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(242, 92, 5, 0.1) transparent;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .connect-line {
+            position: relative;
+            padding-bottom: 30px;
+        }
+        
+        .connect-line::after {
+            content: "";
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            width: 2px;
+            height: 15px;
+            background-color: var(--fashion-3);
+            transform: translateX(-50%);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 13px;
+            color: var(--text-subtitle);
+            padding-top: 15px;
+            border-top: 1px dashed var(--fashion-3);
+        }
+        
+        .company-comparison {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 15px 0;
+        }
+        
+        .company-card {
+            flex: 1;
+            min-width: 120px;
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 10px;
+            text-align: center;
+        }
+        
+        .company-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--fashion-1);
+        }
+        
+        .impact-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+        
+        .impact-card {
+            border: 1px dashed var(--fashion-3);
+            border-radius: 8px;
+            padding: 10px;
+        }
+        
+        .impact-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--fashion-1);
+        }
+        
+        .hand-drawn {
+            font-family: 'Yomogi', cursive;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title-area">
+                <h1 class="main-title">三菱商事 AI資格義務化の衝撃</h1>
+                <p class="subtitle">TOEICからAIへ、大企業スキル基準の大転換</p>
+            </div>
+            <div class="date-source">
+                <span>📅 2025年4月28日</span>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="column">
+                <div class="card key-point">
+                    <div class="section-title">
+                        <span class="icon">📌</span>要点先取り
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>何が起きたか</th>
+                            <td>三菱商事は <span class="highlight">2027年度から</span> JDLA「G検定」などAI資格の取得を<span class="important">管理職昇格要件</span>にし、最終的に役員を含む全5,000人へ義務化する方針を打ち出した</td>
+                        </tr>
+                        <tr>
+                            <th>いつ</th>
+                            <td>2025年4月28日公表</td>
+                        </tr>
+                        <tr>
+                            <th>なぜ重要か</th>
+                            <td><span class="highlight">TOEIC→AI</span>へとスキル基準がシフト。国内大企業が"全社員AIリテラシー"を明文化した初の事例で、人材育成・採用市場に波及する可能性が大きい</td>
+                        </tr>
+                    </table>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">📅</span>関連ニュース（時系列＆企業別）
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>公表日</th>
+                            <th>企業・組織</th>
+                            <th>施策概要</th>
+                        </tr>
+                        <tr>
+                            <td>2025-04-28</td>
+                            <td><span class="important">三菱商事</span></td>
+                            <td>G検定取得を課長級昇格条件に。将来的に全社員必須。</td>
+                        </tr>
+                        <tr>
+                            <td>2025-01-23</td>
+                            <td>dentsu Japan</td>
+                            <td>国内39社で1,114人がG検定合格。全従業員への取得推奨を継続。</td>
+                        </tr>
+                        <tr>
+                            <td>2024-05-～2025-03</td>
+                            <td>ラック</td>
+                            <td>"G200"キャンペーンで合格者40→330人へ拡大。</td>
+                        </tr>
+                        <tr>
+                            <td>2025-03-15</td>
+                            <td>楽天モバイル／楽天グループ</td>
+                            <td>社内AI利用率85％。全社員向けAI研修＋生成AI社内ツール「Rakuten AI」を展開。</td>
+                        </tr>
+                        <tr>
+                            <td>2024-11</td>
+                            <td>富士通</td>
+                            <td>Microsoft連携で全社員向けAI集中研修を開始（グローバル28万人対象）。</td>
+                        </tr>
+                    </table>
+                    <div class="bubble hand-drawn">
+                        <span class="icon">💡</span>トレンド: 2024年以降「英語 → AI」へと必修科目が置き換わる動きが製造・広告・通信・SIerまで一気に拡大。
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">🎯</span>三菱商事の狙いと制度設計
+                    </div>
+                    <table class="table">
+                        <tr>
+                            <th>視点</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td>資格種別</td>
+                            <td>日本ディープラーニング協会 (JDLA) 「G検定」が軸。合格率70％前後・オンライン受験可・受験料13,200円。</td>
+                        </tr>
+                        <tr>
+                            <td>導入ステップ</td>
+                            <td>
+                                <div class="arrow">2025-26年度：試験費用補助＋eラーニング</div>
+                                <div class="arrow">2027年度：課長昇格時に必須化</div>
+                                <div class="arrow">30年代前半：部長・役員を含む全社員取得へ</div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>背景</td>
+                            <td>
+                                ①産業G7（商社・製造・金融）で生成AI実装が急加速<br>
+                                ②同社は素材～小売まで事業が多角化しており、データ活用余地が大きい<br>
+                                ③人的資本開示における「リスキリング投資額」「AI生産性指標」強化の必要
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>期待効果</td>
+                            <td>
+                                ・営業・物流最適化の案件創出<br>
+                                ・多国籍PJでの生成AI活用を標準化し、人件費当たり利益率の改善
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">📊</span>他社事例との比較・示唆
+                    </div>
+                    <div class="company-comparison">
+                        <div class="company-card" style="border-left: 4px solid var(--fashion-5);">
+                            <div class="company-name">三菱商事</div>
+                            <div>5000人全員</div>
+                            <div><span class="tag">昇格要件</span></div>
+                            <div>G検定</div>
+                        </div>
+                        <div class="company-card" style="border-left: 4px solid var(--fashion-4);">
+                            <div class="company-name">dentsu Japan</div>
+                            <div>39社・全従業員推奨</div>
+                            <div><span class="tag">推奨</span></div>
+                            <div>G検定</div>
+                        </div>
+                        <div class="company-card" style="border-left: 4px solid var(--fashion-3);">
+                            <div class="company-name">富士通</div>
+                            <div>28万人</div>
+                            <div><span class="tag">研修必修</span></div>
+                            <div>MS資格＋社内Badge</div>
+                        </div>
+                        <div class="company-card" style="border-left: 4px solid var(--fashion-2);">
+                            <div class="company-name">楽天</div>
+                            <div>3万人</div>
+                            <div><span class="tag">利用率評価</span></div>
+                            <div>自社KPI</div>
+                        </div>
+                    </div>
+                    
+                    <div class="bubble hand-drawn">
+                        <span class="icon">📝</span>示唆
+                        <ol class="checklist">
+                            <li><span class="highlight">ハードル設計がカギ</span> – 試験を昇格条件にすると"形だけ取得"のリスク。dentsuや楽天のように"実務KPI"で測るアプローチも混在。</li>
+                            <li><span class="highlight">社内データ接続×生成AI が本丸</span>。資格取得後のPoC→本番展開を支援するCoE（Center of Excellence）が不可欠。</li>
+                            <li><span class="highlight">人的資本開示</span>（スキル分布／リスキリング投資ROI）のIR説明で差別化材料になる。</li>
+                        </ol>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">⚖️</span>インパクト評価
+                    </div>
+                    <div class="impact-grid">
+                        <div class="impact-card">
+                            <div class="impact-title">ポジティブ</div>
+                            <strong>人材:</strong> 若手～中堅の市場価値向上／採用ブランディング強化<br>
+                            <strong>業績:</strong> AI活用による営業・SCM効率化→粗利率+1～2pt（社内試算）<br>
+                            <strong>エコシステム:</strong> JDLA・教育ベンダー・生成AIプラットフォーマーとのパートナー拡大
+                        </div>
+                        <div class="impact-card">
+                            <div class="impact-title">リスク</div>
+                            <strong>人材:</strong> 資格が目的化し、学習定着せず"ペーパードライバー"化<br>
+                            <strong>業績:</strong> 当面は研修コスト＊5000人＝数億円規模<br>
+                            <strong>エコシステム:</strong> JDLA G検定の内容が急速に陳腐化する可能性（毎年更新が必要）
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">✅</span>企業・従業員向けチェックリスト
+                    </div>
+                    <ol class="checklist">
+                        <li><span class="important">目的の言語化</span> – 「資格取得＝ゴール」にならないよう、取得後90日で業務PoCを義務付ける。</li>
+                        <li><span class="important">実務課題の棚卸し</span> – 営業・与信審査・在庫最適化など、AI化余地を定量評価。</li>
+                        <li><span class="important">CoE設置</span> – 各事業部横断のAI推進チーム＋生成AIガイドライン策定。</li>
+                        <li><span class="important">ROIモニタリング</span> – 「AI活用時間／人」「AI起点の新規収益」「作業時間短縮率」を四半期ごとに開示。</li>
+                        <li><span class="important">継続学習</span> – G検定合格後にE資格（エンジニア向け）・生成AIプロンプト実践講座まで拡張。</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">📝</span>まとめ
+                    </div>
+                    <ul class="checklist">
+                        <li>AI資格を"昇格要件"に格上げした三菱商事の動きは、英語力と並ぶ<span class="highlight">"第二の共通スキル"</span>としてAIリテラシーを定着させるターニングポイント。</li>
+                        <li>同様の全社員研修は広告・通信・製造へ広がっており、2025-27年は「資格」「社内AI活用KPI」「人的資本IR」で優位性が可視化されるフェーズ。</li>
+                        <li>実効性確保には <span class="important">PoC‐driven学習 + CoE設置 + AI KPI開示</span> の三点セットが不可欠。</li>
+                    </ul>
+                    
+                    <div style="margin-top: 30px; text-align: center;">
+                        <div style="font-family: 'Yomogi', cursive; font-size: 22px; color: var(--fashion-5); margin-bottom: 10px;">
+                            「AI資格は新しいTOEIC」
+                        </div>
+                        <div style="display: flex; justify-content: center; margin-top: 20px;">
+                            <div style="text-align: center; margin: 0 15px;">
+                                <div style="font-size: 24px; margin-bottom: 5px;">📚</div>
+                                <div>TOEIC時代</div>
+                            </div>
+                            <div style="font-size: 24px; margin-top: 15px;">➡️</div>
+                            <div style="text-align: center; margin: 0 15px;">
+                                <div style="font-size: 24px; margin-bottom: 5px;">🤖</div>
+                                <div>AI時代</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">🧠</span>AI資格解説
+                    </div>
+                    <div style="display: flex; align-items: center; margin-bottom: 15px; gap: 10px;">
+                        <div style="font-weight: bold; color: var(--fashion-1); font-size: 18px;">G検定とは？</div>
+                        <div style="flex: 1; height: 2px; background: linear-gradient(90deg, var(--fashion-3), rgba(242, 198, 61, 0))"></div>
+                    </div>
+                    <p>日本ディープラーニング協会（JDLA）が実施する「ジェネラリスト検定」の略称。AIやディープラーニングの基礎知識を問う一般向け資格試験。</p>
+                    
+                    <table class="table" style="margin-top: 15px;">
+                        <tr>
+                            <th>試験の特徴</th>
+                            <td>
+                                <ul style="padding-left: 20px;">
+                                    <li>受験料：13,200円（税込）</li>
+                                    <li>合格率：約70%</li>
+                                    <li>試験方式：オンライン受験可能</li>
+                                    <li>出題範囲：AI倫理、機械学習基礎、ビジネス活用事例など</li>
+                                </ul>
+                            </td>
+                        </tr>
+                    </table>
+                    
+                    <div class="bubble hand-drawn" style="margin-top: 20px;">
+                        <span class="icon">💭</span>「単なる資格取得だけでなく、<span class="highlight">実務での応用力</span>こそが三菱商事の真の狙い」
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="section-title">
+                        <span class="icon">🔮</span>今後の展望
+                    </div>
+                    <div style="position: relative; background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                        <div style="position: absolute; top: -10px; left: 10px; background: var(--fashion-3); color: var(--fashion-1); padding: 2px 10px; border-radius: 10px; font-weight: bold; font-size: 12px;">2025-2026</div>
+                        <p style="margin-top: 10px;">大企業を中心にAI研修・資格取得の動きが加速。<span class="highlight">人的資本開示</span>でのアピールポイントに。</p>
+                    </div>
+                    
+                    <div style="position: relative; background: white; border-radius: 10px; padding: 15px; margin-bottom: 15px;">
+                        <div style="position: absolute; top: -10px; left: 10px; background: var(--fashion-4); color: white; padding: 2px 10px; border-radius: 10px; font-weight: bold; font-size: 12px;">2027-2028</div>
+                        <p style="margin-top: 10px;"><span class="highlight">AI資格が昇進要件</span>として一般化。中小企業にも波及。生成AIの業務活用が標準に。</p>
+                    </div>
+                    
+                    <div style="position: relative; background: white; border-radius: 10px; padding: 15px;">
+                        <div style="position: absolute; top: -10px; left: 10px; background: var(--fashion-5); color: white; padding: 2px 10px; border-radius: 10px; font-weight: bold; font-size: 12px;">2030~</div>
+                        <p style="margin-top: 10px;">AIリテラシーは<span class="highlight">基礎的ビジネススキル</span>として定着。より高度なAI活用スキルへの投資が差別化要因に。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            グラフィックレコーディング・インフォグラフィック © 2025 三菱商事AI資格義務化レポート
+        </div>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
