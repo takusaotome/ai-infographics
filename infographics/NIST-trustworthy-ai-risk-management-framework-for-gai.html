@@ -134,13 +134,14 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 0 20px;
         }
 
         .footer-logo {
             font-family: 'Zen Kurenaido', sans-serif;
             font-size: 20px;
             font-weight: bold;
-            color: var(--fashion-2);
+            color: #fff;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
         }
 
@@ -150,19 +151,22 @@
         }
 
         .footer-social a {
-            color: var(--fashion-2);
+            color: #fff;
             text-decoration: none;
             font-size: 14px;
             transition: all 0.3s ease;
             text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
             padding: 5px 10px;
             border-radius: 4px;
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
         }
 
         .footer-social a:hover {
-            background-color: rgba(255,255,255,0.2);
+            background-color: rgba(255,255,255,0.25);
             transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         }
 
         @media (max-width: 768px) {
@@ -787,9 +791,10 @@
 
     <footer class="footer">
         <div class="footer-content">
-            <div class="footer-logo">Monty Trader</div>
+            <div class="footer-logo">AI Infographics</div>
             <div class="footer-social">
-                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+                <a href="https://github.com/yourusername" target="_blank">GitHub</a>
+                <a href="https://twitter.com/yourusername" target="_blank">Twitter</a>
             </div>
         </div>
     </footer>
