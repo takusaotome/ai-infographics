@@ -21,6 +21,10 @@ def generate_page(content_file):
     content = read_content(content_file)
     title = extract_title(content)
     
+    # フッターテキストを.footer-textでラップ
+    # <div class="footer">...</div> の中身を <div class="footer-text">...</div> に置換
+    content = re.sub(r'<div class="footer">(.*?)</div>', r'<div class="footer-text">\1</div>', content, flags=re.DOTALL)
+
     # テンプレートのプレースホルダーを置換
     page = template.replace('{%TITLE%}', title)
     page = page.replace('{%CONTENT%}', content)
