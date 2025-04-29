@@ -1,0 +1,1074 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>トークナイザ入門 — グラフィックレコーディング</title>  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol&display=swap');
+    
+    :root {
+      --color-fashion-1: #593C47;
+      --color-fashion-2: #F2E63D;
+      --color-fashion-3: #F2C53D;
+      --color-fashion-4: #F25C05;
+      --color-fashion-5: #F24405;
+      --color-text: #334155;
+      --color-heading: #1e40af;
+      --color-subheading: #475569;
+      --card-padding: 12px;
+      --section-spacing: 15px;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Zen Kurenaido', sans-serif;
+      color: var(--color-text);
+      line-height: 1.4;
+      background-color: #f8f9fa;
+      background-image: 
+        radial-gradient(#593C4722 1px, transparent 1px),
+        radial-gradient(#593C4722 1px, transparent 1px);
+      background-size: 20px 20px;
+      background-position: 0 0, 10px 10px;
+      padding: 8px;
+      -webkit-text-size-adjust: 100%;
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      border-radius: 16px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+      padding: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 15px;
+      border-bottom: 2px solid var(--color-fashion-3);
+      padding-bottom: 10px;
+      position: relative;
+    }
+    
+    @media (min-width: 576px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      .header {
+        margin-bottom: 20px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      body {
+        padding: 15px;
+      }
+      
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      
+      .container {
+        padding: 25px;
+      }
+      
+      :root {
+        --card-padding: 15px;
+        --section-spacing: 20px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      body {
+        padding: 20px;
+      }
+      
+      .container {
+        padding: 30px;
+      }
+      
+      :root {
+        --card-padding: 18px;
+        --section-spacing: 25px;
+      }
+    }
+    
+    .title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 20px;
+      font-weight: bold;
+      background: linear-gradient(45deg, var(--color-fashion-1), var(--color-fashion-5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+      padding-left: 25px;
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+    
+    @media (min-width: 576px) {
+      .title {
+        font-size: 24px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .title {
+        font-size: 28px;
+        margin-bottom: 0;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .title {
+        font-size: 32px;
+      }
+    }
+    
+    .title::before {
+      content: "✏️";
+      position: absolute;
+      left: 0;
+      top: 3px;
+      font-size: 18px;
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      color: var(--color-subheading);
+      font-size: 14px;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+    
+    @media (min-width: 576px) {
+      .grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px;
+      }
+    }
+    
+    @media (min-width: 992px) {
+      .grid {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+    }
+    
+    .section {
+      margin-bottom: var(--section-spacing);
+      position: relative;
+    }
+    
+    .section-full {
+      grid-column: 1 / -1;
+    }
+    
+    @media (max-width: 575px) {
+      .section {
+        grid-column: 1 / -1;
+      }
+    }
+    
+    .section-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      color: var(--color-heading);
+      margin-bottom: 12px;
+      display: inline-block;
+      position: relative;
+      padding-left: 28px;
+      padding-bottom: 2px;
+      border-bottom: 2px dashed var(--color-fashion-4);
+    }
+    
+    .section-title i {
+      position: absolute;
+      left: 0;
+      top: 2px;
+      font-size: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+      padding: var(--card-padding);
+      margin-bottom: 15px;
+      position: relative;
+      border: 2px solid transparent;
+      transition: all 0.3s ease;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    .card:hover {
+      border-color: var(--color-fashion-3);
+      transform: translateY(-2px);
+    }
+    
+    .card-accent-1 {
+      border-left: 4px solid var(--color-fashion-1);
+    }
+    
+    .card-accent-2 {
+      border-left: 4px solid var(--color-fashion-2);
+    }
+    
+    .card-accent-3 {
+      border-left: 4px solid var(--color-fashion-3);
+    }
+    
+    .card-accent-4 {
+      border-left: 4px solid var(--color-fashion-4);
+    }
+    
+    .card-accent-5 {
+      border-left: 4px solid var(--color-fashion-5);
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 60%, var(--color-fashion-3) 40%);
+      padding: 0 4px;
+      font-weight: bold;
+    }
+    
+    .keyword {
+      font-weight: bold;
+      color: var(--color-fashion-5);
+    }
+    
+    .note {
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      font-style: italic;
+      color: var(--color-subheading);
+      padding: 10px;
+      background-color: rgba(242, 230, 61, 0.1);
+      border-radius: 8px;
+      margin-top: 10px;
+      position: relative;
+      padding-left: 25px;
+    }
+    
+    .note::before {
+      content: "📌";
+      position: absolute;
+      left: 5px;
+      top: 10px;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 10px 0;
+    }
+    
+    .table th {
+      background-color: rgba(89, 60, 71, 0.1);
+      padding: 8px;
+      text-align: left;
+      border-bottom: 2px solid var(--color-fashion-1);
+    }
+    
+    .table td {
+      padding: 8px;
+      border-bottom: 1px dashed #ddd;
+    }
+    
+    .code {
+      font-family: monospace;
+      background-color: #f1f5f9;
+      padding: 12px;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      overflow-x: auto;
+      font-size: 12px;
+      line-height: 1.5;
+      position: relative;
+      -webkit-overflow-scrolling: touch;
+    }
+    
+    @media (min-width: 576px) {
+      .code {
+        font-size: 13px;
+      }
+    }
+    
+    .code::before {
+      content: "💻";
+      position: absolute;
+      right: 10px;
+      top: 5px;
+    }
+    
+    .bubble {
+      background-color: white;
+      border: 2px solid var(--color-fashion-1);
+      border-radius: 20px;
+      padding: 10px 15px;
+      position: relative;
+      display: inline-block;
+      margin: 10px 0;
+      max-width: 100%;
+    }
+    
+    .bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 20px;
+      border-width: 10px 10px 0;
+      border-style: solid;
+      border-color: var(--color-fashion-1) transparent;
+    }
+    
+    .arrow {
+      position: relative;
+      height: 2px;
+      background-color: var(--color-fashion-4);
+      margin: 20px 0;
+    }
+    
+    .arrow::after {
+      content: "";
+      position: absolute;
+      right: 0;
+      top: -4px;
+      border-width: 5px 0 5px 10px;
+      border-style: solid;
+      border-color: transparent transparent transparent var(--color-fashion-4);
+    }
+    
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin: 20px 0;
+    }
+    
+    @media (min-width: 576px) {
+      .flow-diagram {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+    
+    .flow-item {
+      text-align: center;
+      padding: 10px;
+      background-color: rgba(242, 92, 5, 0.1);
+      border-radius: 8px;
+      width: 100%;
+      margin-bottom: 10px;
+      position: relative;
+    }
+    
+    @media (min-width: 576px) {
+      .flow-item {
+        flex: 1;
+        margin-bottom: 0;
+      }
+    }
+    
+    .flow-arrow {
+      text-align: center;
+      font-size: 24px;
+      color: var(--color-fashion-4);
+      margin: 0 0 10px 0;
+      transform: rotate(90deg);
+    }
+    
+    @media (min-width: 576px) {
+      .flow-arrow {
+        flex: 0 0 40px;
+        margin: 0;
+        transform: rotate(0);
+      }
+    }
+    
+    .hand-drawn {
+      position: relative;
+    }
+    
+    .hand-drawn::after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: repeating-linear-gradient(45deg, var(--color-fashion-3), var(--color-fashion-3) 5px, transparent 5px, transparent 10px);
+    }
+    
+    .footer {
+      margin-top: 25px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--color-subheading);
+      border-top: 1px solid #ddd;
+      padding-top: 15px;
+    }
+    
+    .emoji {
+      font-size: 1.2em;
+      vertical-align: middle;
+      margin: 0 2px;
+    }
+
+    .comparison-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      margin: 15px 0;
+      font-size: 13px;
+    }
+    
+    @media (min-width: 576px) {
+      .comparison-table {
+        font-size: 14px;
+      }
+    }
+
+    .comparison-table th {
+      background-color: rgba(89, 60, 71, 0.1);
+      padding: 8px 5px;
+      text-align: left;
+      border-bottom: 2px solid var(--color-fashion-1);
+      position: relative;
+      white-space: nowrap;
+    }
+    
+    @media (min-width: 576px) {
+      .comparison-table th {
+        padding: 8px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .comparison-table th {
+        padding: 10px;
+      }
+    }
+
+    .comparison-table td {
+      padding: 8px 5px;
+      border-bottom: 1px dashed #ddd;
+    }
+    
+    @media (min-width: 576px) {
+      .comparison-table td {
+        padding: 8px;
+      }
+    }
+    
+    @media (min-width: 768px) {
+      .comparison-table td {
+        padding: 10px;
+      }
+    }
+
+    .comparison-table tr:hover td {
+      background-color: rgba(242, 230, 61, 0.1);
+    }
+    
+    /* スマホ表示用の横スクロール対応 */
+    .table-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 15px;
+    }
+    
+    /* アルゴリズム比較セクション */
+    .algorithm-section {
+      margin: 30px 0;
+    }
+    
+    .algorithm-header {
+      font-size: 20px;
+      position: relative;
+      display: inline-block;
+      margin-bottom: 15px;
+      font-family: 'Kaisei Decol', serif;
+      color: #593C47;
+      text-align: center;
+      width: 100%;
+    }
+    
+    @media (min-width: 576px) {
+      .algorithm-header {
+        font-size: 22px;
+      }
+    }
+    
+    .algorithm-header::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: -3px;
+      height: 3px;
+      background-color: var(--color-fashion-4);
+      margin: 0 auto;
+      width: 80%;
+      max-width: 200px;
+    }
+    
+    .algorithm-desc {
+      margin-bottom: 15px;
+      font-size: 15px;
+      text-align: center;
+    }
+    
+    @media (min-width: 576px) {
+      .algorithm-desc {
+        font-size: 16px;
+      }
+    }
+    
+    .tag-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 10px;
+    }
+    
+    .model-tag {
+      display: inline-block;
+      background-color: rgba(242, 230, 61, 0.2);
+      border-radius: 20px;
+      padding: 5px 12px;
+      border: 1px solid rgba(242, 196, 61, 0.5);
+      font-size: 14px;
+    }
+    
+    .algorithm-icon {
+      display: inline-block;
+      width: 50px;
+      height: 50px;
+      background-color: rgba(242, 196, 61, 0.2);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: var(--color-fashion-5);
+      border: 2px dashed var(--color-fashion-3);
+      margin: 0 auto 15px auto;
+    }
+    
+    @media (min-width: 576px) {
+      .algorithm-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 28px;
+      }
+    }
+    
+    /* トークン分割例 */
+    .tokenize-example {
+      background-color: #f8f9fa;
+      border-radius: 12px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      margin-top: 20px;
+    }
+    
+    @media (min-width: 576px) {
+      .tokenize-example {
+        padding: 20px;
+      }
+    }
+    
+    .tokenize-title {
+      text-align: center;
+      margin-bottom: 20px;
+      color: var(--color-fashion-1);
+      font-size: 18px;
+    }
+    
+    @media (min-width: 576px) {
+      .tokenize-title {
+        font-size: 20px;
+      }
+    }
+    
+    .tokenize-method {
+      margin-bottom: 25px;
+    }
+    
+    .tokenize-method:last-child {
+      margin-bottom: 0;
+    }
+    
+    .method-title {
+      color: var(--color-fashion-5);
+      margin-bottom: 10px;
+      border-left: 4px solid var(--color-fashion-4);
+      padding-left: 10px;
+      font-size: 16px;
+    }
+    
+    @media (min-width: 576px) {
+      .method-title {
+        font-size: 18px;
+      }
+    }
+    
+    .token-container {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+    }
+    
+    .token {
+      background-color: white;
+      border: 2px solid var(--color-fashion-1);
+      border-radius: 8px;
+      padding: 6px 12px;
+      font-weight: bold;
+    }
+    
+    @media (min-width: 576px) {
+      .token {
+        padding: 8px 15px;
+      }
+    }
+    
+    .token-arrow {
+      text-align: center;
+      color: var(--color-fashion-4);
+      font-size: 18px;
+      margin: 10px 0;
+    }
+    
+    .token-desc {
+      background-color: rgba(242, 196, 61, 0.1);
+      padding: 8px 10px;
+      border-radius: 8px;
+      text-align: center;
+    }
+    
+    @media (min-width: 576px) {
+      .token-desc {
+        padding: 10px;
+      }
+    }
+    
+    /* モバイル対応の追加スタイル */
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      font-size: 12px;
+    }
+    
+    @media (min-width: 576px) {
+      pre {
+        font-size: 13px;
+      }
+    }
+    
+    /* スマホ表示時に横スクロールになる要素をラップするためのコンテナ */
+    .scroll-container {
+      width: 100%;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      margin-bottom: 15px;
+    }
+    
+    /* 画像の代替表現用 */
+    .img-alt {
+      max-width: 100%;
+      height: auto;
+    }
+    
+    /* タッチスクリーン対応 */
+    @media (hover: none) {
+      .card:hover {
+        transform: none;
+        border-color: transparent;
+      }
+    }
+    
+    /* iOS Safari対応 */
+    @supports (-webkit-touch-callout: none) {
+      body {
+        -webkit-text-size-adjust: 100%;
+      }
+      
+      input, select, textarea {
+        font-size: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">トークナイザ入門 — 文章をコンピュータが『かみ砕く』最初のステップ</h1>
+      <div class="date">2025-04-28</div>
+    </div>
+    
+    <div class="grid">
+      <!-- セクション1: トークナイザとは？ -->
+      <div class="section">
+        <h2 class="section-title"><i>🔍</i> トークナイザとは？</h2>
+        <div class="card card-accent-1">
+          <div class="bubble">
+            <strong>一言でいうと</strong><br>
+            人間にとっての「単語の区切り」を、コンピュータが理解できる <span class="highlight">数字の並び</span> に変換するプログラム。
+          </div>
+          
+          <div class="example-box">
+            <div class="example-input">
+              <div class="example-heading">📝 入力</div>
+              <p>I love sushi 🍣!</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="example-output">
+              <div class="example-heading">🔢 出力</div>
+              <p>[73, 602, 18934, 195, 0]</p>
+            </div>
+          </div>
+          
+          <div class="example-box">
+            <div class="example-input">
+              <div class="example-heading">📝 入力</div>
+              <p>私は寿司が好きです。</p>
+            </div>
+            <div class="flow-arrow">→</div>
+            <div class="example-output">
+              <div class="example-heading">🔢 出力</div>
+              <p>[178, 4521, 19, 421, 6]</p>
+            </div>
+          </div>
+          
+          <div class="note">
+            数値は語彙（Vocabulary）の ID。モデルは数字でしか計算できないため、まず文章→ID列に変える必要がある。
+          </div>
+        </div>
+        
+        <div class="card card-accent-2">
+          <h3 class="hand-drawn">"単語"だけじゃない</h3>
+          <ul style="list-style-type: none; padding-left: 10px;">
+            <li>📄 文字（char）</li>
+            <li>📝 サブワード（sub-word）</li>
+            <li>📑 文（sentence）</li>
+          </ul>
+          <div class="note">
+            日本語のように <span class="highlight">空白がない言語</span> では "どこで切るか" が特に重要。
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション2: なぜトークナイズが必要？ -->
+      <div class="section">
+        <h2 class="section-title"><i>❓</i> なぜトークナイズが必要？</h2>
+        <div class="card card-accent-3">
+          <div class="scroll-container">
+            <table class="comparison-table">
+              <tr>
+                <th>目的</th>
+                <th>説明</th>
+              </tr>
+              <tr>
+                <td><span class="keyword">計算しやすくする</span></td>
+                <td>文字列は長さがバラバラ。固定長 or 可変長の ID 列に変えると GPU で効率的に並列計算できる</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">未知語を減らす</span></td>
+                <td>"iPhone 17" のような新語も、サブワードなら分割＆理解可</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">意味保持</span></td>
+                <td>"playing" → "play + ing" のように語幹・接尾辞を保存</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <div class="card card-accent-4">
+          <div class="flow-diagram">
+            <div class="flow-item">文章</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">ID 列</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">ベクトル</div>
+          </div>
+          <div class="note">
+            トークナイズは自然言語処理の"最初の一歩"。ここを押さえれば、次は埋め込み (Embedding) やモデル構築へスムーズに進めます。
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション3: トークナイズの方法いろいろ -->
+      <div class="section">
+        <h2 class="section-title"><i>🧩</i> トークナイズの方法いろいろ</h2>
+        <div class="card card-accent-5">
+          <div class="scroll-container">
+            <table class="comparison-table">
+              <tr>
+                <th>粒度</th>
+                <th>例</th>
+                <th>長所</th>
+                <th>短所</th>
+              </tr>
+              <tr>
+                <td><span class="keyword">ホワイトスペース単位</span></td>
+                <td>I / like / NLP</td>
+                <td>実装が簡単</td>
+                <td>日本語× / 新語×</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">単語辞書ベース</span></td>
+                <td>私は / 寿司 / が / 好き</td>
+                <td>意味を保ちやすい</td>
+                <td>辞書外 (OOV) 発生</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">文字単位</span></td>
+                <td>私 / は / 寿 / 司</td>
+                <td>OOV なし</td>
+                <td>列が長くモデル肥大</td>
+              </tr>
+              <tr>
+                <td><span class="keyword">サブワード</span><br>(BPE／WordPiece／SentencePiece)</td>
+                <td>寿/司 ##が 好き</td>
+                <td>OOV 少＋列長短</td>
+                <td>実装がやや複雑</td>
+              </tr>
+            </table>
+          </div>
+          
+          <div class="bubble">
+            <strong>サブワードとは？</strong><br>
+            頻出の文字列を"パズルのピース"として再利用する方式。<br>
+            - "スシ"は頻出だから 1 ピース<br>
+            - "ピザ"は稀なので <span class="hand-drawn">ピ + ザ</span> に分ける
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション4: 主要アルゴリズムをざっくり比較 -->
+      <div class="section section-full">
+        <h2 class="section-title"><i>🔄</i> 主要アルゴリズムをざっくり比較</h2>
+        <div class="card">
+          <!-- BPE -->
+          <div class="algorithm-section">
+            <h3 class="algorithm-header">BPE (Byte Pair Encoding)</h3>
+            <p class="algorithm-desc">頻出ペアを逐次で結合。語彙サイズを自在に調整。</p>
+            <div class="tag-container">
+              <span class="model-tag">GPT-2</span>
+              <span class="model-tag">RoBERTa</span>
+            </div>
+          </div>
+          
+          <!-- WordPiece -->
+          <div class="algorithm-section">
+            <div class="algorithm-icon">W</div>
+            <h3 class="algorithm-header">WordPiece</h3>
+            <p class="algorithm-desc">対数確率を最大化するペア結合。未知語に ## 接頭辞を付ける。</p>
+            <div class="tag-container">
+              <span class="model-tag">BERT</span>
+              <span class="model-tag">ALBERT</span>
+            </div>
+          </div>
+          
+          <!-- SentencePiece -->
+          <div class="algorithm-section">
+            <div class="algorithm-icon">S</div>
+            <h3 class="algorithm-header">SentencePiece (Unigram/BPE)</h3>
+            <p class="algorithm-desc">文頭・文末も考慮し、空白を扱わず文字列全体で学習。</p>
+            <div class="tag-container">
+              <span class="model-tag">T5</span>
+              <span class="model-tag">Llama</span>
+              <span class="model-tag">多言語モデル</span>
+            </div>
+          </div>
+          
+          <!-- トークン分割例 -->
+          <div class="tokenize-example">
+            <h3 class="tokenize-title">トークナイザ比較イラスト</h3>
+            
+            <!-- BPE -->
+            <div class="tokenize-method">
+              <h4 class="method-title">BPE の分割例</h4>
+              <div class="token-container">
+                <div class="token">寿司</div>
+                <div class="token">が</div>
+                <div class="token">好き</div>
+              </div>
+              <div class="token-arrow">↓</div>
+              <div class="token-desc">
+                頻出ペアを統合
+              </div>
+            </div>
+            
+            <!-- WordPiece -->
+            <div class="tokenize-method">
+              <h4 class="method-title">WordPiece の分割例</h4>
+              <div class="token-container">
+                <div class="token">寿</div>
+                <div class="token">司</div>
+                <div class="token">##が</div>
+                <div class="token">好き</div>
+              </div>
+              <div class="token-arrow">↓</div>
+              <div class="token-desc">
+                未知語に##接頭辞
+              </div>
+            </div>
+            
+            <!-- SentencePiece -->
+            <div class="tokenize-method">
+              <h4 class="method-title">SentencePiece の分割例</h4>
+              <div class="token-container">
+                <div class="token">寿司</div>
+                <div class="token">が</div>
+                <div class="token">好き</div>
+              </div>
+              <div class="token-arrow">↓</div>
+              <div class="token-desc">
+                空白を特別扱いしない
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション5: どれを選べばいい？ -->
+      <div class="section">
+        <h2 class="section-title"><i>🔍</i> どれを選べばいい？</h2>
+        <div class="card card-accent-2">
+          <div class="scroll-container">
+            <table class="comparison-table">
+              <tr>
+                <th>ニーズ</th>
+                <th>おすすめ</th>
+              </tr>
+              <tr>
+                <td>英語中心 & GPU 学習</td>
+                <td><span class="keyword">WordPiece or BPE</span>（実装が豊富）</td>
+              </tr>
+              <tr>
+                <td>日本語・多言語 & 小さなデバイス</td>
+                <td><span class="keyword">SentencePiece（Unigram）</span> — 空白不要・語彙圧縮</td>
+              </tr>
+              <tr>
+                <td>組み込み開発でメモリ極少</td>
+                <td><span class="keyword">文字ベース</span>（実装最小）</td>
+              </tr>
+              <tr>
+                <td>リアルタイム × 高精度</td>
+                <td><span class="keyword">サブワード＋Dropout</span> で未知語耐性を強化</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション6: Python で試してみよう -->
+      <div class="section">
+        <h2 class="section-title"><i>💻</i> Python で試してみよう（Hugging Face）</h2>
+        <div class="card card-accent-3">
+          <div class="code">
+from transformers import AutoTokenizer
+tok = AutoTokenizer.from_pretrained("cl-tohoku/bert-base-japanese-v3")
+text = "私は寿司が好きです。"
+ids  = tok.encode(text, add_special_tokens=True)
+print("ID 列:", ids)
+print("トークン:", tok.convert_ids_to_tokens(ids))
+          </div>
+          
+          <div class="example-output" style="margin-top: 15px;">
+            <div class="example-heading">🔢 出力結果</div>
+            <pre>ID 列: [2, 178, 4521, 19, 421, 6, 3]
+トークン: ['[CLS]', '私', 'は', '寿司', 'が', '好き', 'です', '。', '[SEP]']</pre>
+          </div>
+          
+          <div class="note">
+            [CLS], [SEP] は BERT 系モデル用の特別トークン<br>
+            寿司 が辞書にあるので 1 トークン。一方で珍しい地名などは分割される。
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション7: よくある疑問 -->
+      <div class="section">
+        <h2 class="section-title"><i>❓</i> よくある疑問</h2>
+        <div class="card card-accent-4">
+          <div style="margin-bottom: 15px;">
+            <div class="hand-drawn"><strong>Q1. 語彙サイズは大きいほどいいの？</strong></div>
+            <p>大きいほど未知語が減るが <span class="highlight">メモリ・計算量が増加</span>。実務では 2k〜50k が一般的。</p>
+          </div>
+          
+          <div style="margin-bottom: 15px;">
+            <div class="hand-drawn"><strong>Q2. 絵文字や記号は？</strong></div>
+            <p>最近のトークナイザは絵文字も一意の ID を付与。未定義の場合はサブワード or 文字単位で分割。</p>
+          </div>
+          
+          <div>
+            <div class="hand-drawn"><strong>Q3. 日本語の "。「" はどう処理する？</strong></div>
+            <p>SentencePiece では記号もトークン化、WordPiece は辞書次第。文章分割（Sentence Split）とは別処理。</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- セクション8: まとめ -->
+      <div class="section">
+        <h2 class="section-title"><i>📝</i> まとめ</h2>
+        <div class="card card-accent-5">
+          <div class="summary-box">
+            <div class="summary-title">トークナイザの重要ポイント</div>
+            <div class="summary-item">トークナイザ＝文章を数字に翻訳する門番</div>
+            <div class="summary-item">方式は <span class="highlight">単語・文字・サブワード</span> に大別。日本語はサブワードが主流</div>
+            <div class="summary-item">用途とリソースに応じて <span class="highlight">語彙サイズとアルゴリズムを選択</span></div>
+            <div class="summary-item">Hugging Face なら 3 行で実験可能。まず動かしながら学ぼう！</div>
+          </div>
+          
+          <div class="flow-diagram" style="margin-top: 20px;">
+            <div class="flow-item">文章</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">ID 列</div>
+            <div class="flow-arrow">→</div>
+            <div class="flow-item">ベクトル</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer">
+      トークナイザ入門 — 文章をコンピュータが『かみ砕く』最初のステップ | 2025-04-28
+    </div>
+  </div>
+</body>
+</html>

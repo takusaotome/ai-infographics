@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YOLO進化の系譜 — "You Only Look Once"の10年史</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-title: #1e3a8a;
+            --text-subtitle: #475569;
+            --bg-card: rgba(255, 255, 255, 0.8);
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Zen Kurenaido', sans-serif;
+            color: var(--text-main);
+            line-height: 1.4;
+            background-color: #f8fafc;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23593c47' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--fashion-3);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 5px;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-5));
+            clip-path: path('M0,0 C50,40 150,0 200,30 C250,60 300,0 350,20 C400,40 450,10 500,30 C550,50 600,20 650,30 C700,40 750,0 800,20 C850,40 900,10 950,30 C1000,50 1050,20 1100,30 L1100,100 L0,100 Z');
+        }
+        
+        .title-container {
+            flex: 2;
+        }
+        
+        h1 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--fashion-1);
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.5rem;
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 8px;
+            bottom: -5px;
+            left: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 20' height='10' width='100' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C30,20 70,0 100,10' stroke='%23F2C53D' stroke-width='4' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            background-size: auto 100%;
+        }
+        
+        .date-info {
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: var(--text-subtitle);
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 1.5rem;
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            position: relative;
+            backdrop-filter: blur(8px);
+            overflow: hidden;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            border-image: linear-gradient(45deg, var(--fashion-2), var(--fashion-4)) 1;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            bottom: -2px;
+            left: -2px;
+            z-index: -1;
+            border-radius: 14px;
+            background: linear-gradient(45deg, rgba(242, 230, 61, 0.1), rgba(242, 91, 5, 0.1));
+        }
+        
+        h2 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            color: var(--fashion-1);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        h2::before {
+            content: "";
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            margin-right: 8px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .section-1 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpath d='M12 16v-4'%3E%3C/path%3E%3Cpath d='M12 8h.01'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .section-2 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cline x1='4' y1='21' x2='4' y2='14'%3E%3C/line%3E%3Cline x1='4' y1='10' x2='4' y2='3'%3E%3C/line%3E%3Cline x1='12' y1='21' x2='12' y2='12'%3E%3C/line%3E%3Cline x1='12' y1='8' x2='12' y2='3'%3E%3C/line%3E%3Cline x1='20' y1='21' x2='20' y2='16'%3E%3C/line%3E%3Cline x1='20' y1='12' x2='20' y2='3'%3E%3C/line%3E%3Cline x1='1' y1='14' x2='7' y2='14'%3E%3C/line%3E%3Cline x1='9' y1='8' x2='15' y2='8'%3E%3C/line%3E%3Cline x1='17' y1='16' x2='23' y2='16'%3E%3C/line%3E%3C/svg%3E");
+        }
+        
+        .section-3 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .section-4 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 2L2 7l10 5 10-5-10-5z'%3E%3C/path%3E%3Cpath d='M2 17l10 5 10-5'%3E%3C/path%3E%3Cpath d='M2 12l10 5 10-5'%3E%3C/path%3E%3C/svg%3E");
+        }
+        
+        .section-5 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 17 10 11 4 5'%3E%3C/polyline%3E%3Cline x1='12' y1='19' x2='20' y2='19'%3E%3C/line%3E%3C/svg%3E");
+        }
+        
+        .section-6 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='10'%3E%3C/circle%3E%3Cpath d='M8 14s1.5 2 4 2 4-2 4-2'%3E%3C/path%3E%3Cline x1='9' y1='9' x2='9.01' y2='9'%3E%3C/line%3E%3Cline x1='15' y1='9' x2='15.01' y2='9'%3E%3C/line%3E%3C/svg%3E");
+        }
+        
+        .section-7 h2::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18 8h1a4 4 0 0 1 0 8h-1'%3E%3C/path%3E%3Cpath d='M2 8h16v9a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V8z'%3E%3C/path%3E%3Cline x1='6' y1='1' x2='6' y2='4'%3E%3C/line%3E%3Cline x1='10' y1='1' x2='10' y2='4'%3E%3C/line%3E%3Cline x1='14' y1='1' x2='14' y2='4'%3E%3C/line%3E%3C/svg%3E");
+        }
+        
+        .keyword {
+            font-weight: bold;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .keyword-highlight-1 {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+        }
+        
+        .keyword-highlight-2 {
+            background: linear-gradient(transparent 60%, var(--fashion-3) 60%);
+        }
+        
+        .keyword-highlight-3 {
+            background: linear-gradient(transparent 60%, var(--fashion-4) 60%);
+        }
+        
+        .timeline {
+            position: relative;
+            margin: 2rem 0;
+            padding: 1rem;
+            background-color: #f8f9fa;
+            border-radius: 12px;
+        }
+        
+        .timeline::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(var(--fashion-2), var(--fashion-5));
+            transform: translateX(-50%);
+            border-radius: 6px;
+        }
+        
+        .timeline-entry {
+            display: flex;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .timeline-entry:nth-child(odd) {
+            flex-direction: row;
+        }
+        
+        .timeline-entry:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .timeline-year {
+            flex: 1;
+            text-align: right;
+            padding-right: 1.5rem;
+            font-weight: bold;
+            color: var(--fashion-1);
+        }
+        
+        .timeline-entry:nth-child(even) .timeline-year {
+            text-align: left;
+            padding-right: 0;
+            padding-left: 1.5rem;
+        }
+        
+        .timeline-dot {
+            width: 20px;
+            height: 20px;
+            background-color: var(--fashion-3);
+            border-radius: 50%;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 1;
+            box-shadow: 0 0 0 4px rgba(242, 196, 61, 0.3);
+        }
+        
+        .timeline-content {
+            flex: 2;
+            padding-left: 1.5rem;
+            background: white;
+            border-radius: 8px;
+            padding: 0.8rem;
+            box-shadow: var(--shadow);
+            position: relative;
+        }
+        
+        .timeline-entry:nth-child(even) .timeline-content {
+            padding-left: 0;
+            padding-right: 1.5rem;
+        }
+        
+        .timeline-version {
+            font-weight: bold;
+            color: var(--fashion-4);
+        }
+        
+        .timeline-entry:nth-child(1) .timeline-dot { background-color: #4299e1; }
+        .timeline-entry:nth-child(2) .timeline-dot { background-color: #48bb78; }
+        .timeline-entry:nth-child(3) .timeline-dot { background-color: #ecc94b; }
+        .timeline-entry:nth-child(4) .timeline-dot { background-color: #ed8936; }
+        .timeline-entry:nth-child(5) .timeline-dot { background-color: #f56565; }
+        .timeline-entry:nth-child(6) .timeline-dot { background-color: #9f7aea; }
+        .timeline-entry:nth-child(7) .timeline-dot { background-color: #38b2ac; }
+        .timeline-entry:nth-child(8) .timeline-dot { background-color: #f687b3; }
+        .timeline-entry:nth-child(9) .timeline-dot { background-color: #667eea; }
+        .timeline-entry:nth-child(10) .timeline-dot { background-color: #718096; }
+        
+        .handdrawn-arrow {
+            position: relative;
+            width: 100%;
+            height: 20px;
+            margin: 1rem 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 20' height='20' width='200' preserveAspectRatio='none'%3E%3Cpath d='M0,10 C50,0 100,20 150,10 L190,10 L185,5 M190,10 L185,15' stroke='%23F25C05' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            background: white;
+        }
+        
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        th {
+            background-color: var(--fashion-1);
+            color: white;
+            font-weight: normal;
+        }
+        
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .improvement-table td:nth-child(2) {
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .highlighted-box {
+            background-color: #fef9c3;
+            border-left: 4px solid var(--fashion-3);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .highlighted-box::before {
+            content: "💡";
+            position: absolute;
+            left: -12px;
+            top: -12px;
+            font-size: 20px;
+        }
+        
+        .code-block {
+            background-color: #1e293b;
+            color: #e2e8f0;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .code-block::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-width: 0 20px 20px 0;
+            border-style: solid;
+            border-color: var(--fashion-4) transparent;
+        }
+        
+        .code-comment {
+            color: #a0aec0;
+        }
+        
+        .card-table {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .card-table-item {
+            background: white;
+            padding: 0.8rem;
+            border-radius: 8px;
+            box-shadow: var(--shadow);
+            display: flex;
+        }
+        
+        .card-table-icon {
+            flex: 0 0 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 0.8rem;
+        }
+        
+        .card-table-content {
+            flex: 1;
+        }
+        
+        .card-table-title {
+            font-weight: bold;
+            color: var(--fashion-1);
+            margin-bottom: 0.3rem;
+        }
+        
+        .card-table-item:nth-child(1) .card-table-icon { color: var(--fashion-4); }
+        .card-table-item:nth-child(2) .card-table-icon { color: var(--fashion-3); }
+        .card-table-item:nth-child(3) .card-table-icon { color: var(--fashion-5); }
+        .card-table-item:nth-child(4) .card-table-icon { color: var(--fashion-1); }
+        
+        .qa-item {
+            margin-bottom: 1.5rem;
+        }
+        
+        .qa-question {
+            font-weight: bold;
+            color: var(--fashion-4);
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .qa-question::before {
+            content: "Q";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .qa-answer {
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .qa-answer::before {
+            content: "A";
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-weight: bold;
+            color: var(--fashion-3);
+        }
+        
+        .application-table {
+            width: 100%;
+        }
+        
+        .application-table th {
+            background-color: var(--fashion-4);
+        }
+        
+        .steps-list {
+            list-style: none;
+            counter-reset: steps-counter;
+            padding-left: 2rem;
+        }
+        
+        .steps-list li {
+            counter-increment: steps-counter;
+            position: relative;
+            margin-bottom: 1rem;
+        }
+        
+        .steps-list li::before {
+            content: counter(steps-counter);
+            position: absolute;
+            left: -2rem;
+            width: 1.5rem;
+            height: 1.5rem;
+            border-radius: 50%;
+            background-color: var(--fashion-3);
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+        
+        .next-steps {
+            background-color: #e6f7ff;
+            border-left: 4px solid #1890ff;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        footer {
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px dashed var(--fashion-3);
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtitle);
+        }
+        
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .date-info {
+                margin-top: 0.5rem;
+            }
+            
+            .timeline::before {
+                left: 30px;
+            }
+            
+            .timeline-entry, .timeline-entry:nth-child(even) {
+                flex-direction: row;
+            }
+            
+            .timeline-year, .timeline-entry:nth-child(even) .timeline-year {
+                flex: 0 0 60px;
+                text-align: right;
+                padding-right: 1rem;
+                padding-left: 0;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+            
+            .timeline-content, .timeline-entry:nth-child(even) .timeline-content {
+                flex: 1;
+                padding-left: 1.5rem;
+                padding-right: 0;
+            }
+            
+            .card-table {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="title-container">
+                <h1>YOLO進化の系譜 — "You Only Look Once"の10年史</h1>
+                <p class="date-info">2025-04-28</p>
+            </div>
+        </header>
+        
+        <div class="grid">
+            <div class="card section-1">
+                <h2>そもそもYOLOとは？</h2>
+                <p>
+                    <span class="keyword keyword-highlight-1">You Only Look Once</span>
+                </p>
+                <p>入力画像を<span class="keyword keyword-highlight-2">"一度"</span>だけCNNに通し、<span class="keyword keyword-highlight-3">バウンディングボックス＋クラス</span>を同時に出力するワンステージ検出器。</p>
+                <p>キーワードは 「<span class="keyword keyword-highlight-1">リアルタイム</span> × <span class="keyword keyword-highlight-2">高精度</span> × <span class="keyword keyword-highlight-3">単純構造</span>」。</p>
+                
+                <div class="handdrawn-arrow"></div>
+            </div>
+            
+            <div class="card section-2">
+                <h2>10年でどう進化した？</h2>
+                <p>地下鉄路線図風タイムライン ✏️</p>
+                
+                <div class="timeline">
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2015</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv1</span>: Darknet-19、単一スケール
+                            <br>mAP@0.5: 63.4 / FPS: <strong>45</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2016</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv2</span>: Anchor Box導入、BatchNorm
+                            <br>mAP@0.5: 76.8 / FPS: 40
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2017</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv3</span>: Darknet-53、Feature Pyramid
+                            <br>mAP@0.5: 80.6 / FPS: 30
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv4</span>: CSPDarknet、Mish、CIoU Loss
+                            <br>mAP@0.5: 83.0 / FPS: 62
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2020</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv5</span>: PyTorch実装、AutoAugment、N/M/L/Xサイズ
+                            <br>mAP@0.5: 88.5 / FPS: 140 (v5n)
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2021</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv6</span>: Dense Prediction、硬件最適化
+                            <br>mAP@0.5:0.95: 43.1 / FPS: 120
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2022</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv7</span>: E-ELAN、連結ブランチ、事前学習不要
+                            <br>mAP@0.5:0.95: <strong>51.4</strong> / FPS: 160
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2023</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv8</span>: Decoupled Head、TaskAligned Loss
+                            <br>mAP@0.5:0.95: 53.9 / FPS: 165
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2024</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv9</span>: Omni-Dimension Δ、Dynamic Sparse
+                            <br>mAP@0.5:0.95: 56.1 / FPS: 180
+                        </div>
+                    </div>
+                    
+                    <div class="timeline-entry">
+                        <div class="timeline-year">2025</div>
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <span class="timeline-version">YOLOv10</span>: ViT Backbone + RT-DETR Head
+                            <br>mAP@0.5:0.95: <strong>58.7</strong> / FPS: <strong>190</strong>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlighted-box">
+                    <p><strong>路線図の見かた</strong></p>
+                    <p>- <span style="color: #3182ce;">青線</span>＝アーキテクチャ改良</p>
+                    <p>- <span style="color: #38a169;">緑線</span>＝学習トリック</p>
+                    <p>- <span style="color: #e53e3e;">赤線</span>＝ハードウェア最適化</p>
+                    <p>- v5以降は"枝線"でNano / Small / Medium / Largeなどモデルサイズ展開</p>
+                </div>
+            </div>
+            
+            <div class="card section-3">
+                <h2>主な改良ポイントを初心者向けに分解</h2>
+                
+                <table class="improvement-table">
+                    <tr>
+                        <th>改良カテゴリ</th>
+                        <th>キーワード</th>
+                        <th>ざっくり説明</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Backbone</strong></td>
+                        <td>Darknet → CSP → <strong>ViT</strong></td>
+                        <td>"特徴抽出器"。深く／広く／自己注意化で表現力UP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Neck & Head</strong></td>
+                        <td>FPN, PAN, <strong>Decoupled Head</strong></td>
+                        <td>マルチスケール融合＋分類と回帰を分離し学習効率UP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Loss関数</strong></td>
+                        <td>IoU → GIoU → <strong>CIoU</strong></td>
+                        <td>"ズレ"をより厳密に評価、収束を高速化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Data Augment</strong></td>
+                        <td>Mosaic, MixUp, <strong>AutoAugment</strong></td>
+                        <td>画像4枚合成や色変換で汎化性能UP</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ハード最適化</strong></td>
+                        <td>TensorRT, ncnn, <strong>ONNX</strong></td>
+                        <td>量子化・プルーニングでスマホやEdge TPUでも動作</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card section-4">
+                <h2>実装ステップ（Ultralytics YOLOv10例）</h2>
+                
+                <div class="code-block">
+<span class="code-comment"># 1️⃣ インストール</span>
+pip install ultralytics>=8.2.0  <span class="code-comment"># v10対応版</span>
+
+<span class="code-comment"># 2️⃣ 学習済みモデルで推論</span>
+yolo task=detect mode=predict model=yolov10n.pt source=video.mp4
+
+<span class="code-comment"># 3️⃣ 転移学習</span>
+yolo task=detect mode=train   \
+     model=yolov10s.pt        \
+     data=custom.yaml         \
+     epochs=100 imgsz=640
+                </div>
+                
+                <div class="highlighted-box">
+                    <p>yolov10n/s/m/l... Nano〜Large。nは0.9 MBでモバイルOK、lは精度重視。</p>
+                    <p>custom.yamlにクラス名とアノテーションパスを記述するだけでトレーニング開始。</p>
+                </div>
+            </div>
+            
+            <div class="card section-5">
+                <h2>バージョン選びの指針</h2>
+                
+                <table>
+                    <tr>
+                        <th>使用条件</th>
+                        <th>推奨バージョン</th>
+                    </tr>
+                    <tr>
+                        <td>スマホ/Edgeで30 FPS</td>
+                        <td>YOLOv5n, v8n, v10n</td>
+                    </tr>
+                    <tr>
+                        <td>GPUで最高精度</td>
+                        <td>YOLOv10l + Rerank</td>
+                    </tr>
+                    <tr>
+                        <td>研究・新機能検証</td>
+                        <td>YOLOv9/v10（ViT & DETR融合）</td>
+                    </tr>
+                    <tr>
+                        <td>C++組込み</td>
+                        <td>YOLOv4-CSP, v7-tiny (ncnn)</td>
+                    </tr>
+                    <tr>
+                        <td>学習コスト重視</td>
+                        <td>YOLOv3/v4（低メモリ、データ少量でも安定）</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card section-6">
+                <h2>よくあるQ&A</h2>
+                
+                <div class="qa-item">
+                    <p class="qa-question">"v5は公式じゃない"って聞きました</p>
+                    <p class="qa-answer">
+                        経緯: v1–v4はJoseph Redmon & AlexeyAB、v5はUltralyticsがPyTorchで独自開発。<br>
+                        実務的には: ドキュメント・拡張が充実しており、今やデファクト。
+                    </p>
+                </div>
+                
+                <div class="qa-item">
+                    <p class="qa-question">YOLOとDETR系はどう違う？</p>
+                    <p class="qa-answer">
+                        YOLO: CNN主体、Anchor Boxあり/なし両対応、超高速。<br>
+                        DETR: Transformer＋セット損失でAnchorフリー、学習コスト高いが高精度。<br>
+                        最新: YOLOv10がDETRのアイデアを取り込み"いいとこ取り"。
+                    </p>
+                </div>
+                
+                <div class="qa-item">
+                    <p class="qa-question">学習データはどのくらい必要？</p>
+                    <p class="qa-answer">
+                        1クラスなら1,000枚×20 epochでも実用精度可。<br>
+                        マルチクラスや小物体は5,000〜10,000枚を推奨。
+                    </p>
+                </div>
+            </div>
+            
+            <div class="card section-7">
+                <h2>応用事例ベスト5</h2>
+                
+                <table class="application-table">
+                    <tr>
+                        <th>業界</th>
+                        <th>事例</th>
+                        <th>効果</th>
+                    </tr>
+                    <tr>
+                        <td>物流</td>
+                        <td>パレット荷姿検査 (v5n)</td>
+                        <td>誤積載率 -70%</td>
+                    </tr>
+                    <tr>
+                        <td>リテール</td>
+                        <td>棚在庫＆価格タグ確認 (v8s)</td>
+                        <td>棚卸工数 -50%</td>
+                    </tr>
+                    <tr>
+                        <td>農業</td>
+                        <td>果実成熟度検出 (v7-tiny on Jetson)</td>
+                        <td>収穫タイミング最適化</td>
+                    </tr>
+                    <tr>
+                        <td>医療</td>
+                        <td>レントゲン異常陰影検出 (v10l)</td>
+                        <td>読影時間 -30%</td>
+                    </tr>
+                    <tr>
+                        <td>交通</td>
+                        <td>信号無視車両検出 (v9m, Multi-Cam)</td>
+                        <td>違反検出精度 +25%</td>
+                    </tr>
+                </table>
+            </div>
+            
+            <div class="card section-7">
+                <h2>まとめ</h2>
+                
+                <ol class="steps-list">
+                    <li>YOLOは毎年進化し、速度・精度・ハード適応性をアップデート</li>
+                    <li>Nano〜Largeまでサイズが細分化、Edgeからクラウドまでカバー</li>
+                    <li>最新YOLOv10はViT + DETRヘッドで高精度＆高速を両立</li>
+                    <li>選定ポイントは 推論速度・モデルサイズ・アノテ花費 のバランス</li>
+                    <li>最初はpip install ultralytics → yolo predictで触ってみよう！</li>
+                </ol>
+                
+                <div class="next-steps">
+                    <p><strong>次のステップ</strong></p>
+                    <p>自分のデータセットで精度が出ない場合は、①画像解像度アップ、②データ拡張、③CIoU ↔ DIoU Loss比較、④ハイパーパラメータ自動探索 を順番に試してみてください。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2025 YOLO進化の系譜 — "You Only Look Once"の10年史</p>
+        </footer>
+    </div>
+</body>
+</html>

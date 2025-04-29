@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI × エッジカメラ活用事例 10 選 — グラフィックレコーディング</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-heading: #1e40af;
+            --bg-light: #f8fafc;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Zen Kurenaido', sans-serif;
+            line-height: 1.4;
+            color: var(--text-main);
+            background-color: var(--bg-light);
+            padding: 2rem;
+            font-size: 14px;
+        }
+        
+        /* グラフィックレコーディング風スタイル */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 24px;
+            padding: 2rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at top right, rgba(242,230,61,0.1), transparent 70%);
+            z-index: 0;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        h1 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            transform: rotate(-1deg);
+            display: inline-block;
+        }
+        
+        .header-info {
+            font-size: 16px;
+            color: #475569;
+            text-align: right;
+        }
+        
+        .hand-drawn-border {
+            border: 3px solid;
+            border-color: var(--fashion-3);
+            border-radius: 12px;
+            position: relative;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            background-color: rgba(255,255,255,0.8);
+            box-shadow: 3px 3px 8px rgba(0,0,0,0.08);
+        }
+        
+        .hand-drawn-border::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            width: 40px;
+            height: 20px;
+            background-color: white;
+            border: 3px solid var(--fashion-3);
+            border-bottom: none;
+            border-radius: 20px 20px 0 0;
+            z-index: -1;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 30%;
+        }
+        
+        .section-title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            color: var(--text-heading);
+            margin-bottom: 1rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px dashed var(--fashion-4);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transform: rotate(0.5deg);
+        }
+        
+        .card:nth-child(even) {
+            transform: rotate(-0.5deg);
+        }
+        
+        .card-title {
+            font-family: 'Kaisei Decol', serif;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 0.5rem;
+            color: var(--fashion-1);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 50%, var(--fashion-2) 50%);
+            padding: 0 4px;
+            font-weight: bold;
+        }
+        
+        .note {
+            background-color: rgba(242,196,61,0.2);
+            border-left: 3px solid var(--fashion-3);
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .arrow {
+            position: absolute;
+            width: 50px;
+            height: 20px;
+            right: -30px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .arrow::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 2px;
+            background-color: var(--fashion-4);
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%);
+        }
+        
+        .arrow::after {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--fashion-4);
+            border-right: 2px solid var(--fashion-4);
+            transform: rotate(45deg);
+            right: 0;
+            top: 5px;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.2rem 0.5rem;
+            background-color: var(--fashion-4);
+            color: white;
+            border-radius: 8px;
+            font-size: 12px;
+            transform: rotate(-2deg);
+            margin-right: 0.5rem;
+        }
+        
+        .result {
+            background-color: rgba(242,92,5,0.1);
+            border-radius: 8px;
+            padding: 0.5rem;
+            margin-top: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .result-icon {
+            font-size: 18px;
+        }
+        
+        .result-text {
+            font-weight: bold;
+        }
+        
+        .kaizenup::before {
+            content: "▲";
+            color: #22c55e;
+            margin-right: 0.25rem;
+        }
+        
+        .kaizendown::before {
+            content: "▼";
+            color: #ef4444;
+            margin-right: 0.25rem;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+            font-size: 14px;
+        }
+        
+        .table th, .table td {
+            border: 1px dashed #cbd5e1;
+            padding: 0.5rem;
+            text-align: left;
+        }
+        
+        .table th {
+            background-color: rgba(89,60,71,0.1);
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: rgba(242,230,61,0.05);
+        }
+        
+        .key-points {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .key-point {
+            flex: 1;
+            min-width: 200px;
+            background-color: white;
+            border-radius: 12px;
+            padding: 1rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            border: 1px dashed var(--fashion-1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .key-point-number {
+            width: 30px;
+            height: 30px;
+            background-color: var(--fashion-1);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 0.5rem;
+            font-family: 'Kaisei Decol', serif;
+            font-weight: bold;
+        }
+        
+        .key-point-text {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .footer {
+            margin-top: 2rem;
+            text-align: center;
+            font-size: 12px;
+            color: #64748b;
+            border-top: 1px dashed #cbd5e1;
+            padding-top: 1rem;
+        }
+        
+        /* 手書き風要素 */
+        .hand-drawn-circle {
+            display: inline-block;
+            position: relative;
+        }
+        
+        .hand-drawn-circle::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            right: -5px;
+            bottom: -5px;
+            border: 2px solid var(--fashion-3);
+            border-radius: 50%;
+            transform: rotate(-5deg);
+            z-index: -1;
+        }
+        
+        .bubble {
+            position: relative;
+            background-color: white;
+            border: 2px solid var(--fashion-1);
+            border-radius: 20px;
+            padding: 0.75rem;
+            margin: 1rem 0;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .bubble::before {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 20px;
+            height: 10px;
+            background-color: white;
+            border-left: 2px solid var(--fashion-1);
+            border-bottom: 2px solid var(--fashion-1);
+            transform: rotate(-45deg);
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            
+            .column {
+                min-width: 100%;
+            }
+            
+            h1 {
+                font-size: 24px;
+            }
+            
+            .hand-drawn-border {
+                padding: 0.75rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div>
+                <h1>AI × エッジカメラ活用事例 10 選</h1>
+                <p>"クラウドに送らず、その場で判断"<br>遅延・プライバシー・通信コストをまとめて解決するエッジ AI カメラ</p>
+            </div>
+            <div class="header-info">
+                <p>2025年4月28日</p>
+                <p>📊 現場で完結するコンピュータビジョンの最前線</p>
+            </div>
+        </div>
+        
+        <div class="hand-drawn-border">
+            <div class="section-title">
+                <span>📋</span> 業界別エッジカメラ活用早見表
+            </div>
+            <div style="overflow-x: auto;">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>業界</th>
+                            <th>ユースケース</th>
+                            <th>主な成果</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><span class="badge">小売</span></td>
+                            <td>棚在庫リアルタイム検知</td>
+                            <td><span class="kaizendown">棚卸工数 60%</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><span class="badge">製造</span></td>
+                            <td>表面欠陥検査</td>
+                            <td><span class="kaizendown">不良流出 90%</span></td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><span class="badge">交通</span></td>
+                            <td>バスレーン違反検知</td>
+                            <td><span class="kaizendown">乗客遅延 15%</span></td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><span class="badge">農業</span></td>
+                            <td>ブドウうどん粉病検知</td>
+                            <td><span class="kaizendown">防除コスト 35%</span></td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><span class="badge">建設</span></td>
+                            <td>ヘルメット未着用警告</td>
+                            <td><span class="kaizendown">労災 25%</span></td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><span class="badge">医療</span></td>
+                            <td>患者転倒検知</td>
+                            <td><span class="kaizendown">発見遅延 80%</span></td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><span class="badge">エネルギー</span></td>
+                            <td>風車ブレード損傷点検</td>
+                            <td><span class="kaizendown">点検時間 50%</span></td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><span class="badge">保全</span></td>
+                            <td>密猟監視</td>
+                            <td><span class="kaizendown">インシデント 40%</span></td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><span class="badge">スマートシティ</span></td>
+                            <td>AIごみ箱分別監視</td>
+                            <td><span class="kaizenup">リサイクル率 20%</span></td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><span class="badge">物流</span></td>
+                            <td>パレット & 車両追跡</td>
+                            <td><span class="kaizendown">誤出荷 30%</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">
+                        <span>🛒</span> 小売：棚在庫リアルタイム検知
+                    </div>
+                    <div class="bubble">
+                        <strong>背景課題：</strong> 人手棚卸は <span class="highlight">1日3回×30分</span>。欠品放置で売上ロス。
+                    </div>
+                    <div>
+                        <div><strong>システム構成：</strong></div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <span class="highlight">PoE 4Kカメラ + Jetson Xavier NX</span></li>
+                            <li>🔹 YOLOv8 m（TensorRT量子化）</li>
+                            <li>🔹 640²リサイズ → BBox → SKUマッピング → 在庫閾値判定 → MQTT</li>
+                        </ul>
+                    </div>
+                    <div class="result">
+                        <span class="result-icon">📈</span>
+                        <div class="result-text">
+                            アラート遅延 <span class="highlight">9.7秒</span><br>
+                            棚卸工数 ▼60%、売上 ▲3%（12店舗 POC）
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🏭</span> 製造：表面欠陥検査
+                    </div>
+                    <div class="bubble">
+                        <strong>背景課題：</strong> 金属筐体の微小キズを肉眼検査 → 見落とし 0.5%。
+                    </div>
+                    <div>
+                        <div><strong>システム構成：</strong></div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 Sony 8 MPカメラ + Jetson Nano</li>
+                            <li>🔹 EfficientNet-B3 + FPN（IoU 0.92）</li>
+                            <li>🔹 スループット：ライン速度 <span class="highlight">90 fps / 11 ms</span></li>
+                        </ul>
+                    </div>
+                    <div class="result">
+                        <span class="result-icon">📈</span>
+                        <div class="result-text">
+                            不良流出 ▼90%<br>
+                            検査員 3→1名（6か月でROI回収）
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🚌</span> 交通：バスレーン違反検知
+                    </div>
+                    <div class="bubble">
+                        <strong>背景課題：</strong> フィラデルフィア中心部、バスレーン違反で <span class="highlight">1.7 M h/年</span> の遅延。
+                    </div>
+                    <div>
+                        <div><strong>システム構成：</strong></div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 NVIDIA Orin Nano＋前方カメラ（バス車載）</li>
+                            <li>🔹 YOLOv8 s + DeepSORT 追跡／ALPR</li>
+                            <li>🔹 違反 → ナンバーOCR → 自動罰金API</li>
+                        </ul>
+                    </div>
+                    <div class="result">
+                        <span class="result-icon">📈</span>
+                        <div class="result-text">
+                            遅延 ▼15%、誤検知率 1.3%<br>
+                            運行コスト 年1500万$ 削減見込み
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">
+                        <span>🍇</span> 農業：ブドウうどん粉病検知
+                    </div>
+                    <div class="bubble">
+                        <strong>背景課題：</strong> 肉眼巡回では発症を見逃し、収量ロス 20%。
+                    </div>
+                    <div>
+                        <div><strong>システム構成：</strong></div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 ドローン & 地上カメラ + Jetson AGX</li>
+                            <li>🔹 Swin Transformer + U-Net（mIoU 0.87）</li>
+                            <li>🔹 セグメ結果をGPSマップ化 → 散布ドローンへ</li>
+                        </ul>
+                    </div>
+                    <div class="result">
+                        <span class="result-icon">📈</span>
+                        <div class="result-text">
+                            防除コスト ▼35%、薬剤 ▼22%<br>
+                            収量 ▲12%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🏗️</span> 建設：ヘルメット・安全帯検知
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> 4K PTZ + Hailo-8 Edge TPU</li>
+                            <li>🔹 <strong>モデル：</strong> YOLOv7-tiny + Pose Estimation</li>
+                            <li>🔹 <strong>通知：</strong> 未着用 ⇒ スピーカー＆Slack</li>
+                        </ul>
+                    </div>
+                    <div class="result">
+                        <span class="result-icon">📈</span>
+                        <div class="result-text">
+                            労災 ▼25%<br>
+                            現場停止 -18%
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🏥</span> 医療：患者転倒検知
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> 深度カメラ + Google Coral TPU</li>
+                            <li>🔹 <strong>モデル：</strong> MoveNet キーポイント → SVM 異常姿勢判定</li>
+                            <li>🔹 <strong>結果：</strong> 通知遅延 2秒、骨折率 ▼35%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>💨</span> エネルギー：風車ブレード点検
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> ドローン + Jetson NX</li>
+                            <li>🔹 <strong>モデル：</strong> Mask R-CNN でクラック抽出 → Cloud 報告</li>
+                            <li>🔹 <strong>成果：</strong> 点検時間 3→1.5 h、報告作成 ▼50%</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <div class="card-title">
+                        <span>🐘</span> 保全：密猟監視
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> 赤外線カメラ + Jetson Nano（ソーラー駆動）</li>
+                            <li>🔹 <strong>モデル：</strong> YOLOv5s-IR → Poacher Probability > 0.8 で Starlink SMS</li>
+                            <li>🔹 <strong>成果：</strong> 密猟 ▼40%、象23頭を保護</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>🗑️</span> スマートシティ：AIごみ箱
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> ARM A73 NPU + EfficientNet-Lite</li>
+                            <li>🔹 <strong>成果：</strong> 分別精度 92→97%、リサイクル率 ▲20%</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span>📦</span> 物流：パレット & 車両追跡
+                    </div>
+                    <div>
+                        <ul style="list-style: none; padding-left: 1rem;">
+                            <li>🔹 <strong>ハード：</strong> 360°カメラ + Orin Nano</li>
+                            <li>🔹 <strong>モデル：</strong> YOLOv8 m + ByteTrack</li>
+                            <li>🔹 <strong>成果：</strong> 誤出荷 ▼30%、紛失パレット ▼70%（ROI 8か月）</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="note">
+                    <div class="section-title" style="margin-top: 0;">
+                        <span>💻</span> プラットフォーム比較
+                    </div>
+                    <div style="overflow-x: auto;">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Device</th>
+                                    <th>TOPS</th>
+                                    <th>推論速度†</th>
+                                    <th>価格</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Jetson Orin Nano</td>
+                                    <td>40</td>
+                                    <td>165 fps</td>
+                                    <td>\$499</td>
+                                </tr>
+                                <tr>
+                                    <td>Google Coral Dev Bd</td>
+                                    <td>4</td>
+                                    <td>89 fps</td>
+                                    <td>\$149</td>
+                                </tr>
+                                <tr>
+                                    <td>Hailo-8</td>
+                                    <td>26</td>
+                                    <td>150 fps</td>
+                                    <td>\$199</td>
+                                </tr>
+                                <tr>
+                                    <td>Luxonis OAK-D</td>
+                                    <td>–</td>
+                                    <td>80 fps</td>
+                                    <td>\$249</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p style="font-size: 12px; margin-top: 0.5rem;">† YOLOv8n @ 640² / batch 1</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hand-drawn-border" style="margin-top: 2rem;">
+            <div class="section-title">
+                <span>🎯</span> 成功の勘所
+            </div>
+            <div class="key-points">
+                <div class="key-point">
+                    <div class="key-point-number">1</div>
+                    <div class="key-point-text">モデル軽量化</div>
+                    <p>量子化 & プルーニングで 50% 以上の速度向上</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-number">2</div>
+                    <div class="key-point-text">現場ファースト設計</div>
+                    <p>ネットが切れても動くローカルキュー & バッファ</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-number">3</div>
+                    <div class="key-point-text">プライバシー保護</div>
+                    <p>データ最小化 & エッジ処理で規制対応</p>
+                </div>
+                <div class="key-point">
+                    <div class="key-point-number">4</div>
+                    <div class="key-point-text">可視化・運用</div>
+                    <p>KPI ダッシュボードで ROI を継続監視</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="hand-drawn-border" style="margin-top: 2rem;">
+            <div class="section-title">
+                <span>🚀</span> 次のステップ
+            </div>
+            <div class="bubble" style="width: 80%; margin: 0 auto;">
+                <ul style="list-style: none;">
+                    <li>📌 自社課題を <span class="highlight">分類／検出／追跡／セグメ</span> でマッピング</li>
+                    <li>📌 Jetson + YOLOv8n で小規模 PoC → 成果指標を測定 → 横展開</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>AI × エッジカメラ活用事例10選 | 2025年4月28日 | グラフィックレコーディング</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教師あり・教師なし・強化学習の違いを直感的に理解する</title>
+    <!-- Google Fonts -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --dark-text: #334155;
+            --light-text: #475569;
+            --section-title: #1e40af;
+            --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --card-radius: 12px;
+        }
+        
+        body {
+            font-family: 'Zen Kurenaido', 'Kaisei Decol', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f8f9fa;
+            color: var(--dark-text);
+            line-height: 1.4;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--fashion-1);
+            padding-bottom: 20px;
+        }
+        
+        .title-container {
+            flex: 1;
+        }
+        
+        h1 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0 0 10px 0;
+            background: linear-gradient(45deg, var(--fashion-1), var(--fashion-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            position: relative;
+            text-align: center;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='8' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 Q25,0 50,5 T100,5' stroke='%23F25C05' fill='none' stroke-width='2' /%3E%3C/svg%3E") repeat-x;
+            background-size: 100px 8px;
+        }
+        
+        .date {
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: var(--light-text);
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            text-align: center;
+        }
+        
+        .description {
+            width: 80%;
+            max-width: 600px;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: var(--light-text);
+            padding: 10px;
+            background-color: rgba(242, 230, 60, 0.15);
+            border-radius: 8px;
+            text-align: center;
+            margin: 0 auto;
+        }
+        
+        .goal {
+            background-color: rgba(242, 196, 60, 0.15);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            margin-bottom: 30px;
+            position: relative;
+            border: 2px dashed var(--fashion-3);
+        }
+        
+        .goal::before {
+            content: "📌";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 24px;
+            transform: rotate(-15deg);
+        }
+        
+        .goal-title {
+            font-family: 'Kaisei Decol', serif;
+            font-weight: bold;
+            font-size: 18px;
+            color: var(--fashion-5);
+            margin-top: 0;
+            margin-bottom: 10px;
+            border-bottom: 2px solid var(--fashion-3);
+            display: inline-block;
+            padding-right: 20px;
+        }
+        
+        .goal ul {
+            margin: 0;
+            padding-left: 30px;
+            list-style-type: none;
+        }
+        
+        .goal li {
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .goal li::before {
+            content: "✓";
+            position: absolute;
+            left: -25px;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .columns {
+            display: flex;
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        
+        .column {
+            flex: 1;
+        }
+        
+        .method-card {
+            background-color: white;
+            border-radius: var(--card-radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .method-card.supervised {
+            border-left: 5px solid var(--fashion-3);
+        }
+        
+        .method-card.unsupervised {
+            border-left: 5px solid var(--fashion-4);
+        }
+        
+        .method-card.reinforcement {
+            border-left: 5px solid var(--fashion-5);
+        }
+        
+        .card-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: var(--fashion-1);
+            color: white;
+            font-size: 12px;
+            padding: 4px 10px;
+            border-bottom-left-radius: 8px;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        h2 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: var(--section-title);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .method-icon {
+            font-size: 26px;
+            vertical-align: middle;
+        }
+        
+        h3 {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            color: var(--fashion-1);
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 5px;
+            display: inline-block;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 14px;
+        }
+        
+        table th {
+            text-align: left;
+            padding: 8px;
+            background-color: rgba(89, 60, 71, 0.1);
+            color: var(--fashion-1);
+            font-weight: normal;
+            border-bottom: 2px dashed var(--fashion-1);
+        }
+        
+        table td {
+            padding: 8px;
+            border-bottom: 1px dashed #e2e8f0;
+            vertical-align: top;
+        }
+        
+        .handwritten-arrow {
+            position: absolute;
+            font-family: 'Yomogi', cursive;
+            color: var(--fashion-4);
+            transform: rotate(-15deg);
+            font-size: 20px;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid;
+            border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='10' y='10' width='80' height='80' fill='none' stroke='%23593C47' stroke-width='2' stroke-dasharray='10 5' rx='15' ry='15' /%3E%3C/svg%3E") 25;
+            border-radius: 10px;
+            padding: 15px;
+            margin: 15px 0;
+            background-color: rgba(242, 230, 60, 0.05);
+        }
+        
+        .comparison {
+            overflow-x: auto;
+        }
+        
+        .stars {
+            color: var(--fashion-4);
+        }
+        
+        .action-list {
+            counter-reset: action-counter;
+            padding-left: 40px;
+            list-style-type: none;
+        }
+        
+        .action-list li {
+            position: relative;
+            margin-bottom: 15px;
+            counter-increment: action-counter;
+        }
+        
+        .action-list li::before {
+            content: counter(action-counter);
+            position: absolute;
+            left: -40px;
+            top: -2px;
+            width: 28px;
+            height: 28px;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-family: 'Kaisei Decol', serif;
+        }
+        
+        .links {
+            background-color: rgba(89, 60, 71, 0.05);
+            border-radius: var(--card-radius);
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .links h3 {
+            border-bottom: none;
+            margin-top: 0;
+        }
+        
+        .links ul {
+            margin: 0;
+            padding-left: 25px;
+            list-style-type: none;
+        }
+        
+        .links li {
+            position: relative;
+            margin-bottom: 8px;
+        }
+        
+        .links li::before {
+            content: "🔗";
+            position: absolute;
+            left: -25px;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--fashion-1);
+            font-size: 14px;
+            color: var(--light-text);
+            text-align: center;
+            font-family: 'Yomogi', cursive;
+            position: relative;
+            bottom: 0;
+            width: 100%;
+        }
+        
+        .glassmorphism {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Add decorative elements */
+        .decoration {
+            position: absolute;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .decoration-1 {
+            top: 50px;
+            right: 50px;
+            font-size: 120px;
+            color: var(--fashion-3);
+            transform: rotate(15deg);
+        }
+        
+        .decoration-2 {
+            bottom: 50px;
+            left: 50px;
+            font-size: 100px;
+            color: var(--fashion-4);
+            transform: rotate(-10deg);
+        }
+        
+        /* Responsive design */
+        @media (max-width: 900px) {
+            .columns {
+                flex-direction: column;
+            }
+            
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Decorative elements -->
+        <div class="decoration decoration-1">🧠</div>
+        <div class="decoration decoration-2">🤖</div>
+        
+        <!-- Header -->
+        <div class="header">
+            <h1>教師あり・教師なし・強化学習の違いを直感的に理解する</h1>
+            <p class="date" style="text-align: center; font-family: 'Yomogi', cursive; font-size: 14px; color: var(--light-text); margin-bottom: 15px;">📅 2025年4月28日</p>
+            <div class="description">
+                3大機械学習パラダイムを"旅・宝探し・ゲーム攻略"のメタファで整理し、ビジネス活用シーンまで一気に俯瞰します。
+            </div>
+        </div>
+        
+        <!-- Goal section -->
+        <div class="goal">
+            <h3 class="goal-title">この記事の狙い</h3>
+            <ul>
+                <li>機械学習の分類を <span class="highlight">3分で把握</span></li>
+                <li>それぞれの <span class="highlight">代表タスクとビジネス応用</span> をざっくり掴む</li>
+                <li>"どの課題にどの学習方法を当てるか"の判断軸を得る</li>
+            </ul>
+        </div>
+        
+        <!-- Main content columns -->
+        <div class="columns">
+            <!-- Column 1: Supervised Learning -->
+            <div class="column">
+                <div class="method-card supervised">
+                    <div class="card-badge">直感的メタファ</div>
+                    <h2><span class="method-icon">🤝</span> 教師あり学習</h2>
+                    <p style="font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--fashion-4); text-align: center; font-weight: bold; background-color: rgba(242, 196, 60, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 20px;">
+                        "目的地の決まった旅"
+                    </p>
+                    
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Map background -->
+                            <rect x="10" y="10" width="180" height="100" fill="#f8f9fa" stroke="#593C47" stroke-width="2" stroke-dasharray="5,3" rx="8" ry="8"/>
+                            
+                            <!-- Start point -->
+                            <circle cx="40" cy="60" r="15" fill="#F2E63D" stroke="#593C47" stroke-width="2"/>
+                            <text x="40" y="65" font-family="Yomogi, cursive" font-size="14" text-anchor="middle" fill="#593C47">スタート</text>
+                            
+                            <!-- Path -->
+                            <path d="M55 60 Q 100 30, 145 60" stroke="#F25C05" stroke-width="3" fill="none" stroke-dasharray="8,4"/>
+                            
+                            <!-- Destination -->
+                            <circle cx="160" cy="60" r="15" fill="#F24405" stroke="#593C47" stroke-width="2"/>
+                            <text x="160" y="65" font-family="Yomogi, cursive" font-size="12" text-anchor="middle" fill="white">ゴール</text>
+                            
+                            <!-- Guide -->
+                            <circle cx="100" cy="40" r="12" fill="white" stroke="#593C47" stroke-width="1"/>
+                            <text x="100" y="44" font-family="Yomogi, cursive" font-size="16" text-anchor="middle" fill="#593C47">👨‍🏫</text>
+                        </svg>
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <th>観点</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td><strong>目的</strong></td>
+                            <td>ラベル（正解）を入力✕出力のペアで学習し、新しいデータのラベルを予測</td>
+                        </tr>
+                        <tr>
+                            <td><strong>代表アルゴリズム</strong></td>
+                            <td>線形回帰／決定木／SVM／ニューラルネット など</td>
+                        </tr>
+                        <tr>
+                            <td><strong>典型タスク</strong></td>
+                            <td>
+                                - クリック率予測<br>
+                                - 画像分類（犬 or 猫）<br>
+                                - 信用スコアリング
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ビジネス例</strong></td>
+                            <td>EC でのレコメンド、融資リスク評価、医療画像診断</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="hand-drawn-box" style="border-color: var(--fashion-3);">
+                        <strong>ポイント：</strong> 正解データを大量に集める"教師データ作り"がコストの９割。
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 2: Unsupervised Learning -->
+            <div class="column">
+                <div class="method-card unsupervised">
+                    <div class="card-badge">直感的メタファ</div>
+                    <h2><span class="method-icon">🔍</span> 教師なし学習</h2>
+                    <p style="font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--fashion-4); text-align: center; font-weight: bold; background-color: rgba(242, 196, 60, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 20px;">
+                        "宝探しの冒険"
+                    </p>
+                    
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Map background -->
+                            <rect x="10" y="10" width="180" height="100" fill="#f8f9fa" stroke="#593C47" stroke-width="2" stroke-dasharray="5,3" rx="8" ry="8"/>
+                            
+                            <!-- Data points as gems -->
+                            <circle cx="50" cy="40" r="8" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <circle cx="70" cy="70" r="6" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <circle cx="90" cy="30" r="7" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <circle cx="120" cy="50" r="9" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <circle cx="140" cy="85" r="7" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <circle cx="160" cy="40" r="8" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            
+                            <!-- Clusters -->
+                            <circle cx="70" cy="55" r="25" fill="none" stroke="#F25C05" stroke-width="2" stroke-dasharray="5,3"/>
+                            <circle cx="140" cy="60" r="30" fill="none" stroke="#F25C05" stroke-width="2" stroke-dasharray="5,3"/>
+                            
+                            <!-- Explorer -->
+                            <circle cx="110" cy="70" r="12" fill="white" stroke="#593C47" stroke-width="1"/>
+                            <text x="110" y="74" font-family="Yomogi, cursive" font-size="16" text-anchor="middle" fill="#593C47">🔎</text>
+                        </svg>
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <th>観点</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td><strong>目的</strong></td>
+                            <td>ラベルなしデータから <span class="highlight">構造やパターン</span> を発見</td>
+                        </tr>
+                        <tr>
+                            <td><strong>代表アルゴリズム</strong></td>
+                            <td>K-means、階層クラスタリング、主成分分析、自己符号化器</td>
+                        </tr>
+                        <tr>
+                            <td><strong>典型タスク</strong></td>
+                            <td>
+                                - 顧客セグメンテーション<br>
+                                - 次元削減（特徴圧縮）<br>
+                                - 異常検知
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ビジネス例</strong></td>
+                            <td>マーケティングのターゲティング、工場センサーの故障兆候検知</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="hand-drawn-box" style="border-color: var(--fashion-4);">
+                        <strong>ポイント：</strong> "答えがない"課題で <span class="highlight">探索と洞察</span> を得るのに強い。
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 3: Reinforcement Learning -->
+            <div class="column">
+                <div class="method-card reinforcement">
+                    <div class="card-badge">直感的メタファ</div>
+                    <h2><span class="method-icon">🎮</span> 強化学習</h2>
+                    <p style="font-family: 'Kaisei Decol', serif; font-size: 18px; color: var(--fashion-4); text-align: center; font-weight: bold; background-color: rgba(242, 196, 60, 0.1); padding: 8px; border-radius: 8px; margin-bottom: 20px;">
+                        "ゲーム攻略"
+                    </p>
+                    
+                    <div style="text-align: center; margin-bottom: 15px;">
+                        <svg width="200" height="120" viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Game background -->
+                            <rect x="10" y="10" width="180" height="100" fill="#f8f9fa" stroke="#593C47" stroke-width="2" stroke-dasharray="5,3" rx="8" ry="8"/>
+                            
+                            <!-- Game path -->
+                            <path d="M40 60 L 70 60 L 70 30 L 100 30 L 100 60 L 130 60 L 130 90 L 160 90" stroke="#593C47" stroke-width="3" fill="none"/>
+                            
+                            <!-- Game obstacles -->
+                            <rect x="85" y="75" width="30" height="10" fill="#F24405" rx="3" ry="3"/>
+                            <rect x="115" y="45" width="10" height="30" fill="#F24405" rx="3" ry="3"/>
+                            <rect x="45" y="30" width="10" height="30" fill="#F24405" rx="3" ry="3"/>
+                            
+                            <!-- Rewards -->
+                            <circle cx="70" cy="30" r="8" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <text x="70" y="34" font-family="Yomogi, cursive" font-size="12" text-anchor="middle" fill="#593C47">+</text>
+                            
+                            <circle cx="130" cy="90" r="8" fill="#F2E63D" stroke="#593C47" stroke-width="1"/>
+                            <text x="130" y="94" font-family="Yomogi, cursive" font-size="12" text-anchor="middle" fill="#593C47">+</text>
+                            
+                            <!-- Agent -->
+                            <circle cx="40" cy="60" r="12" fill="white" stroke="#593C47" stroke-width="1"/>
+                            <text x="40" y="64" font-family="Yomogi, cursive" font-size="16" text-anchor="middle" fill="#593C47">🤖</text>
+                            
+                            <!-- Goal -->
+                            <circle cx="160" cy="90" r="10" fill="#F25C05" stroke="#593C47" stroke-width="1"/>
+                            <text x="160" y="95" font-family="Yomogi, cursive" font-size="16" text-anchor="middle" fill="white">🏆</text>
+                        </svg>
+                    </div>
+                    
+                    <table>
+                        <tr>
+                            <th>観点</th>
+                            <th>内容</th>
+                        </tr>
+                        <tr>
+                            <td><strong>目的</strong></td>
+                            <td>"環境"と対話しながら <span class="highlight">報酬を最大化</span> する行動戦略（ポリシー）を学習</td>
+                        </tr>
+                        <tr>
+                            <td><strong>代表アルゴリズム</strong></td>
+                            <td>Q-Learning、Deep Q-Network、Proximal Policy Optimization</td>
+                        </tr>
+                        <tr>
+                            <td><strong>典型タスク</strong></td>
+                            <td>
+                                - 自律走行・ロボット制御<br>
+                                - アルゴリズム取引<br>
+                                - レコメンデーションのオンライン最適化
+                            </td>
+                        </tr>
+                        <tr>
+                            <td><strong>ビジネス例</strong></td>
+                            <td>倉庫ロボットの経路最適化、ゲーム AI、広告入札戦略の自動調整</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="hand-drawn-box" style="border-color: var(--fashion-5);">
+                        <strong>ポイント：</strong> シミュレータやオンライン環境で"試行錯誤を繰り返せる"インフラが鍵。
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Comparison section -->
+        <div class="glassmorphism" style="padding: 20px; border-radius: var(--card-radius); margin-bottom: 30px;">
+            <h2><span class="method-icon">📊</span> 一枚で比較：あなたの課題に合うのはどれ？</h2>
+            
+            <div class="comparison">
+                <table>
+                    <tr>
+                        <th></th>
+                        <th>教師あり</th>
+                        <th>教師なし</th>
+                        <th>強化学習</th>
+                    </tr>
+                    <tr>
+                        <td><strong>インプット</strong></td>
+                        <td>ラベル付きデータ</td>
+                        <td>ラベルなしデータ</td>
+                        <td>状態＋報酬</td>
+                    </tr>
+                    <tr>
+                        <td><strong>ゴール</strong></td>
+                        <td>予測精度</td>
+                        <td>パターン発見</td>
+                        <td>報酬最大化</td>
+                    </tr>
+                    <tr>
+                        <td><strong>データ準備コスト</strong></td>
+                        <td><span class="stars">★★★</span></td>
+                        <td><span class="stars">★</span></td>
+                        <td><span class="stars">★★★★</span><br>（環境構築含む）</td>
+                    </tr>
+                    <tr>
+                        <td><strong>主な制約</strong></td>
+                        <td>ラベル作成コスト</td>
+                        <td>解釈の難易度</td>
+                        <td>学習に時間・計算資源</td>
+                    </tr>
+                    <tr>
+                        <td><strong>向いている課題</strong></td>
+                        <td>需要予測、画像診断</td>
+                        <td>セグメント抽出、異常検知</td>
+                        <td>ロボット制御、動的価格設定</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        <!-- Summary and Next Actions section -->
+        <div class="method-card" style="border-left: 5px solid var(--fashion-1);">
+            <h2><span class="method-icon">📝</span> まとめと次のアクション</h2>
+            
+            <ol class="action-list">
+                <li>
+                    <strong class="highlight">課題定義を先に</strong><br>
+                    "正解があるか／ないか／試行錯誤できるか"で学習パラダイムを選定。
+                </li>
+                <li>
+                    <strong class="highlight">データ or シミュレータを評価</strong><br>
+                    教師あり→ラベル化コスト、教師なし→データ質、強化→環境構築可否。
+                </li>
+                <li>
+                    <strong class="highlight">MVPを早く回す</strong><br>
+                    小規模データや既存 API でプロトタイプ→ROI を測定→スケール判断。
+                </li>
+            </ol>
+            
+            <!-- Links section -->
+            <div class="links">
+                <h3><span style="margin-right: 5px;">🔗</span> リンク集（深掘り用）</h3>
+                <ul>
+                    <li><strong>教師あり学習をゼロから実装</strong> — scikit-learn チュートリアル</li>
+                    <li><strong>Autoencoder で異常検知</strong> — TensorFlow Keras 公式ノートブック</li>
+                    <li><strong>OpenAI Gym 入門</strong> — 強化学習環境をPythonで触る</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- Footer -->
+        <div class="footer">
+            <p>✏️ グラフィックレコーディング風インフォグラフィック</p>
+        </div>
+        
+    </div>
+</body>
+</html>

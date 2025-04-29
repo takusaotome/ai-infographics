@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>1枚でわかる！ニューラルネットのしくみ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --bg-light: #f8f9fa;
+            --text-main: #334155;
+            --text-title: #1e293b;
+            --text-subtitle: #475569;
+            --text-section: #1e40af;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--bg-light);
+            color: var(--text-main);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 2px dashed var(--fashion-1);
+            padding-bottom: 15px;
+        }
+        
+        .title-area {
+            flex: 2;
+        }
+        
+        .meta-area {
+            flex: 1;
+            text-align: right;
+            font-family: 'Zen Kurenaido', sans-serif;
+            color: var(--text-subtitle);
+        }
+        
+        h1 {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            display: inline-block;
+            position: relative;
+        }
+        
+        h1::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: url("data:image/svg+xml,%3Csvg width='100' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0,3 C 20,0 30,6 50,3 C 70,0 80,6 100,3' stroke='%23F25C05' stroke-width='2' fill='none' /%3E%3C/svg%3E") repeat-x;
+            background-size: 100px 6px;
+        }
+        
+        .description {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--text-subtitle);
+            max-width: 90%;
+        }
+        
+        .main-content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            position: relative;
+        }
+        
+        .section::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 60px;
+            height: 16px;
+            background-color: var(--fashion-2);
+            border-radius: 4px;
+            z-index: -1;
+        }
+        
+        h2 {
+            font-family: 'Yomogi', cursive;
+            font-size: 18px;
+            color: var(--text-section);
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        h2::before {
+            content: attr(data-icon);
+            font-size: 22px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            border-left: 4px solid var(--fashion-3);
+        }
+        
+        .card-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--fashion-1);
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+        }
+        
+        .card-content {
+            font-size: 14px;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            padding: 15px;
+            position: relative;
+            margin: 25px 0;
+            background-color: white;
+        }
+        
+        .hand-drawn-box::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            z-index: -1;
+            transform: rotate(-0.5deg);
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        th {
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            text-align: left;
+            padding: 10px;
+            font-weight: bold;
+        }
+        
+        td {
+            padding: 10px;
+            border-bottom: 1px dashed #ddd;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(242, 197, 61, 0.1);
+        }
+        
+        .keyword {
+            font-weight: bold;
+            color: var(--fashion-5);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .keyword::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background-color: rgba(242, 196, 61, 0.4);
+            z-index: -1;
+        }
+        
+        .network-diagram {
+            margin: 30px auto;
+            text-align: center;
+            max-width: 100%;
+            position: relative;
+        }
+        
+        .network-diagram svg {
+            max-width: 100%;
+            height: auto;
+        }
+        
+        .qa-section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 30px;
+        }
+        
+        .question {
+            font-weight: bold;
+            color: var(--fashion-1);
+            margin-bottom: 5px;
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        .answer {
+            margin-bottom: 15px;
+            padding-left: 20px;
+            position: relative;
+        }
+        
+        .answer::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-subtitle);
+            border-top: 2px dashed var(--fashion-1);
+            padding-top: 15px;
+        }
+        
+        .step {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 15px;
+        }
+        
+        .step-number {
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-weight: bold;
+            font-family: 'Kaisei Decol', serif;
+            flex-shrink: 0;
+        }
+        
+        .step-content {
+            flex: 1;
+        }
+        
+        .step-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: var(--fashion-1);
+        }
+        
+        .step-description {
+            font-size: 14px;
+        }
+
+        .summary-points {
+            padding-left: 20px;
+        }
+        
+        .summary-point {
+            position: relative;
+            margin-bottom: 10px;
+            padding-left: 20px;
+        }
+        
+        .summary-point::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title-area">
+                <h1>1枚でわかる！ニューラルネットのしくみ</h1>
+                <p class="description">配管＋バルブのメタファで、ニューラルネットがデータをどう変換していくかを視覚化。初心者が『層』『重み』『活性化関数』を直感的に理解できる構成にしました。</p>
+            </div>
+            <div class="meta-area">
+                <p>作成日: 2025年4月28日</p>
+            </div>
+        </div>
+        
+        <div class="network-diagram">
+            <svg viewBox="0 0 800 400" xmlns="http://www.w3.org/2000/svg">
+                <!-- タイトル -->
+                <text x="120" y="40" font-family="Yomogi, cursive" font-size="24" fill="#593C47">入力層</text>
+                <text x="350" y="40" font-family="Yomogi, cursive" font-size="24" fill="#593C47">中間層</text>
+                <text x="600" y="40" font-family="Yomogi, cursive" font-size="24" fill="#593C47">出力層</text>
+                
+                <!-- 入力層 -->
+                <!-- 水栓1 -->
+                <path d="M80,120 Q75,120 75,115 L75,95 Q75,90 80,90 L90,90 Q95,90 95,95 L95,115 Q95,120 90,120 Z" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M85,90 L85,70 L75,70 L75,60 L95,60 L95,70 L85,70" fill="none" stroke="#593C47" stroke-width="2"/>
+                <circle cx="85" cy="60" r="8" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M95,120 L110,120" fill="none" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 水栓2 -->
+                <path d="M80,220 Q75,220 75,215 L75,195 Q75,190 80,190 L90,190 Q95,190 95,195 L95,215 Q95,220 90,220 Z" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M85,190 L85,170 L75,170 L75,160 L95,160 L95,170 L85,170" fill="none" stroke="#593C47" stroke-width="2"/>
+                <circle cx="85" cy="160" r="8" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M95,220 L110,220" fill="none" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 水栓3 -->
+                <path d="M80,320 Q75,320 75,315 L75,295 Q75,290 80,290 L90,290 Q95,290 95,295 L95,315 Q95,320 90,320 Z" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M85,290 L85,270 L75,270 L75,260 L95,260 L95,270 L85,270" fill="none" stroke="#593C47" stroke-width="2"/>
+                <circle cx="85" cy="260" r="8" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <path d="M95,320 L110,320" fill="none" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 水滴 -->
+                <path d="M75,145 Q78,150 75,155" fill="none" stroke="#a8c4de" stroke-width="2"/>
+                <path d="M75,245 Q78,250 75,255" fill="none" stroke="#a8c4de" stroke-width="2"/>
+                <path d="M75,345 Q78,350 75,355" fill="none" stroke="#a8c4de" stroke-width="2"/>
+                
+                <!-- 入力層ニューロン -->
+                <circle cx="150" cy="120" r="25" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <circle cx="150" cy="220" r="25" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                <circle cx="150" cy="320" r="25" fill="#d1e3f0" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 中間層ニューロン -->
+                <circle cx="300" cy="100" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                <circle cx="370" cy="100" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                <circle cx="300" cy="200" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                <circle cx="370" cy="200" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                <circle cx="300" cy="300" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                <circle cx="370" cy="300" r="25" fill="#f8d7c4" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 省略記号 -->
+                <circle cx="300" cy="250" r="3" fill="#593C47"/>
+                <circle cx="300" cy="260" r="3" fill="#593C47"/>
+                <circle cx="300" cy="270" r="3" fill="#593C47"/>
+                <circle cx="370" cy="250" r="3" fill="#593C47"/>
+                <circle cx="370" cy="260" r="3" fill="#593C47"/>
+                <circle cx="370" cy="270" r="3" fill="#593C47"/>
+                
+                <!-- 出力層ニューロン -->
+                <circle cx="550" cy="150" r="25" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                <circle cx="550" cy="275" r="25" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 蛇口1 -->
+                <path d="M575,150 Q580,150 580,145 L580,130 Q580,125 585,125 L615,125 Q620,125 620,130 L620,145 Q620,150 625,150" fill="none" stroke="#593C47" stroke-width="2"/>
+                <rect x="625" y="140" width="15" height="20" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                <circle cx="633" cy="140" r="8" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                <path d="M633,160 L633,170 L643,170 L643,180" fill="none" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 蛇口2 -->
+                <path d="M575,275 Q580,275 580,270 L580,255 Q580,250 585,250 L615,250 Q620,250 620,255 L620,270 Q620,275 625,275" fill="none" stroke="#593C47" stroke-width="2"/>
+                <rect x="625" y="265" width="15" height="20" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                <circle cx="633" cy="265" r="8" fill="#d7e8d5" stroke="#593C47" stroke-width="2"/>
+                <path d="M633,285 L633,295 L643,295 L643,305" fill="none" stroke="#593C47" stroke-width="2"/>
+                
+                <!-- 水滴（出力） -->
+                <path d="M643,190 Q648,195 643,200" fill="none" stroke="#a8c4de" stroke-width="2"/>
+                <path d="M643,315 Q648,320 643,325" fill="none" stroke="#a8c4de" stroke-width="2"/>
+                
+                <!-- 接続線 -->
+                <!-- 入力層から中間層へ -->
+                <path d="M175,110 L275,90" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,115 L345,90" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,125 L275,190" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,130 L345,190" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,135 L275,290" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,140 L345,290" fill="none" stroke="#333" stroke-width="1.5"/>
+                
+                <path d="M175,210 L275,100" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,215 L345,100" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,225 L275,200" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,230 L345,200" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,235 L275,300" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,240 L345,300" fill="none" stroke="#333" stroke-width="1.5"/>
+                
+                <path d="M175,310 L275,110" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,315 L345,110" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,325 L275,210" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,330 L345,210" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,335 L275,310" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M175,340 L345,310" fill="none" stroke="#333" stroke-width="1.5"/>
+                
+                <!-- 中間層内の接続 -->
+                <path d="M325,100 L345,100" fill="none" stroke="#333" stroke-width="2"/>
+                <path d="M325,200 L345,200" fill="none" stroke="#333" stroke-width="2"/>
+                <path d="M325,300 L345,300" fill="none" stroke="#333" stroke-width="2"/>
+                
+                <!-- 中間層から出力層へ -->
+                <path d="M395,90 L525,140" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M395,110 L525,160" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M395,190 L525,145" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M395,210 L525,155" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M395,290 L525,265" fill="none" stroke="#333" stroke-width="1.5"/>
+                <path d="M395,310 L525,285" fill="none" stroke="#333" stroke-width="1.5"/>
+                
+                <!-- バルブのシンボル（中間層ニューロン内） -->
+                <path d="M290,90 L310,110 M290,110 L310,90" stroke="#F25C05" stroke-width="2"/>
+                <path d="M360,90 L380,110 M360,110 L380,90" stroke="#F25C05" stroke-width="2"/>
+                <path d="M290,190 L310,210 M290,210 L310,190" stroke="#F25C05" stroke-width="2"/>
+                <path d="M360,190 L380,210 M360,210 L380,190" stroke="#F25C05" stroke-width="2"/>
+                <path d="M290,290 L310,310 M290,310 L310,290" stroke="#F25C05" stroke-width="2"/>
+                <path d="M360,290 L380,310 M360,310 L380,290" stroke="#F25C05" stroke-width="2"/>
+                
+                <!-- テキスト注釈 -->
+                <text x="150" y="70" font-family="Zen Kurenaido, sans-serif" font-size="12" fill="#593C47" text-anchor="middle">データ入力</text>
+                <text x="340" y="60" font-family="Zen Kurenaido, sans-serif" font-size="12" fill="#593C47" text-anchor="middle">重み×活性化関数</text>
+                <text x="550" y="100" font-family="Zen Kurenaido, sans-serif" font-size="12" fill="#593C47" text-anchor="middle">予測結果</text>
+            </svg>
+        </div>
+        
+        <div class="hand-drawn-box">
+            <h2 data-icon="👁️">図の見かた</h2>
+            <div class="step">
+                <div class="step-number">1</div>
+                <div class="step-content">
+                    <div class="step-title">入力層（左・水栓）</div>
+                    <div class="step-description">データが水のように流れ込むスタート地点</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">2</div>
+                <div class="step-content">
+                    <div class="step-title">中間層（中央・バルブ付き配管）</div>
+                    <div class="step-description">バルブをひねって水量＝信号を調整（＝重み×活性化関数）</div>
+                </div>
+            </div>
+            <div class="step">
+                <div class="step-number">3</div>
+                <div class="step-content">
+                    <div class="step-title">出力層（右・蛇口）</div>
+                    <div class="step-description">最終結果が流れ出る</div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="column">
+                <div class="section">
+                    <h2 data-icon="📝">キーワードをやさしく解説</h2>
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>用語</th>
+                                <th>イメージ</th>
+                                <th>やさしい説明</th>
+                            </tr>
+                            <tr>
+                                <td><span class="keyword">ニューロン</span></td>
+                                <td>パイプの節</td>
+                                <td>水（数値）が通る通路。数が多いほど複雑な変換が可能</td>
+                            </tr>
+                            <tr>
+                                <td><span class="keyword">重み</span></td>
+                                <td>バルブの開き具合</td>
+                                <td>水量を強めたり弱めたりして重要度を表すネジ</td>
+                            </tr>
+                            <tr>
+                                <td><span class="keyword">バイアス</span></td>
+                                <td>定量注水器</td>
+                                <td>全体の水位を底上げ／底下げする微調整ノブ</td>
+                            </tr>
+                            <tr>
+                                <td><span class="keyword">活性化関数</span></td>
+                                <td>フィルター</td>
+                                <td>一定以上の水しか通さない "ふるい" で非線形性を導入</td>
+                            </tr>
+                            <tr>
+                                <td><span class="keyword">学習</span></td>
+                                <td>バルブ調整の自動化</td>
+                                <td>目的（水量の目標）に近づくようにバルブを何度も回す作業</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section">
+                    <h2 data-icon="🔄">仕組みを 3 ステップで追ってみよう</h2>
+                    <div class="card">
+                        <div class="card-title">1️⃣ データ投入</div>
+                        <div class="card-content">
+                            <p>• 画像なら「ピクセルの明るさ」、テーブルなら「売価・気温」などを水として流し込む</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">2️⃣ 層を通過して変換</div>
+                        <div class="card-content">
+                            <p>• 各層で "水量" が掛け算＋ふるい によって最適化され、情報が抽象化</p>
+                            <p>• 序盤：エッジ検出など "ざっくり特徴" を抽出</p>
+                            <p>• 終盤：犬の耳／猫のヒゲなど "具体的特徴" に集約</p>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">3️⃣ 出力層で判定</div>
+                        <div class="card-content">
+                            <p>• もっとも水量が多い蛇口＝モデルが「そうだ！」と判断したクラス</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section">
+                    <h2 data-icon="❓">よくある疑問 Q&A</h2>
+                    <div class="question">Q1. 層は多いほどいいの？</div>
+                    <div class="answer">データが大量＆計算資源があれば精度向上しやすい。ただし過学習や推論遅延のリスクも。</div>
+                    
+                    <div class="question">Q2. 重みはどうやって決める？</div>
+                    <div class="answer">「逆伝播」という仕組みで、予測誤差が小さくなるようバルブを自動調整（勾配降下法）。</div>
+                    
+                    <div class="question">Q3. 活性化関数って何種類ある？</div>
+                    <div class="answer">ReLU, Sigmoid, Tanh など多数。最近は <span class="keyword">ReLU 系（LeakyReLU, GELU）</span> が主流。</div>
+                </div>
+                
+                <div class="section">
+                    <h2 data-icon="📋">まとめ</h2>
+                    <div class="summary-points">
+                        <div class="summary-point">ニューラルネットは <span class="keyword">入力 → 中間層 → 出力</span> のパイプラインでデータを段階的に変換</div>
+                        <div class="summary-point"><span class="keyword">重み＝重要度、活性化関数＝ふるい</span> と覚えると直感的</div>
+                        <div class="summary-point">学習は「目標に合わせてバルブを自動調整するプロセス」</div>
+                    </div>
+                    <p style="margin-top: 15px; font-style: italic; text-align: center; font-family: 'Zen Kurenaido', sans-serif;">この図1枚と用語セットを押さえれば、CNN や Transformer など派生モデルの理解もスムーズになります！</p>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 グラフィックレコーディング風インフォグラフィック | 制作：Claude 3.7 Sonnet</p>
+        </div>
+    </div>
+</body>
+</html>

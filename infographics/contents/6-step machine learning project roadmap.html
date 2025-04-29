@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>学習フロー丸わかり6ステップ — はじめてのMLプロジェクト道案内</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --neutral-dark: #334155;
+            --neutral-medium: #475569;
+            --neutral-light: #CBD5E1;
+            --background: #FFFDF7;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--background);
+            color: var(--neutral-dark);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* ヘッダースタイル */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            border-bottom: 3px solid var(--fashion-3);
+            padding-bottom: 20px;
+            position: relative;
+        }
+        
+        .title-area {
+            flex: 2;
+        }
+        
+        .meta-area {
+            flex: 1;
+            text-align: right;
+            font-family: 'Zen Kurenaido', sans-serif;
+            color: var(--neutral-medium);
+            font-size: 14px;
+        }
+        
+        h1 {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .subtitle {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--neutral-medium);
+            margin-bottom: 10px;
+        }
+        
+        /* メインコンテンツスタイル */
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .objective-box {
+            width: 100%;
+            background-color: rgba(242, 230, 61, 0.1);
+            border: 2px dashed var(--fashion-3);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .objective-box::before {
+            content: "📌";
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            font-size: 24px;
+            background-color: white;
+            padding: 0 10px;
+        }
+        
+        .objective-list {
+            list-style: none;
+            padding-left: 30px;
+        }
+        
+        .objective-list li {
+            position: relative;
+            margin-bottom: 8px;
+            padding-left: 10px;
+        }
+        
+        .objective-list li::before {
+            content: "✓";
+            position: absolute;
+            left: -20px;
+            color: var(--fashion-5);
+            font-weight: bold;
+        }
+        
+        .section {
+            width: calc(33.333% - 20px);
+            min-width: 300px;
+            flex-grow: 1;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        h2 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: #1e40af;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--fashion-4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 12px;
+            padding: 10px;
+            margin: 10px 0;
+            position: relative;
+            background-color: rgba(89, 60, 71, 0.03);
+        }
+        
+        .table-like {
+            width: 100%;
+            margin-top: 15px;
+            border-collapse: collapse;
+        }
+        
+        .table-like .row {
+            display: flex;
+            border-bottom: 1px dashed var(--neutral-light);
+            padding: 8px 0;
+        }
+        
+        .table-like .row:last-child {
+            border-bottom: none;
+        }
+        
+        .table-like .header-row {
+            font-weight: bold;
+            border-bottom: 2px solid var(--fashion-3);
+        }
+        
+        .table-like .cell {
+            flex: 1;
+            padding: 5px;
+        }
+        
+        .table-like .cell:first-child {
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+            display: inline;
+            padding: 0 2px;
+        }
+        
+        .example {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+            background-color: rgba(242, 196, 61, 0.1);
+            border-left: 4px solid var(--fashion-3);
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .example-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .checklist {
+            list-style: none;
+            margin: 15px 0;
+        }
+        
+        .checklist li {
+            margin-bottom: 8px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .checklist li::before {
+            content: "□";
+            color: var(--fashion-4);
+            font-size: 18px;
+        }
+        
+        .summary {
+            width: 100%;
+            background-color: rgba(89, 60, 71, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            margin-top: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .summary h3 {
+            font-family: 'Yomogi', cursive;
+            font-size: 20px;
+            color: var(--fashion-1);
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        
+        .summary-list {
+            list-style: none;
+            padding-left: 10px;
+        }
+        
+        .summary-list li {
+            margin-bottom: 10px;
+            position: relative;
+            padding-left: 25px;
+        }
+        
+        .summary-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .highlight-box {
+            background-color: white;
+            border: 2px solid var(--fashion-4);
+            border-radius: 12px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+        }
+        
+        .highlight-box::before {
+            content: "🔍 POINT";
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-family: 'Yomogi', cursive;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--neutral-medium);
+            padding-top: 20px;
+            border-top: 1px dashed var(--neutral-light);
+        }
+        
+        .hand-arrow {
+            position: absolute;
+            font-size: 24px;
+            color: var(--fashion-5);
+            transform: rotate(45deg);
+        }
+        
+        .flow-visual {
+            width: 100%;
+            margin: 30px 0;
+            background-color: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            border: 2px dashed var(--fashion-3);
+        }
+        
+        .step-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            font-family: 'Yomogi', cursive;
+            font-size: 18px;
+        }
+        
+        .step-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .step-number {
+            background-color: var(--fashion-1);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .step-arrow {
+            font-size: 24px;
+            color: var(--fashion-4);
+        }
+        
+        .data-split-bar {
+            width: 80%;
+            height: 50px;
+            border: 2px solid var(--fashion-3);
+            border-radius: 25px;
+            margin: 0 auto;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .data-split-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 20px;
+            align-items: center;
+        }
+        
+        .train-split {
+            background-color: var(--fashion-2);
+            height: 100%;
+            width: 70%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .val-split {
+            background-color: var(--fashion-3);
+            height: 100%;
+            width: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .test-split {
+            background-color: var(--fashion-4);
+            height: 100%;
+            width: 15%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 768px) {
+            .section {
+                width: 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+            }
+            
+            .meta-area {
+                text-align: left;
+                margin-top: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- ヘッダー -->
+        <div class="header">
+            <div class="title-area">
+                <h1>学習フロー丸わかり6ステップ</h1>
+                <p class="subtitle">— はじめてのMLプロジェクト道案内 —</p>
+            </div>
+            <div class="meta-area">
+                <p>📅 2025年4月28日</p>
+                <p>📊 機械学習ワークフローガイド</p>
+            </div>
+        </div>
+        
+        <!-- この記事の狙い -->
+        <div class="objective-box">
+            <h3 style="font-family: 'Zen Kurenaido', sans-serif; margin-bottom: 10px;">この記事の狙い</h3>
+            <ul class="objective-list">
+                <li>"機械学習って何から始めるの？"を <span class="highlight">3〜4分でイメージ</span></li>
+                <li><span class="highlight">6ステップ</span> と各工程の <span class="highlight">費用・期間・リスク</span> を把握</li>
+                <li>実務に落とし込む際の <span class="highlight">チェックリスト</span> を得る</li>
+            </ul>
+        </div>
+        
+        <!-- 全体像図解 -->
+        <div class="flow-visual">
+            <h2>🔄 全体像を1枚図解</h2>
+            
+            <div class="step-row">
+                <div class="step-item">
+                    <span class="step-number">1</span>
+                    <div>📥 データ収集</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-item">
+                    <span class="step-number">2</span>
+                    <div>🧹 前処理 & 特徴量<br>エンジニアリング</div>
+                </div>
+                <div class="step-arrow">→</div>
+                <div class="step-item">
+                    <span class="step-number">3</span>
+                    <div>✂️ データ分割</div>
+                </div>
+            </div>
+            
+            <div class="data-split-bar">
+                <div class="data-split-content">
+                    <div class="train-split">Train 70%</div>
+                    <div class="val-split">Val 15%</div>
+                    <div class="test-split">Test 15%</div>
+                </div>
+            </div>
+            
+            <div class="step-row" style="margin-top: 20px;">
+                <div class="step-item">
+                    <span class="step-number">6</span>
+                    <div>🚀 デプロイ &<br>モニタリング</div>
+                </div>
+                <div class="step-arrow">←</div>
+                <div class="step-item">
+                    <span class="step-number">5</span>
+                    <div>🧪 評価 &<br>チューニング</div>
+                </div>
+                <div class="step-arrow">←</div>
+                <div class="step-item">
+                    <span class="step-number">4</span>
+                    <div>🏗️ モデル学習</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="content">
+            <!-- データ収集 -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">1</span>📥 データ収集（Data Collection）</h2>
+                <div class="highlight-box">
+                    まずは <span class="highlight">良いデータ</span> を集めることが成功のカギ。"Garbage in, garbage out" を忘れずに。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">観点</div>
+                        <div class="cell">ポイント</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">目的</div>
+                        <div class="cell">モデル学習に十分な量と質のデータを確保</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">データの型</div>
+                        <div class="cell"><span class="highlight">構造化</span>（CSV, SQL）／<span class="highlight">半構造化</span>（JSON, XML）／<span class="highlight">非構造化</span>（画像, 音声, テキスト）</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">主な手段</div>
+                        <div class="cell">既存DB抽出、公開API、IoTセンサー、スクレイピング、クラウドストレージに集約</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">チェック項目</div>
+                        <div class="cell">同意取得（プライバシー）、ライセンス、タイムスタンプ欠損、重複行</div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-title">📋 例:</div>
+                    <ul style="list-style-type: none; padding-left: 15px;">
+                        <li>・ECサイト：商品ID・価格・購入日時をログから抽出</li>
+                        <li>・工場：センサー値を1分ごとにクラウド送信</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 前処理 & 特徴量エンジニアリング -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">2</span>🧹 前処理 & 特徴量エンジニアリング（Data Prep）</h2>
+                <div class="highlight-box">
+                    モデル構築の <span class="highlight">7〜8割の時間</span> はここに費やされます。地味ですが、最も精度に効く作業です。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">作業</div>
+                        <div class="cell">具体例</div>
+                        <div class="cell">目的</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">欠損値処理</div>
+                        <div class="cell">平均／中央値で補完、KNN補完、欠損フラグ追加</div>
+                        <div class="cell">情報損失を減らす</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">外れ値処理</div>
+                        <div class="cell">箱ひげ図で検出しウィンズライジング</div>
+                        <div class="cell">学習を安定させる</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">特徴量作成</div>
+                        <div class="cell">売上 → 売上の前年比・移動平均<br>テキスト → TF-IDF</div>
+                        <div class="cell">モデルに役立つ"説明変数"を作る</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">エンコーディング</div>
+                        <div class="cell">カテゴリをOne-Hot、日付を「月」「曜日」に分解</div>
+                        <div class="cell">数値で表現できるようにする</div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-title">🛠️ ツール例:</div>
+                    <p>Pandas / Polars、scikit-learn <code>ColumnTransformer</code>、Databricks AutoML</p>
+                </div>
+            </div>
+            
+            <!-- データ分割 -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">3</span>✂️ データ分割（Train / Validation / Test）</h2>
+                <div class="highlight-box">
+                    テストデータは調理後に味見する最後のひと口。<span class="highlight">学習には一切使わない</span> ことで真の汎化性能が測れます。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">推奨比率</div>
+                        <div class="cell">用途</div>
+                        <div class="cell">やること</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">70 %</div>
+                        <div class="cell"><span class="highlight">Train</span></div>
+                        <div class="cell">モデルを"記憶"させる</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">15 %</div>
+                        <div class="cell"><span class="highlight">Validation</span></div>
+                        <div class="cell">ハイパーパラメータ調整、過学習チェック</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">15 %</div>
+                        <div class="cell"><span class="highlight">Test</span></div>
+                        <div class="cell">最終評価レポート用、1回だけ使用</div>
+                    </div>
+                </div>
+                
+                <div class="example" style="background-color: rgba(242, 92, 5, 0.1); border-left-color: var(--fashion-4);">
+                    <div class="example-title">⚠️ 時系列データの注意:</div>
+                    <p>ランダム分割はNG。<span class="highlight">古い→新しい</span> 時間順で切るタイムスプリット方式を採用。</p>
+                </div>
+            </div>
+            
+            <!-- モデル学習 -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">4</span>🏗️ モデル学習（Training）</h2>
+                <div class="highlight-box">
+                    まずは <span class="highlight">シンプルなアルゴリズム</span> から。精度が足りなければ徐々に複雑にします。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">アプローチ</div>
+                        <div class="cell">使いどころ</div>
+                        <div class="cell">初期設定の手軽さ</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">決定木 / ランダムフォレスト</div>
+                        <div class="cell">変数が多く説明性を保ちたい</div>
+                        <div class="cell">◎</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">勾配ブースティング（XGBoost, LightGBM）</div>
+                        <div class="cell">Tabularデータで高精度を狙う</div>
+                        <div class="cell">○</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">ニューラルネット（DNN, CNN, RNN）</div>
+                        <div class="cell">画像・音声・自然言語の大量データ</div>
+                        <div class="cell">△</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">AutoML</div>
+                        <div class="cell">手動チューニングの時間がない</div>
+                        <div class="cell">◎</div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-title">🎛️ ハイパーパラメータ例:</div>
+                    <ul style="list-style-type: none; padding-left: 15px;">
+                        <li>・学習率 <code>0.01</code> → 速いが不安定。<code>0.001</code> で安定</li>
+                        <li>・決定木の深さ <code>max_depth</code> → 深過ぎると過学習</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- 評価 & チューニング -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">5</span>🧪 評価 & チューニング（Evaluation）</h2>
+                <div class="highlight-box">
+                    評価指標は <span class="highlight">ビジネスゴール</span> に合わせて選択。クリック率ならAUC、在庫予測ならRMSEなど。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">指標</div>
+                        <div class="cell">適用例</div>
+                        <div class="cell">読み方</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">Accuracy</div>
+                        <div class="cell">スパム or 非スパム分類</div>
+                        <div class="cell">正答率</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">F1-score</div>
+                        <div class="cell">医療診断（陽性少）</div>
+                        <div class="cell">適合率と再現率の調和平均</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">RMSE</div>
+                        <div class="cell">売上予測、気温予測</div>
+                        <div class="cell">予測誤差の平均的な大きさ</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">AUC</div>
+                        <div class="cell">クレジット不正検知</div>
+                        <div class="cell">1.0 完璧、0.5 ランダム</div>
+                    </div>
+                </div>
+                
+                <h3 style="font-family: 'Zen Kurenaido', sans-serif; font-size: 16px; color: var(--fashion-5); margin-top: 20px; margin-bottom: 10px;">チューニングの流れ</h3>
+                <ol style="padding-left: 25px;">
+                    <li><span class="highlight">Baseline</span>（デフォルト設定で精度を測る）</li>
+                    <li><span class="highlight">パラメータ探索</span>（Grid / Random / Bayesian）</li>
+                    <li><span class="highlight">交差検証</span>（k-fold CV）で過学習チェック</li>
+                    <li><span class="highlight">最終モデルをTestデータで一度だけ計測</span></li>
+                </ol>
+            </div>
+            
+            <!-- デプロイ & モニタリング -->
+            <div class="section">
+                <h2><span class="step-number" style="width: 22px; height: 22px; font-size: 14px;">6</span>🚀 デプロイ & モニタリング（Deployment）</h2>
+                <div class="highlight-box">
+                    モデルは作って終わりではなく <span class="highlight">"育て続ける"</span> もの。本番に出した瞬間から管理が始まります。
+                </div>
+                
+                <div class="table-like">
+                    <div class="row header-row">
+                        <div class="cell">項目</div>
+                        <div class="cell">内容</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">デプロイ方法</div>
+                        <div class="cell">REST API（Flask/FastAPI）, サーバーレス（AWS Lambda）, バッチ, モバイル組込み</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">バージョン管理</div>
+                        <div class="cell">MLflow Model Registry, DVC, Git LFS</div>
+                    </div>
+                    <div class="row">
+                        <div class="cell">監視指標</div>
+                        <div class="cell">入力データと学習時分布の差（データドリフト）<br>精度の低下（概念ドリフト）<br>レイテンシ／コスト</div>
+                    </div>
+                </div>
+                
+                <div class="example">
+                    <div class="example-title">🔄 ローリングアップデート例:</div>
+                    <ol style="padding-left: 25px;">
+                        <li><span class="highlight">Shadow Test</span> 新旧モデルを並行稼働し応答を比較</li>
+                        <li>KPIが上回れば <span class="highlight">Gradual Rollout</span>（10%→100%へ段階移行）</li>
+                        <li>監視で異常検知→自動リバート</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+        
+        <!-- まとめ -->
+        <div class="summary">
+            <h3>まとめ — 6ステップをスムーズに回すコツ</h3>
+            <ol class="summary-list">
+                <li><span class="highlight">データ探索に7割の時間を割く</span>
+                    <div style="margin-left: 20px; font-size: 14px;">- 低品質データは後工程で10倍のコストになる</div>
+                </li>
+                <li><span class="highlight">小さく回す→学習→修正</span>
+                    <div style="margin-left: 20px; font-size: 14px;">- 1,000行のサンプルでPipelineを組み、全量投入は後</div>
+                </li>
+                <li><span class="highlight">MLOpsを最初から意識</span>
+                    <div style="margin-left: 20px; font-size: 14px;">- デプロイ方法・監視指標を企画段階で定義</div>
+                </li>
+            </ol>
+            
+            <div class="hand-drawn-box" style="margin-top: 20px;">
+                <h3 style="font-family: 'Zen Kurenaido', sans-serif; font-size: 16px; color: var(--fashion-1); margin-bottom: 10px;">チェックリスト（コピーして使える）</h3>
+                <ul class="checklist">
+                    <li>目的とKPIが明文化されている</li>
+                    <li>データソースが確保でき、利用許諾も確認済み</li>
+                    <li>前処理フローがスクリプト化され再現可能</li>
+                    <li>テストデータは完全未使用で保持</li>
+                    <li>デプロイ後の監視ダッシュボードが設置済み</li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- フッター -->
+        <div class="footer">
+            <p>© 2025 機械学習ワークフローガイド | 学習フロー丸わかり6ステップ</p>
+        </div>
+    </div>
+</body>
+</html>
