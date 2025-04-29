@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGの基本構造と応用アイデア - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGの基本構造と応用アイデア - グラフィックレコーディング</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --bg-color: #fcfaf7;
+            --text-color: #334155;
+            --title-color: #1e293b;
+            --heading-color: #1e40af;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 30px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            position: relative;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 30' preserveAspectRatio='none'%3E%3Cpath d='M0,0 Q300,30 600,15 T1200,0 V30 H0 Z' fill='white'/%3E%3C/svg%3E");
+            background-size: 100% 100%;
+        }
+        
+        .title-block {
+            flex: 1;
+        }
+        
+        .title {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 3px rgba(0,0,0,0.2);
+            letter-spacing: 1px;
+            background: linear-gradient(45deg, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            max-width: 70%;
+        }
+        
+        .date {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+            text-align: right;
+            color: rgba(255,255,255,0.8);
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            padding: 30px 20px;
+            gap: 20px;
+        }
+        
+        .column {
+            flex: 1 1 30%;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: relative;
+            border: 2px dashed var(--fashion-1);
+            border-style: dashed solid;
+        }
+        
+        .glass-card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--heading-color);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px dotted var(--fashion-3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-title::before {
+            content: attr(data-icon);
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            line-height: 30px;
+            text-align: center;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            border-radius: 50%;
+            margin-right: 10px;
+        }
+        
+        p {
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 10px;
+            padding: 15px;
+            margin: 10px 0;
+            position: relative;
+            background-color: rgba(242, 230, 61, 0.1);
+        }
+        
+        .hand-drawn-box::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: 20px;
+            width: 40px;
+            height: 10px;
+            background-color: white;
+        }
+        
+        .arrow {
+            display: block;
+            margin: 15px auto;
+            width: 40px;
+            height: 40px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23F25C05' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 5v14M5 12l7 7 7-7'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .highlight {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+        
+        .highlight::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            background-color: var(--fashion-2);
+            z-index: -1;
+            opacity: 0.6;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 2px 8px;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            border-radius: 12px;
+            font-size: 12px;
+            margin: 2px;
+            font-weight: bold;
+        }
+        
+        .keyword {
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .bullet-list {
+            list-style: none;
+            padding-left: 10px;
+            margin: 10px 0;
+        }
+        
+        .bullet-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+            line-height: 1.4;
+        }
+        
+        .bullet-list li::before {
+            content: "✏️";
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 13px;
+        }
+        
+        .table th {
+            background-color: var(--fashion-1);
+            color: white;
+            text-align: left;
+            padding: 8px;
+        }
+        
+        .table td {
+            border-bottom: 1px dashed var(--fashion-3);
+            padding: 8px;
+        }
+        
+        .table tr:nth-child(even) {
+            background-color: rgba(242, 230, 61, 0.1);
+        }
+        
+        .code-block {
+            background-color: #f8f8f8;
+            border-left: 4px solid var(--fashion-4);
+            padding: 10px;
+            font-family: monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            margin: 10px 0;
+            border-radius: 4px;
+        }
+        
+        .handwriting {
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .diagram {
+            border: 2px dashed var(--fashion-1);
+            padding: 15px;
+            margin: 15px 0;
+            background-color: white;
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .diagram-title {
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--fashion-1);
+        }
+        
+        .rag-layers {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        
+        .rag-layer {
+            border: 2px solid var(--fashion-1);
+            padding: 10px;
+            border-radius: 8px;
+            background-color: white;
+            text-align: center;
+            font-weight: bold;
+            position: relative;
+        }
+        
+        .rag-process {
+            text-align: right;
+            font-size: 12px;
+            color: var(--fashion-5);
+            font-style: italic;
+            margin: 0;
+            position: absolute;
+            right: 10px;
+            bottom: -20px;
+            background-color: white;
+            padding: 0 5px;
+            z-index: 2;
+        }
+        
+        .footer {
+            background-color: var(--fashion-1);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            font-size: 12px;
+            margin-top: 30px;
+        }
+        
+        .summary-box {
+            background-color: rgba(242, 230, 61, 0.2);
+            border-left: 4px solid var(--fashion-2);
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
+        .number-circle {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            background-color: var(--fashion-4);
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+        
+        .hand-arrow {
+            display: block;
+            width: 30px;
+            height: 20px;
+            margin: 10px auto;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 50' fill='none' stroke='%23F25C05' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M10,25 C30,5 70,45 90,25'/%3E%3Cpath d='M80,15 L90,25 L80,35'/%3E%3C/svg%3E");
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: auto;
+            gap: 15px;
+            margin: 15px 0;
+            border: 2px dashed var(--fashion-1);
+            padding: 20px;
+            border-radius: 15px;
+        }
+        
+        .use-case-item {
+            border: 2px solid var(--fashion-3);
+            border-radius: 12px;
+            padding: 15px;
+            background-color: white;
+            text-align: center;
+        }
+        
+        .use-case-title {
+            font-size: 18px;
+            color: var(--fashion-5);
+            text-align: center;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        
+        .use-case-desc {
+            font-size: 14px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .use-case-effect {
+            color: var(--fashion-4);
+            font-weight: bold;
+            text-align: center;
+            font-size: 14px;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .column {
+                flex: 1 1 100%;
+            }
+            
+            .use-case-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title-block">
+                <h1 class="title">RAGの基本構造と応用アイデア</h1>
+                <p class="subtitle">検索システムと生成系LLMを結合し、根拠付きの回答を実現するアーキテクチャ</p>
+            </div>
+            <div class="date">2025年4月28日</div>
+        </div>
+        
+        <div class="content">
+            <!-- 左カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="❓">なぜRAGが必要か</h2>
+                    <p>LLM単体の<span class="highlight">3つの弱点</span>を補うアーキテクチャ</p>
+                    
+                    <div class="hand-drawn-box">
+                        <p><span class="keyword">📚 知識が学習時点で止まる</span></p>
+                        <p>例: 「2025年EU AI Actの最終条文は？」</p>
+                        <p>→ <span class="tag">RAG対策</span> 検索フェーズで最新版の条文PDFを取得・要約</p>
+                    </div>
+                    
+                    <div class="hand-drawn-box">
+                        <p><span class="keyword">💭 ハルシネーション</span></p>
+                        <p>例: 架空の論文を引用</p>
+                        <p>→ <span class="tag">RAG対策</span> 検索結果を引用付きで提示→出典がなければ生成を抑制</p>
+                    </div>
+                    
+                    <div class="hand-drawn-box">
+                        <p><span class="keyword">📄 長文コンテキストに弱い</span></p>
+                        <p>例: 200ページのマニュアル要約</p>
+                        <p>→ <span class="tag">RAG対策</span> 必要箇所だけベクトル検索で抽出し、短いプロンプトに注入</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="🔍">RAG 5レイヤー構成</h2>
+                    
+                    <div class="diagram">
+                        <div class="diagram-title">俯瞰図</div>
+                        <div class="rag-layers">
+                            <div class="rag-layer" style="background-color: rgba(89, 60, 71, 0.1);">
+                                1. コーパス（生テキスト / PDF / DB）
+                            </div>
+                            <span class="rag-process">(a) Chunk & Embed</span>
+                            <i class="arrow"></i>
+                            
+                            <div class="rag-layer" style="background-color: rgba(242, 230, 61, 0.1);">
+                                2. ベクトルストア（pgvector / Pinecone …）
+                            </div>
+                            <span class="rag-process">(b) Similarity / Hybrid Search</span>
+                            <i class="arrow"></i>
+                            
+                            <div class="rag-layer" style="background-color: rgba(242, 196, 60, 0.1);">
+                                3. リトリーバ (Top-k, Filter, Rerank)
+                            </div>
+                            <span class="rag-process">(c) Prompt Assembly</span>
+                            <i class="arrow"></i>
+                            
+                            <div class="rag-layer" style="background-color: rgba(242, 91, 4, 0.1);">
+                                4. LLM (Generator)
+                            </div>
+                            <span class="rag-process">(d) Post-process / Cite</span>
+                            <i class="arrow"></i>
+                            
+                            <div class="rag-layer" style="background-color: rgba(242, 68, 4, 0.1);">
+                                5. Application UI / API
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="handwriting" style="margin-top: 30px;">
+                        <p>✨ <span class="highlight">情報の流れ</span> ✨</p>
+                        <ul class="bullet-list">
+                            <li>文書を小さく分割→埋め込みベクトル化</li>
+                            <li>クエリもベクトル化し、類似度orハイブリッドで検索</li>
+                            <li>上位文書をテンプレに挿入（メタデータも付加）</li>
+                            <li>生成結果を検証し、引用リンクや要約を返却</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="📊">RAGの性能評価</h2>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>指標</th>
+                            <th>どこを見る？</th>
+                            <th>計算方法</th>
+                        </tr>
+                        <tr>
+                            <td><b>Recall@k</b></td>
+                            <td>検索</td>
+                            <td>正解文書がTop-kに含まれる率</td>
+                        </tr>
+                        <tr>
+                            <td><b>Relevance</b></td>
+                            <td>生成</td>
+                            <td>参考回答との類似度</td>
+                        </tr>
+                        <tr>
+                            <td><b>Faithfulness</b></td>
+                            <td>生成</td>
+                            <td>生成文の全根拠がソースに存在するか</td>
+                        </tr>
+                        <tr>
+                            <td><b>Latency/Cost</b></td>
+                            <td>全体</td>
+                            <td>ms・$ per 1k req</td>
+                        </tr>
+                    </table>
+                    
+                    <p class="handwriting" style="font-size: 16px; margin-top: 15px;">
+                        💡 テストセット作り：社員FAQ＋正答、APIドキュメントQ&Aなど
+                        <span class="highlight">"質問↔根拠"ペアを100件程度</span>ラベリングすると
+                        実務評価しやすい！
+                    </p>
+                </div>
+            </div>
+            
+            <!-- 中央カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="🔧">コンポーネント詳細(1)</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 16px; color: var(--fashion-5);">2.1 コーパス準備 📚</h3>
+                        <table class="table">
+                            <tr>
+                                <th>項目</th>
+                                <th>ベストプラクティス</th>
+                            </tr>
+                            <tr>
+                                <td><b>チャンクサイズ</b></td>
+                                <td>300–800 tokens（文脈保持と検索ヒット率の両立）</td>
+                            </tr>
+                            <tr>
+                                <td><b>オーバーラップ</b></td>
+                                <td>10–20 % → 文の切れ目をまたぐ情報欠落を防止</td>
+                            </tr>
+                            <tr>
+                                <td><b>メタデータ</b></td>
+                                <td>タイトル・日付・アクセス制御タグをJSONで付与</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 16px; color: var(--fashion-5);">2.2 ベクトルストア 🗄️</h3>
+                        <p><span class="highlight">選定軸</span>: スケール（10M→分散必須）、フィルタ検索、コスト</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 10px;">
+                            <div class="tag" style="background-color: rgba(242, 230, 61, 0.7);">Pinecone: 高速マルチテナント</div>
+                            <div class="tag" style="background-color: rgba(242, 196, 60, 0.7);">pgvector: 手軽にPostgres拡張</div>
+                            <div class="tag" style="background-color: rgba(242, 91, 4, 0.7);">Weaviate: GraphQL API</div>
+                        </div>
+                    </div>
+                    
+                    <div>
+                        <h3 style="font-size: 16px; color: var(--fashion-5);">2.3 リトリーバ＆リランカー 🎯</h3>
+                        <table class="table">
+                            <tr>
+                                <th>層</th>
+                                <th>役割</th>
+                                <th>代表実装</th>
+                            </tr>
+                            <tr>
+                                <td><b>1st (Recall)</b></td>
+                                <td>Top-k 類似度検索（高速）</td>
+                                <td><code>vector_db.similarity_search()</code></td>
+                            </tr>
+                            <tr>
+                                <td><b>2nd (Filter)</b></td>
+                                <td>アクセス権・言語などで絞込</td>
+                                <td>メタデータ条件</td>
+                            </tr>
+                            <tr>
+                                <td><b>3rd (Rerank)</b></td>
+                                <td>クロスエンコーダで関連度を再計算</td>
+                                <td>Cohere Rerank, ColBERT</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="💻">コンポーネント詳細(2)</h2>
+                    
+                    <div style="margin-bottom: 20px;">
+                        <h3 style="font-size: 16px; color: var(--fashion-5);">2.4 LLMプロンプト設計 ✏️</h3>
+                        <div class="code-block">You are a helpful agent.  
+Answer with **reference tags** like [doc1] …  
+&lt;references&gt;  ← Top-k ドキュメントをここに追加</div>
+                        
+                        <ul class="bullet-list">
+                            <li>インストラクション → 役割 & 出力形式</li>
+                            <li>コンテキスト → 検索結果 (400–2,000 tokens)</li>
+                            <li>クエリ再掲 → 「あなたは何を答えるか」の明示</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h3 style="font-size: 16px; color: var(--fashion-5);">2.5 ポストプロセス 🔄</h3>
+                        <ul class="bullet-list">
+                            <li>引用タグをURLに置換</li>
+                            <li>検索ヒットなし → 「情報なし」と明示しハルシネを抑止</li>
+                            <li>キャッシュキー：hash(query + retrieved_ids) でコスト削減</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="⚠️">よくある落とし穴と対策</h2>
+                    
+                    <table class="table">
+                        <tr>
+                            <th>症状</th>
+                            <th>原因</th>
+                            <th>処方箋</th>
+                        </tr>
+                        <tr>
+                            <td>関係ない文書が混じる</td>
+                            <td>チャンクが大き過ぎ／類似度のみ検索</td>
+                            <td>BM25+ベクトル or Rerank導入</td>
+                        </tr>
+                        <tr>
+                            <td>ハルシネーション復活</td>
+                            <td>コンテキスト長オーバーで切り捨て</td>
+                            <td>Top-kを絞りつつ要約を前段に挿入</td>
+                        </tr>
+                        <tr>
+                            <td>計算コスト増大</td>
+                            <td>LLMへ長文投入</td>
+                            <td>Map-Reduce Summarizationで一次要約→短縮</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="💼">応用ユースケース6選</h2>
+                    
+                    <div class="use-case-grid">
+                        <div class="use-case-item">
+                            <div class="use-case-title">法務レビュー</div>
+                            <div class="use-case-desc">契約書＋判例ベースで条項チェック</div>
+                            <div class="use-case-effect">リスク抜け漏れを定量可視化</div>
+                        </div>
+                        
+                        <div class="use-case-item">
+                            <div class="use-case-title">カスタマーサポート</div>
+                            <div class="use-case-desc">過去チケットを自動引用し回答ドラフト</div>
+                            <div class="use-case-effect">平均応答時間 ▲60%</div>
+                        </div>
+                        
+                        <div class="use-case-item">
+                            <div class="use-case-title">IoTトラブルシュート</div>
+                            <div class="use-case-desc">デバイスログ→既知KBを検索→修復手順生成</div>
+                            <div class="use-case-effect">現場復旧時間 ▲50%</div>
+                        </div>
+                        
+                        <div class="use-case-item">
+                            <div class="use-case-title">コードアシスト</div>
+                            <div class="use-case-desc">リポジトリ全体から類似実装を再利用</div>
+                            <div class="use-case-effect">再発明防止・品質均一化</div>
+                        </div>
+                        
+                        <div class="use-case-item">
+                            <div class="use-case-title">社内ナレッジ検索</div>
+                            <div class="use-case-desc">Confluence, SharePointを統合しQ&A出力</div>
+                            <div class="use-case-effect">問合せ工数 ▲70%</div>
+                        </div>
+                        
+                        <div class="use-case-item">
+                            <div class="use-case-title">金融リサーチ</div>
+                            <div class="use-case-desc">10-K, カンファレンスコールから企業概要を要約</div>
+                            <div class="use-case-effect">アナリスト工数 ▲40%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="handwriting" style="text-align: center; margin-top: 20px; font-size: 16px;">
+                        <p>💡 業界ごとの<span class="highlight">具体的な効果</span>が見えるのがRAGの強み！</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="🔄">ミニ実装（LangChain + pgvector）</h2>
+                    
+                    <div class="code-block">from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.pgvector import PGVector
+from langchain.retrievers import ContextualCompressionRetriever
+from langchain.chat_models import ChatOpenAI
+from langchain.chains import RetrievalQA
+
+# ① ベクトルストア接続
+db = PGVector(connection_string="postgresql://user:pwd@localhost/mydb",
+              collection_name="docs",
+              embedding_function=OpenAIEmbeddings())
+
+# ② Retriever + Rerank
+retriever = ContextualCompressionRetriever.from_llm(
+    base_retriever=db.as_retriever(search_kwargs={"k":20}),
+    llm=ChatOpenAI(model="gpt-4o-mini")
+)
+
+# ③ RAGチェーン
+rag = RetrievalQA.from_chain_type(
+    llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
+    chain_type="stuff", retriever=retriever)
+
+answer = rag({"query": "EU AI Actの施行スケジュールを教えて"})</div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="📝">まとめ & 次のステップ</h2>
+                    
+                    <div class="summary-box">
+                        <p><span class="number-circle">1</span> <span class="highlight">RAG = 検索 × LLM</span>。設計は「どの文書を、どれだけ、どう挿入するか」が核心</p>
+                        <p><span class="number-circle">2</span> <span class="highlight">3層検索（Recall→Filter→Rerank）</span> で精度と速度を両立</p>
+                        <p><span class="number-circle">3</span> <span class="highlight">評価指標</span>を整備し、P0:ハルシネ率、P1:応答時間で運用モニタ</p>
+                        <p><span class="number-circle">4</span> 応用余地は 社内検索・文書要約・分析自動化 など無限大</p>
+                        <p><span class="number-circle">5</span> まずは小規模 Corpus＋pgvector＋LangChain で PoC → KPI 計測 → スケール検討</p>
+                    </div>
+                    
+                    <div class="handwriting" style="text-align: center; margin-top: 20px; font-size: 18px;">
+                        <p>✨ RAGでLLMアプリの信頼性と有用性を高めよう！ ✨</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer-text">
+            <p>元データ: Retrieval-Augmented Generation (RAG) の基本構造と応用アイデア (2025-04-28)</p>
+            <p>グラフィックレコーディング: Claude 3.7 Sonnet (2025-04-29)</p>
+        </div>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 

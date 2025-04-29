@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>単語を"ベクトル"にするとは？<br>— ゼロからわかる Word Embedding - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#F2C53D">
+  <title>単語を"ベクトル"にするとは？— ゼロからわかる Word Embedding</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    /* フォント最適化のためのプリロード */
+    @font-face {
+      font-family: 'Yomogi';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/yomogi/v8/VEMwRoJ0KXDukJkOxCd7NQ.woff2) format('woff2');
+    }
+    @font-face {
+      font-family: 'Zen Kurenaido';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/zenkurenaido/v10/K2F4faMnyT7tWzEaXaE6_UBMwPYR.woff2) format('woff2');
+    }
+    @font-face {
+      font-family: 'Kaisei Decol';
+      font-style: normal;
+      font-weight: 400;
+      font-display: swap;
+      src: url(https://fonts.gstatic.com/s/kaiseidecol/v8/bMrvmSqP45sidWf3QXfxzS61.woff2) format('woff2');
+    }
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --gray-600: #475569;
+      --gray-700: #334155;
+      --blue-800: #1e40af;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      margin: 0;
+      padding: 10px;
+      background-color: #f8f8f8;
+      color: var(--gray-700);
+      line-height: 1.4;
+    }
+    
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 15px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+      border-bottom: 3px solid var(--fashion-3);
+      padding-bottom: 15px;
+      position: relative;
+    }
+    
+    @media (min-width: 768px) {
+      body {
+        padding: 20px;
+      }
+      
+      .container {
+        padding: 20px;
+      }
+      
+      .header {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        margin-bottom: 30px;
+      }
+    }
+    
+    .header:after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--fashion-5);
+      border-radius: 50%;
+      opacity: 0.5;
+    }
+    
+    .title {
+      font-size: 24px;
+      font-weight: bold;
+      font-family: 'Zen Kurenaido', sans-serif;
+      margin: 0 0 15px 0;
+      background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+      position: relative;
+    }
+    
+    .title:after {
+      content: "";
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: var(--fashion-4);
+      border-radius: 3px;
+    }
+    
+    .date-source {
+      font-size: 14px;
+      color: var(--gray-600);
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      margin-top: 10px;
+    }
+    
+    @media (min-width: 768px) {
+      .title {
+        font-size: 32px;
+        margin: 0;
+      }
+      
+      .date-source {
+        text-align: right;
+        align-items: flex-end;
+        margin-top: 0;
+      }
+    }
+    
+    .date {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+    
+    .date:before {
+      content: "📆";
+      margin-right: 5px;
+    }
+    
+    .description {
+      font-size: 14px;
+      color: var(--gray-600);
+      margin-bottom: 20px;
+      font-family: 'Yomogi', cursive;
+      padding: 15px 12px 12px 15px;
+      background-color: rgba(242, 196, 60, 0.15);
+      border-radius: 8px;
+      position: relative;
+    }
+    
+    .description:before {
+      content: "📝";
+      position: absolute;
+      left: -5px;
+      top: -8px;
+      font-size: 20px;
+    }
+    
+    @media (min-width: 768px) {
+      .description {
+        font-size: 16px;
+        margin-bottom: 30px;
+        padding: 10px 15px;
+      }
+      
+      .description:before {
+        left: -10px;
+        top: -10px;
+        font-size: 24px;
+      }
+    }
+    
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+    
+    .column {
+      width: 100%;
+    }
+    
+    @media (min-width: 768px) {
+      .content {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 20px;
+      }
+      
+      .column {
+        flex: 1;
+        min-width: calc(33% - 20px);
+      }
+    }
+    
+    .section {
+      margin-bottom: 20px;
+      padding: 12px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .section:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 4px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--fashion-2), var(--fashion-4));
+      border-radius: 2px;
+    }
+    
+    .section-title {
+      font-size: 16px;
+      color: var(--blue-800);
+      margin-top: 0;
+      margin-bottom: 12px;
+      font-family: 'Zen Kurenaido', sans-serif;
+      padding-left: 25px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .section-title:before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 18px;
+    }
+    
+    @media (min-width: 768px) {
+      .section {
+        margin-bottom: 30px;
+        padding: 15px;
+      }
+      
+      .section:before {
+        width: 5px;
+      }
+      
+      .section-title {
+        font-size: 18px;
+        margin-bottom: 15px;
+        padding-left: 30px;
+      }
+      
+      .section-title:before {
+        font-size: 20px;
+      }
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 15px;
+      font-size: 13px;
+    }
+    
+    .table td, .table th {
+      padding: 8px 6px;
+      text-align: left;
+      border-bottom: 1px dashed var(--fashion-3);
+      word-break: break-word;
+    }
+    
+    .table th {
+      color: var(--fashion-1);
+      font-weight: bold;
+    }
+    
+    @media (min-width: 768px) {
+      .table {
+        font-size: 14px;
+      }
+      
+      .table td, .table th {
+        padding: 8px 12px;
+      }
+    }
+    
+    .quote {
+      margin: 15px 0;
+      padding: 10px 15px;
+      background-color: rgba(89, 60, 71, 0.05);
+      border-left: 3px solid var(--fashion-1);
+      font-family: 'Yomogi', cursive;
+      position: relative;
+    }
+    
+    .quote:before {
+      content: "💡";
+      position: absolute;
+      left: -12px;
+      top: -10px;
+      font-size: 20px;
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+      font-weight: bold;
+      padding: 0 2px;
+    }
+    
+    .hand-arrow {
+      position: relative;
+      display: inline-block;
+      font-weight: bold;
+      margin: 0 5px;
+      color: var(--fashion-4);
+    }
+    
+    .footer {
+      margin-top: 20px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--gray-600);
+      border-top: a1px dashed var(--fashion-3);
+      padding-top: 12px;
+    }
+    
+    @media (min-width: 768px) {
+      .footer {
+        margin-top: 30px;
+        font-size: 14px;
+        padding-top: 15px;
+      }
+    }
+    
+    /* 読み込み高速化のためのプリロード */
+    #word-embedding-container {
+      animation: fadeIn 0.4s ease-in;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    
+    /* 手書き風要素 */
+    .hand-drawn {
+      border: 2px solid var(--fashion-1);
+      border-radius: 10px;
+      position: relative;
+      padding: 12px 10px;
+      margin: 15px 0;
+      font-size: 13px;
+    }
+    
+    .hand-drawn:before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 15px;
+      width: 16px;
+      height: 16px;
+      background-color: white;
+      border-top: 2px solid var(--fashion-1);
+      border-left: 2px solid var(--fashion-1);
+      transform: rotate(45deg);
+    }
+    
+    @media (min-width: 768px) {
+      .hand-drawn {
+        border-radius: 12px;
+        padding: 15px;
+        margin: 20px 0;
+        font-size: inherit;
+      }
+      
+      .hand-drawn:before {
+        top: -10px;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+      }
+    }
+    
+    .steps {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+    
+    .steps li {
+      padding-left: 30px;
+      margin-bottom: 12px;
+      position: relative;
+      font-size: 13px;
+    }
+    
+    .steps li:before {
+      content: attr(data-step);
+      position: absolute;
+      left: 0;
+      top: 2px;
+      width: 22px;
+      height: 22px;
+      background-color: var(--fashion-3);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--fashion-1);
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 14px;
+    }
+    
+    @media (min-width: 768px) {
+      .steps li {
+        padding-left: 35px;
+        font-size: inherit;
+      }
+      
+      .steps li:before {
+        top: 50%;
+        transform: translateY(-50%);
+        width: 25px;
+        height: 25px;
+        font-size: 16px;
+      }
+    }
+    
+    .cloud {
+      background-color: rgba(242, 230, 60, 0.15);
+      border-radius: 30px;
+      padding: 15px 20px;
+      position: relative;
+      margin: 20px 0;
+    }
+    
+    .cloud:after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 20px;
+      height: 20px;
+      background-color: rgba(242, 230, 60, 0.15);
+      transform: rotate(45deg);
+    }
+    
+    .vector-math {
+      font-family: 'Kaisei Decol', serif;
+      font-weight: bold;
+      background-color: rgba(242, 91, 4, 0.1);
+      padding: 5px 10px;
+      border-radius: 5px;
+      display: inline-block;
+    }
+    
+    .divider {
+      height: 3px;
+      background: repeating-linear-gradient(90deg, var(--fashion-3), var(--fashion-3) 5px, transparent 5px, transparent 12px);
+      margin: 20px 0;
+      border-radius: 3px;
+    }
+    
+    .st1-title:before { content: "🔍"; }
+    .st2-title:before { content: "🔄"; }
+    .st3-title:before { content: "⚙️"; }
+    .st4-title:before { content: "🧮"; }
+    .st5-title:before { content: "📈"; }
+    .st6-title:before { content: "🚀"; }
+    .st7-title:before { content: "✨"; }
+    
+    /* グラスモーフィズム */
+    .glass {
+      background: rgba(255, 255, 255, 0.25);
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+    }
+    
+    /* アイコン装飾 */
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      margin: 15px 0;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    
+    .icon-item {
+      text-align: center;
+      margin: 0 5px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 60px;
+    }
+    
+    .icon {
+      font-size: 22px;
+      margin-bottom: 3px;
+    }
+    
+    .icon-label {
+      font-size: 11px;
+      font-family: 'Yomogi', cursive;
+    }
+    
+    @media (min-width: 768px) {
+      .icon-container {
+        margin: 20px 0;
+        gap: 0;
+      }
+      
+      .icon-item {
+        margin: 0 10px;
+      }
+      
+      .icon {
+        font-size: 24px;
+        margin-bottom: 5px;
+      }
+      
+      .icon-label {
+        font-size: 12px;
+      }
+    }
+    
+    /* 追加の装飾 */
+    .arrow-connection {
+      position: relative;
+      text-align: center;
+      margin: 12px 0;
+      font-weight: bold;
+      color: var(--fashion-4);
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 13px;
+    }
+    
+    .arrow-connection:before {
+      content: "↓";
+      display: block;
+      font-size: 18px;
+      margin-bottom: 3px;
+    }
+    
+    @media (min-width: 768px) {
+      .arrow-connection {
+        margin: 15px 0;
+        font-size: initial;
+      }
+      
+      .arrow-connection:before {
+        font-size: 20px;
+        margin-bottom: 5px;
+      }
+    }
+    
+    /* モバイル最適化のための追加スタイル */
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    /* ページトップへ戻るボタン */
+    .back-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 40px;
+      height: 40px;
+      background-color: var(--fashion-3);
+      color: var(--fashion-1);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      opacity: 0;
+      transition: opacity 0.3s;
+      z-index: 1000;
+    }
+    
+    .back-to-top.visible {
+      opacity: 0.8;
+    }
+    
+    .back-to-top:hover {
+      opacity: 1;
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="word-embedding-container">
+    <div class="header">
+      <h1 class="title">単語を"ベクトル"にするとは？<br>— ゼロからわかる Word Embedding</h1>
+      <div class="date-source">
+        <div class="date">2025-04-28</div>
+      </div>
+    </div>
+    
+    <div class="description">
+      言葉を数字の並び＝ベクトルに変換すると、コンピュータは『意味』を計算できます。地図・方位磁石のたとえで、初心者でも直感的に理解できるようにまとめました。
+    </div>
+    
+    <div class="content">
+      <!-- 左カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title st1-title">そもそも"ベクトル"って何？</h2>
+          <table class="table">
+            <tr>
+              <th>項目</th>
+              <th>ざっくり説明</th>
+            </tr>
+            <tr>
+              <td><strong>スカラー</strong></td>
+              <td>1 つの数字（温度 23℃ など）</td>
+            </tr>
+            <tr>
+              <td><strong>ベクトル</strong></td>
+              <td>方向と大きさを持つ数字のセット（「北東へ 3 km」など）</td>
+            </tr>
+          </table>
+          <div class="quote">
+            <strong>イメージ：</strong> 単語を "地図上の点" に置くと、<span class="highlight">距離や方向で意味の近さ</span> を測れるようになる。
+          </div>
+          
+          <div class="icon-container">
+            <div class="icon-item">
+              <div class="icon">🗺️</div>
+              <div class="icon-label">地図</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon">🧭</div>
+              <div class="icon-label">方位磁石</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon">📏</div>
+              <div class="icon-label">距離</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title st2-title">単語 → ベクトル化 3 ステップ</h2>
+          <ul class="steps">
+            <li data-step="1">
+              <strong>語彙を用意</strong>
+              <br>例：{king, queen, man, woman, apple, orange …}
+            </li>
+            <li data-step="2">
+              <strong>コンテキストを集める</strong>
+              <br>「king は king of England のように man, queen と一緒に出現」
+              <br><span class="highlight">大量テキストから共起（一緒に出る）パターン</span>を数える
+            </li>
+            <li data-step="3">
+              <strong>統計を圧縮して座標化</strong>
+              <br>Word2Vec / GloVe などのアルゴリズムが
+              <br>"似たコンテキストなら近い座標" になるように学習
+            </li>
+          </ul>
+          
+          <div class="icon-container">
+            <div class="icon-item">
+              <div class="icon">📚</div>
+              <div class="icon-label">語彙</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon">👯</div>
+              <div class="icon-label">共起</div>
+            </div>
+            <div class="icon-item">
+              <div class="icon">📊</div>
+              <div class="icon-label">座標</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 中央カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title st3-title">具体例：Word2Vec のしくみ</h2>
+          <table class="table">
+            <tr>
+              <th>工程</th>
+              <th>何をしている？</th>
+            </tr>
+            <tr>
+              <td><strong>Skip-gram</strong></td>
+              <td>1 単語 → 周囲の単語を予測（例：<code>king</code> → <code>queen</code>, <code>royal</code>）</td>
+            </tr>
+            <tr>
+              <td><strong>CBOW</strong></td>
+              <td>周囲の単語 → 中央の単語を予測（例：<code>the ___ and</code> → <code>king</code>）</td>
+            </tr>
+          </table>
+          
+          <div class="arrow-connection">"当たり" や "ハズレ" を通じて <span class="highlight">重み</span> を更新 → ベクトル完成</div>
+          
+          <div class="quote">
+            <strong>ポイント：</strong> 予測がうまくいく＝単語の意味空間が「いい感じ」に配置された証拠。
+          </div>
+          
+          <div class="hand-drawn">
+            <div style="text-align: center; font-family: 'Yomogi', cursive;">
+              <div style="font-size: 18px; margin-bottom: 10px;">Skip-gram の例</div>
+              <div>
+                <span style="background-color: rgba(242, 196, 60, 0.3); padding: 3px 8px; border-radius: 5px;">context</span>
+                <span style="margin: 0 10px;">→</span>
+                <span style="background-color: rgba(242, 91, 4, 0.3); padding: 3px 8px; border-radius: 5px;">target</span>
+              </div>
+              <div style="margin: 10px 0;">
+                <strong style="color: var(--fashion-1);">"the <u>king</u> of"</strong>
+                <span style="margin: 0 10px;">→</span>
+                <strong style="color: var(--fashion-4);">the, of</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title st4-title">ベクトルだからこそ出来る"意味の計算"</h2>
+          <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 15px; position: relative; padding-left: 25px;">
+              <span style="position: absolute; left: 0; top: 0;">➕</span>
+              <strong>足し算・引き算が通用</strong>
+              <div class="vector-math">king - man + woman ≈ queen</div>
+              <div style="margin-left: 25px; font-size: 13px; color: var(--gray-600);">
+                "男性的要素" を引いて "女性的要素" を足すと <code>queen</code> に近づく
+              </div>
+            </li>
+            <li style="margin-bottom: 15px; position: relative; padding-left: 25px;">
+              <span style="position: absolute; left: 0; top: 0;">📏</span>
+              <strong>近さ = 類似度</strong>
+              <div style="margin-left: 25px; font-size: 13px; color: var(--gray-600);">
+                コサイン類似度 1.0 は同じ向き、0 は無関係<br>
+                <code>apple</code> と <code>orange</code> は 0.85、<code>apple</code> と <code>keyboard</code> は 0.1 など
+              </div>
+            </li>
+            <li style="margin-bottom: 15px; position: relative; padding-left: 25px;">
+              <span style="position: absolute; left: 0; top: 0;">🔍</span>
+              <strong>クラスタリング</strong>
+              <div style="margin-left: 25px; font-size: 13px; color: var(--gray-600);">
+                動物／食べ物／感情… 自然にグループ化できる
+              </div>
+            </li>
+          </ul>
+          
+          <div class="cloud">
+            <div style="text-align: center; font-family: 'Yomogi', cursive;">
+              <div><span class="highlight">空間に配置された単語同士の関係性</span>が</div>
+              <div>数学的な操作で表現できる！</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title st5-title">最新の流れ：文脈ベクトルへ</h2>
+          <table class="table">
+            <tr>
+              <th>世代</th>
+              <th>代表技術</th>
+              <th>特徴</th>
+            </tr>
+            <tr>
+              <td><strong>第1世代</strong></td>
+              <td>Word2Vec, GloVe</td>
+              <td>単語ごとに固定ベクトル</td>
+            </tr>
+            <tr>
+              <td><strong>第2世代</strong></td>
+              <td>FastText</td>
+              <td>未知語をサブワードで表現</td>
+            </tr>
+            <tr>
+              <td><strong>第3世代</strong></td>
+              <td>BERT, GPT</td>
+              <td><strong>文脈依存</strong>：同じ "bank" でも「川岸」か「銀行」かを区別</td>
+            </tr>
+          </table>
+          
+          <div class="quote">
+            <strong>文脈ベクトル (Contextual Embedding)</strong> により、多義語も正しく扱えるように。
+          </div>
+          
+          <div class="hand-drawn">
+            <div style="text-align: center; font-family: 'Yomogi', cursive;">
+              <div style="color: var(--fashion-1);">
+                <strong>"bank"</strong> という単語の場合:
+              </div>
+              <div style="display: flex; justify-content: space-around; margin-top: 10px;">
+                <div>
+                  <div>「川の<span style="color: var(--fashion-4);">土手</span>」</div>
+                  <div style="font-size: 24px;">🏞️</div>
+                </div>
+                <div style="font-size: 24px;">≠</div>
+                <div>
+                  <div>「お金の<span style="color: var(--fashion-4);">銀行</span>」</div>
+                  <div style="font-size: 24px;">🏦</div>
+                </div>
+              </div>
+              <div style="margin-top: 10px;">
+                文脈によって<span class="highlight">違うベクトル</span>になる！
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title st6-title">どこで使われている？</h2>
+          <ul style="list-style-type: none; padding: 0;">
+            <li style="margin-bottom: 12px; position: relative; padding-left: 30px;">
+              <span style="position: absolute; left: 0; top: 0;">🔍</span>
+              <strong>検索エンジン</strong>：クエリと文書の意味的近さで順位付け
+            </li>
+            <li style="margin-bottom: 12px; position: relative; padding-left: 30px;">
+              <span style="position: absolute; left: 0; top: 0;">🤖</span>
+              <strong>チャットボット</strong>：ユーザ入力をベクトル化 → 意図を推定
+            </li>
+            <li style="margin-bottom: 12px; position: relative; padding-left: 30px;">
+              <span style="position: absolute; left: 0; top: 0;">🛒</span>
+              <strong>レコメンド</strong>：商品説明やレビューをベクトルにして類似アイテム抽出
+            </li>
+            <li style="margin-bottom: 12px; position: relative; padding-left: 30px;">
+              <span style="position: absolute; left: 0; top: 0;">🌐</span>
+              <strong>機械翻訳</strong>：意味距離を保ったまま別言語に写像
+            </li>
+          </ul>
+          
+          <div class="glass" style="padding: 15px; margin-top: 15px; border-radius: 10px;">
+            <div style="text-align: center; font-family: 'Zen Kurenaido', sans-serif; font-size: 18px; margin-bottom: 10px;">
+              <span style="color: var(--fashion-5);">ベクトル空間の強み</span>
+            </div>
+            <div style="text-align: center; font-family: 'Yomogi', cursive;">
+              <div>言葉の「近さ」や「関係性」を</div>
+              <div>コンピュータが理解できる形に変換！</div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title st7-title">まとめ</h2>
+          <ol style="padding-left: 25px;">
+            <li style="margin-bottom: 8px;">
+              単語をベクトルにすると、<span class="highlight">計算で意味操作</span> が可能に
+            </li>
+            <li style="margin-bottom: 8px;">
+              学習は "共起パターンを似せる" ことで自然言語の統計を圧縮
+            </li>
+            <li style="margin-bottom: 8px;">
+              現在は <span class="highlight">文脈依存ベクトル</span> で、同じ単語でも使い方に応じた座標を取得
+            </li>
+          </ol>
+          
+          <div class="divider"></div>
+          
+          <div style="text-align: center; font-family: 'Zen Kurenaido', sans-serif; margin: 15px 0;">
+            <div style="font-size: 18px; color: var(--fashion-1); margin-bottom: 10px;">
+              これで <span class="highlight">「単語をベクトルにする」とは<br>"言葉を地図に置くこと"</span> とイメージできたはず。
+            </div>
+            <div style="font-size: 16px; margin-top: 15px;">
+              次は実際に Python のライブラリ（<code>gensim</code>, <code>sentence-transformers</code> など）で自作ベクトルを試してみましょう！
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-text">
+      © 2025 Word Embedding 解説 | 単語を"ベクトル"にするとは？— ゼロからわかる Word Embedding
+    </div>
+  </div>
+  
+  <a href="#word-embedding-container" class="back-to-top">↑</a>
+  
+  <script>
+    // ページトップへ戻るボタンの表示/非表示制御
+    window.addEventListener('scroll', function() {
+      const backToTopButton = document.querySelector('.back-to-top');
+      if (window.scrollY > 300) {
+        backToTopButton.classList.add('visible');
+      } else {
+        backToTopButton.classList.remove('visible');
+      }
+    });
+    
+    // モバイルでのタップ操作を最適化
+    document.addEventListener('DOMContentLoaded', function() {
+      // 全ての要素に適切なタップ領域を確保
+      const clickableElements = document.querySelectorAll('a, button, .section-title');
+      clickableElements.forEach(function(element) {
+        element.style.minHeight = '44px';
+      });
+    });
+  </script>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
