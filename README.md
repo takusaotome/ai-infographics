@@ -13,7 +13,7 @@ AI（人工知能）に関するインフォグラフィックスのコレクシ
 ## 閲覧方法
 
 このリポジトリはGitHub Pagesで公開されています。以下のURLでアクセスできます：
-https://[your-username].github.io/ai-infographics/
+https://takusaotome.github.io/ai-infographics/
 
 ## コンテンツの追加方法
 
