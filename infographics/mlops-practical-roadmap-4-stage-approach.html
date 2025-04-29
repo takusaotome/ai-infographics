@@ -1,0 +1,1012 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLOps 実践ロードマップ - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MLOps 実践ロードマップ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-title: #1e40af;
+            --text-subtitle: #475569;
+            --bg-card: rgba(255, 255, 255, 0.85);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            line-height: 1.4;
+            color: var(--text-main);
+            background-color: #f8f9fa;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            padding: 1rem;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            padding: 2rem;
+            position: relative;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+            border-bottom: 2px dashed var(--fashion-1);
+            padding-bottom: 1rem;
+        }
+        
+        .header-left {
+            flex: 2;
+        }
+        
+        .header-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        h1 {
+            font-size: 32px;
+            font-family: 'Yomogi', cursive;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: inline-block;
+        }
+        
+        .description {
+            font-size: 16px;
+            color: var(--text-subtitle);
+            max-width: 90%;
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        .date-source {
+            font-size: 14px;
+            color: var(--text-subtitle);
+            margin-bottom: 0.5rem;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .section {
+            flex: 1 1 30%;
+            min-width: 300px;
+            margin-bottom: 2rem;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 1rem;
+            padding-left: 0.5rem;
+            border-left: 4px solid var(--fashion-4);
+        }
+        
+        .section-title {
+            font-size: 18px;
+            color: var(--text-title);
+            font-weight: bold;
+            margin-left: 0.5rem;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+            position: relative;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            color: var(--fashion-1);
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        .card-title-icon {
+            margin-right: 0.5rem;
+            color: var(--fashion-4);
+        }
+        
+        .card-content {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        
+        .key-phrase {
+            background-color: var(--fashion-2);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            margin: 0.25rem 0.25rem 0.25rem 0;
+            font-family: 'Kaisei Decol', serif;
+        }
+        
+        .hand-arrow {
+            font-size: 24px;
+            color: var(--fashion-4);
+            margin: 0 0.5rem;
+            transform: rotate(25deg);
+            display: inline-block;
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .table th, .table td {
+            border: 1.5px dashed var(--fashion-1);
+            padding: 0.5rem;
+            text-align: left;
+            font-size: 14px;
+        }
+        
+        .table th {
+            background-color: rgba(89, 60, 71, 0.1);
+            font-weight: bold;
+        }
+        
+        .roadmap {
+            display: flex;
+            flex-direction: column;
+            margin: 1rem 0;
+        }
+        
+        .phase {
+            display: flex;
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+        
+        .phase-number {
+            background-color: var(--fashion-1);
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            margin-right: 1rem;
+            flex-shrink: 0;
+        }
+        
+        .phase-content {
+            flex: 1;
+            background-color: rgba(242, 230, 61, 0.15);
+            border-radius: 8px;
+            padding: 1rem;
+            border-left: 3px solid var(--fashion-3);
+        }
+        
+        .phase-title {
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 0.5rem;
+            color: var(--fashion-5);
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .phase-desc {
+            font-size: 14px;
+        }
+        
+        .code-block {
+            background-color: #2d2d2d;
+            color: #e6e6e6;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 14px;
+            margin: 1rem 0;
+            white-space: pre-wrap;
+            word-break: break-all;
+        }
+        
+        .tool-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 2fr;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+        
+        .tool-grid-header {
+            font-weight: bold;
+            font-size: 14px;
+            background-color: rgba(89, 60, 71, 0.1);
+            padding: 0.5rem;
+            border-radius: 4px;
+        }
+        
+        .tool-grid-cell {
+            padding: 0.5rem;
+            font-size: 13px;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .highlight {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 7px;
+            background-color: rgba(242, 196, 61, 0.4);
+            z-index: -1;
+        }
+        
+        .marker {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 40%);
+            padding: 0 2px;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 12px;
+            position: relative;
+            padding: 1rem;
+            margin: 1rem 0;
+            border-style: dashed;
+        }
+        
+        .hand-drawn-box::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--fashion-4);
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .footer {
+            margin-top: 3rem;
+            padding-top: 1rem;
+            border-top: 2px dashed var(--fashion-1);
+            text-align: center;
+            font-size: 14px;
+            color: var(--text-subtitle);
+            font-family: 'Zen Kurenaido', sans-serif;
+        }
+        
+        .emoji {
+            font-size: 20px;
+            margin-right: 0.25rem;
+            vertical-align: middle;
+        }
+        
+        .note {
+            background-color: rgba(242, 92, 5, 0.1);
+            border-left: 3px solid var(--fashion-4);
+            padding: 0.75rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            font-size: 14px;
+        }
+        
+        .tag {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            border-radius: 4px;
+            font-size: 12px;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .list-item {
+            margin-bottom: 0.5rem;
+            padding-left: 1.5rem;
+            position: relative;
+            font-size: 14px;
+        }
+        
+        .list-item:before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .next-action {
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 2rem;
+            text-align: center;
+        }
+        
+        .next-action-title {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .section {
+                flex: 1 1 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+            }
+            
+            .header-right {
+                margin-top: 1rem;
+                text-align: left;
+            }
+            
+            .tool-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="header-left">
+                <h1>MLOps 実践ロードマップ</h1>
+                <p class="description">モデル管理・CI/CD・監視を軸にした4段階ステップ — PoC で終わらせない機械学習ライフサイクルの自動化</p>
+            </div>
+            <div class="header-right">
+                <p class="date-source">作成日: 2025-04-28</p>
+            </div>
+        </header>
+        
+        <div class="content">
+            <!-- Section 1: なぜMLOpsが必要？ -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">🔍</span>
+                    <h2 class="section-title">なぜ MLOps が必要？</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="list-item">Phase 0→3 のロードマップで徐々に自動化レベルを上げる</div>
+                        <div class="list-item">MVP 構成は「GitHub Actions + MLflow + Docker + Seldon」だけでも回る</div>
+                        <div class="list-item">監視と再学習 を後回しにしない。精度保証＝ビジネスの信頼</div>
+                        <div class="list-item">ツールは急速に進化中。"思想"を理解しアーキテクチャは柔軟に選択</div>
+                    </div>
+                </div>
+                
+                <div class="next-action">
+                    <div class="next-action-title">Next Action 🚀</div>
+                    <p>リポジトリに MLflow を導入し、まず Phase 0 の"実験ログ一元化"から始めてみましょう！</p>
+                </div>
+            </section>
+        </div>
+        
+<table class="table">
+                        <tr>
+                            <th>従来</th>
+                            <th>MLOps 導入後</th>
+                        </tr>
+                        <tr>
+                            <td>Jupyter で個人実験<br>→ 手作業デプロイ<br>→ 動かなくなる</td>
+                            <td><span class="marker">再現可能パイプライン</span><br>→ <span class="marker">CI/CD</span><br>→ <span class="marker">監視と再学習</span>が自動</td>
+                        </tr>
+                        <tr>
+                            <td>モデルが増えると<br>バージョン管理がカオス</td>
+                            <td><span class="marker">モデル/データのバージョン</span>が<br>Git のように一元管理</td>
+                        </tr>
+                        <tr>
+                            <td>精度低下に気付かない</td>
+                            <td>データドリフト検知<br>→ 再学習ジョブを自動トリガー</td>
+                        </tr>
+                    </table>
+                    
+                    <div class="note">
+                        <strong>キーフレーズ</strong>：
+                        <div style="margin-top: 0.5rem;">
+                            <span class="key-phrase">実験</span>
+                            <span class="hand-arrow">➜</span>
+                            <span class="key-phrase">再現</span>
+                            <span class="hand-arrow">➜</span>
+                            <span class="key-phrase">自動化</span>
+                            <span class="hand-arrow">➜</span>
+                            <span class="key-phrase">ガバナンス</span>
+                        </div>
+                        <p style="margin-top: 0.5rem;">4 つを回し続けるのが MLOps</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 2: 4段階ロードマップ -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">🛣️</span>
+                    <h2 class="section-title">4段階ロードマップ</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="roadmap">
+                        <div class="phase">
+                            <div class="phase-number">0</div>
+                            <div class="phase-content">
+                                <div class="phase-title">PoC & 実験管理</div>
+                                <div class="phase-desc">
+                                    <span class="highlight">MLflow Tracking, DVC</span> でコード＋パラメータ＋成果を保存
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: -0.5rem 0; font-size: 24px; color: var(--fashion-4);">↓</div>
+                        
+                        <div class="phase">
+                            <div class="phase-number">1</div>
+                            <div class="phase-content">
+                                <div class="phase-title">ML パイプライン化</div>
+                                <div class="phase-desc">
+                                    train.py を <span class="highlight">Airflow/Kedro/Dagster</span> で DAG 化
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: -0.5rem 0; font-size: 24px; color: var(--fashion-4);">↓</div>
+                        
+                        <div class="phase">
+                            <div class="phase-number">2</div>
+                            <div class="phase-content">
+                                <div class="phase-title">CI/CD & オンライン推論</div>
+                                <div class="phase-desc">
+                                    Git Push → テスト → Docker 化 → K8s デプロイ
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="text-align: center; margin: -0.5rem 0; font-size: 24px; color: var(--fashion-4);">↓</div>
+                        
+                        <div class="phase">
+                            <div class="phase-number">3</div>
+                            <div class="phase-content">
+                                <div class="phase-title">監視 & 再学習オートメーション</div>
+                                <div class="phase-desc">
+                                    メトリクス/ドリフト監視 → 再学習ジョブ自動実行
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 3: フェーズ別実装ガイド -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">📝</span>
+                    <h2 class="section-title">フェーズ別 実装ガイド</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-title-icon">📊</span>
+                        Phase 0: 実験管理
+                    </div>
+                    <div class="card-content">
+                        <div class="code-block">
+# MLflow で実験を記録
+mlflow run . -P alpha=0.01 -P epochs=100
+mlflow ui  # → localhost:5000 で可視化</div>
+                        <div class="list-item">conda.yaml を同じレポジトリに置き "環境の再現性" を確保</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-title-icon">🔄</span>
+                        Phase 1: パイプライン化
+                    </div>
+                    <div class="card-content">
+                        <div class="code-block">
+# Airflow DAG (simplified)
+with DAG("ml_pipeline", schedule_interval="0 3 * * *") as dag:
+    preprocess = BashOperator(cmd="python preprocess.py")
+    train      = BashOperator(cmd="python train.py")
+    evaluate   = BashOperator(cmd="python evaluate.py")
+    preprocess >> train >> evaluate</div>
+                        <div class="list-item">データ & モデルを S3 + DVC でバージョン管理</div>
+                        <div class="list-item">Artifact Store は MLflow Registry を利用 (Staging/Prod)</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-title-icon">🚀</span>
+                        Phase 2: CI/CD & オンライン推論
+                    </div>
+                    <div class="card-content">
+                        <div class="code-block">
+# .github/workflows/mlops.yml
+jobs:
+  build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Unit Test
+        run: pytest tests/
+      - name: Build & Push Docker
+        run: |
+          docker build -t ghcr.io/org/model:${{ github.sha }} .
+          docker push ghcr.io/org/model:${{ github.sha }}
+  deploy:
+    needs: build-test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: azure/setup-kubectl@v3
+      - name: Kustomize Apply
+        run: kubectl apply -k k8s/overlays/prod</div>
+                        <div class="list-item">推論サービング: Seldon Core / BentoML / FastAPI を選択</div>
+                        <div class="list-item">ブルーグリーン or カナリア で無停止デプロイ</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <div class="card-title">
+                        <span class="card-title-icon">📈</span>
+                        Phase 3: 監視 & 再学習
+                    </div>
+                    <div class="card-content">
+                        <div class="code-block">
+# Argo Workflow (YAML abridged)
+entrypoint: retrain
+templates:
+- name: retrain
+  dag:
+    tasks:
+    - name: drift-check
+      template: drift
+    - name: retrain
+      template: train
+      when: "{{tasks.drift-check.outputs.result}} == true"</div>
+                        <div class="list-item">モニタリング指標：サービス (レイテンシ, エラー率)</div>
+                        <div class="list-item">モデル：Prediction/Label Drift, 精度, 不確実性</div>
+                        <div class="list-item">Evidently で Drift → Argo イベント起動 → 新モデル学習 → MLflow→自動昇格</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 4: 推奨ツールスタック -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">🛠️</span>
+                    <h2 class="section-title">推奨ツールスタック (2025版)</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="tool-grid">
+                            <div class="tool-grid-header">レイヤ</div>
+                            <div class="tool-grid-header">OSS代表</div>
+                            <div class="tool-grid-header">主な役割</div>
+                            
+                            <div class="tool-grid-cell">実験管理</div>
+                            <div class="tool-grid-cell">MLflow, W&B</div>
+                            <div class="tool-grid-cell">パラメータ・メトリクス可視化</div>
+                            
+                            <div class="tool-grid-cell">データバージョン</div>
+                            <div class="tool-grid-cell">DVC, LakeFS</div>
+                            <div class="tool-grid-cell">データ差分・再現</div>
+                            
+                            <div class="tool-grid-cell">パイプライン</div>
+                            <div class="tool-grid-cell">Airflow, Prefect</div>
+                            <div class="tool-grid-cell">ETL＋学習ジョブ管理</div>
+                            
+                            <div class="tool-grid-cell">モデルレジストリ</div>
+                            <div class="tool-grid-cell">MLflow Registry</div>
+                            <div class="tool-grid-cell">Staging/Prod ラベル付</div>
+                            
+                            <div class="tool-grid-cell">サービング</div>
+                            <div class="tool-grid-cell">Seldon, KServe</div>
+                            <div class="tool-grid-cell">REST/gRPC 推論</div>
+                            
+                            <div class="tool-grid-cell">監視</div>
+                            <div class="tool-grid-cell">Prometheus, Evidently</div>
+                            <div class="tool-grid-cell">モデル & サービス指標</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 5: KPI例 -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">📌</span>
+                    <h2 class="section-title">KPI 例</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="tool-grid">
+                        <div class="tool-grid-header">カテゴリ</div>
+                        <div class="tool-grid-header">指標</div>
+                        <div class="tool-grid-header">目標値の目安</div>
+                        
+                        <div class="tool-grid-cell">開発速度</div>
+                        <div class="tool-grid-cell">Code→Prod リードタイム</div>
+                        <div class="tool-grid-cell">≤ 1 day</div>
+                        
+                        <div class="tool-grid-cell">再現性</div>
+                        <div class="tool-grid-cell">Run hash 一意性</div>
+                        <div class="tool-grid-cell">100 % 再現可</div>
+                        
+                        <div class="tool-grid-cell">品質</div>
+                        <div class="tool-grid-cell">本番精度 / F1</div>
+                        <div class="tool-grid-cell">±3 % 以内保持</div>
+                        
+                        <div class="tool-grid-cell">信頼性</div>
+                        <div class="tool-grid-cell">予測レイテンシ p95</div>
+                        <div class="tool-grid-cell">< 200 ms</div>
+                        
+                        <div class="tool-grid-cell">運用</div>
+                        <div class="tool-grid-cell">Drift 検知→対処時間</div>
+                        <div class="tool-grid-cell">< 1 hour</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 6: よくある落とし穴 -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">⚠️</span>
+                    <h2 class="section-title">よくある落とし穴 & 回避策</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="tool-grid">
+                        <div class="tool-grid-header">罠</div>
+                        <div class="tool-grid-header">症状</div>
+                        <div class="tool-grid-header">対策</div>
+                        
+                        <div class="tool-grid-cell">Data/Code 分離不足</div>
+                        <div class="tool-grid-cell">"動く環境が人によって違う"</div>
+                        <div class="tool-grid-cell">コンテナ & requirements.txt 厳格管理</div>
+                        
+                        <div class="tool-grid-cell">モデルだけ管理</div>
+                        <div class="tool-grid-cell">データ版ズレで再現不可</div>
+                        <div class="tool-grid-cell">DVC/LakeFS で Input データをバージョン管理</div>
+                        
+                        <div class="tool-grid-cell">監視後回し</div>
+                        <div class="tool-grid-cell">精度劣化に気付かない</div>
+                        <div class="tool-grid-cell">PoC 時点で 最小監視を実装</div>
+                        
+                        <div class="tool-grid-cell">CI/CD 省略</div>
+                        <div class="tool-grid-cell">手作業デプロイ→ミス</div>
+                        <div class="tool-grid-cell">GitHub Actions などで Unit Test & Build 自動化</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 7: 学習リソース -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">📚</span>
+                    <h2 class="section-title">学習リソース</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="list-item">書籍: Introducing MLOps (O'Reilly, 2025 改訂), Machine Learning Engineering with MLflow</div>
+                        <div class="list-item">無料コース: Google Cloud MLOps Fundamentals, Microsoft MLOps v2 ランディングゾーン Hands-on</div>
+                        <div class="list-item">OSS デモ: mlops-stacks (Terraform + AWS EKS + MLflow), Seldon Core quickstart (K8s + Canary)</div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Section 8: まとめ -->
+            <section class="section">
+                <div class="section-header">
+                    <span class="emoji">📋</span>
+                    <h2 class="section-title">まとめ</h2>
+                </div>
+                
+                <div class="card">
+                    <div class="card-content">
+                        <div class="list-item">MLOps はツールの進化によって徐々に自動化レベルを上げる</div>
+                        <div class="list-item">MVP 構成は「GitHub Actions + MLflow + Docker + Seldon」だけでも回る</div>
+                        <div class="list-item">監視と再学習 を後回しにしない。精度保証＝ビジネスの信頼</div>
+                        <div class="list-item">ツールは急速に進化中。"思想"を理解しアーキテクチャは柔軟に選択</div>
+                    </div>
+                </div> 
+            </section>
+        </div>
+        
+        <footer class="footer">
+            <p>作成: グラフィックレコーディング風 MLOps ロードマップ | 2025-04-28</p>
+        </footer>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
