@@ -1,0 +1,832 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>プロンプトエンジニアリング大全 — 基本原則と実践テクニック - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>プロンプトエンジニアリング大全</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --shadow-color: rgba(0, 0, 0, 0.1);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Zen Kurenaido', sans-serif;
+      background-color: #f9f8f3;
+      color: #334155;
+      line-height: 1.4;
+      padding: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23593c47' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(5px);
+      border-radius: 16px;
+      box-shadow: 0 4px 15px var(--shadow-color);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 32px;
+      font-weight: 700;
+      background: linear-gradient(90deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      max-width: 70%;
+      line-height: 1.2;
+      position: relative;
+    }
+    
+    .title::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='3' viewBox='0 0 100 3' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,1.5 C10,0.5 20,2.5 30,1.5 C40,0.5 50,2.5 60,1.5 C70,0.5 80,2.5 90,1.5 C95,0.5 100,2.5 100,1.5' stroke='%23F25C05' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      color: #475569;
+      text-align: right;
+    }
+    
+    .description {
+      font-size: 16px;
+      color: #475569;
+      margin-bottom: 30px;
+      padding: 15px;
+      border: 2px dashed var(--fashion-3);
+      border-radius: 12px;
+      background-color: rgba(242, 230, 61, 0.1);
+      position: relative;
+    }
+    
+    .description::before {
+      content: "📌";
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      font-size: 24px;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .section-title {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: #1e40af;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      padding-bottom: 5px;
+      border-bottom: 2px solid;
+      border-image: url("data:image/svg+xml,%3Csvg width='100' height='2' viewBox='0 0 100 2' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,1 C15,0.4 35,1.6 50,1 C65,0.4 85,1.6 100,1' stroke='%23F2C53D' stroke-width='2' fill='none'/%3E%3C/svg%3E") 1;
+    }
+    
+    .section-title::before {
+      content: attr(data-icon);
+      margin-right: 8px;
+      font-size: 22px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px var(--shadow-color);
+      padding: 20px;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--fashion-3), var(--fashion-4));
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    
+    table th, table td {
+      border: 1px solid #e2e8f0;
+      padding: 8px 12px;
+      text-align: left;
+    }
+    
+    table th {
+      background-color: rgba(89, 60, 71, 0.1);
+      font-weight: bold;
+    }
+    
+    ul, ol {
+      padding-left: 25px;
+      margin: 10px 0;
+    }
+    
+    li {
+      margin-bottom: 5px;
+      position: relative;
+    }
+    
+    .highlight {
+      position: relative;
+      display: inline-block;
+    }
+    
+    .highlight::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(242, 196, 61, 0.4);
+      z-index: -1;
+    }
+    
+    .marker {
+      background: linear-gradient(transparent 60%, rgba(242, 91, 5, 0.3) 40%);
+      padding: 0 2px;
+    }
+    
+    .bubble {
+      position: relative;
+      background-color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 2px 5px var(--shadow-color);
+      border: 1px solid var(--fashion-1);
+    }
+    
+    .bubble::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      border-width: 0 10px 10px;
+      border-style: solid;
+      border-color: var(--fashion-1) transparent;
+    }
+    
+    .bubble::after {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 22px;
+      border-width: 0 8px 8px;
+      border-style: solid;
+      border-color: white transparent;
+    }
+    
+    .definition {
+      font-style: italic;
+      border-left: 3px solid var(--fashion-4);
+      padding-left: 15px;
+      margin: 15px 0;
+    }
+    
+    .code-block {
+      background-color: #f8f8f8;
+      border-radius: 8px;
+      padding: 15px;
+      font-family: monospace;
+      font-size: 14px;
+      overflow-x: auto;
+      border-left: 4px solid var(--fashion-4);
+      margin: 15px 0;
+    }
+    
+    .arrow {
+      position: absolute;
+      transform-origin: center;
+    }
+    
+    .arrow-1 {
+      top: 190px;
+      left: 32%;
+      transform: rotate(25deg);
+    }
+    
+    .arrow-2 {
+      top: 420px;
+      left: 65%;
+      transform: rotate(-15deg);
+    }
+    
+    .footer {
+      margin-top: 40px;
+      text-align: center;
+      font-size: 14px;
+      color: #64748b;
+      padding-top: 20px;
+      border-top: 1px dashed var(--fashion-3);
+    }
+    
+    /* 手書き風の要素 */
+    .hand-drawn {
+      filter: url("#roughpaper");
+    }
+    
+    @media (max-width: 1000px) {
+      .grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .title {
+        font-size: 28px;
+        max-width: 100%;
+      }
+      
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .date {
+        margin-top: 10px;
+        text-align: left;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="header">
+      <h1 class="title">プロンプトエンジニアリング大全 — 基本原則と実践テクニック</h1>
+      <p class="date">2025年4月29日</p>
+    </header>
+    
+    <p class="description">ChatGPT などの生成AIは "入力がすべて"。わずかな言い回しの違いで出力品質が劇的に変わります。本記事では、初心者から上級者まで使えるプロンプト設計の原則・パターン・チェックリストを体系的にまとめました。</p>
+    
+    <!-- SVGフィルター -->
+    <svg width="0" height="0" style="position: absolute;">
+      <filter id="roughpaper" x="0%" y="0%" width="100%" height="100%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.04" numOctaves="5" result="noise" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
+      </filter>
+    </svg>
+    
+    <svg class="arrow arrow-1 hand-drawn" width="100" height="50" viewBox="0 0 100 50">
+      <path d="M0,25 C30,30 70,20 95,5" stroke="#F25C05" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="1 3"/>
+      <polygon points="95,5 90,15 85,2" fill="#F25C05" />
+    </svg>
+    
+    <svg class="arrow arrow-2 hand-drawn" width="100" height="50" viewBox="0 0 100 50">
+      <path d="M0,5 C30,30 70,20 95,25" stroke="#F25C05" stroke-width="2" fill="none" stroke-linecap="round" stroke-dasharray="1 3"/>
+      <polygon points="95,25 85,15 90,35" fill="#F25C05" />
+    </svg>
+    
+    <div class="grid">
+      <section class="section">
+        <h2 class="section-title" data-icon="🔍">0. プロンプトエンジニアリングとは？</h2>
+        <div class="card">
+          <div class="definition">
+            <strong>定義</strong><br>
+            生成 AI に対し、<span class="highlight">意図した出力を得るための入力設計</span>を科学し、体系化する技法。
+          </div>
+          
+          <ul>
+            <li><strong>入力 (Prompt)</strong>: テキスト、画像、音声など</li>
+            <li><strong>出力 (Completion)</strong>: 回答、コード、画像、API コールなど</li>
+            <li><strong>評価 (Metric)</strong>: 正確さ・網羅性・独創性・一貫性・実行時間</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="📝">1. 4つの基本原則</h2>
+        <div class="card">
+          <table>
+            <tr>
+              <th>#</th>
+              <th>原則</th>
+              <th>Why / How</th>
+            </tr>
+            <tr>
+              <td>1</td>
+              <td><strong class="marker">Role 指定</strong></td>
+              <td>「あなたは○○の専門家です」と<span class="highlight">人格を固定</span> → 言い回しが専門的になる</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong class="marker">明確なタスク</strong></td>
+              <td>要求を箇条書き・番号付けで具体化 → "何を・どれくらい" を数値で示す</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong class="marker">制約付与</strong></td>
+              <td>文字数・フォーマット・NG ワードを先に宣言 → 出力のブレを抑制</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong class="marker">逐次思考</strong></td>
+              <td>「ステップバイステップで考えて」→ 中間推論を露わにし高精度化</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="🎯">2. ゴール別プロンプトパターン</h2>
+        <div class="card">
+          <table>
+            <tr>
+              <th>ゴール</th>
+              <th>テンプレ</th>
+              <th>効果ポイント</th>
+            </tr>
+            <tr>
+              <td><strong>要約</strong></td>
+              <td>「以下を ①箇条書き ②100 字以内 ③専門用語なしで要約せよ」</td>
+              <td>形式・長さ・トーンを限定</td>
+            </tr>
+            <tr>
+              <td><strong>アイデア出し</strong></td>
+              <td>「○○の新規ビジネス案を 5 つ。各 1 行、ターゲットと収益モデル記載」</td>
+              <td>数・フォーマット制約</td>
+            </tr>
+            <tr>
+              <td><strong>コード生成</strong></td>
+              <td>「Python 3.11 / Pydantic v2 を使い、CSV → JSON 変換関数を docstring 付きで」</td>
+              <td>環境・依存ライブラリを固定</td>
+            </tr>
+            <tr>
+              <td><strong>校正・翻訳</strong></td>
+              <td>「次文をビジネス敬語に直し、誤字を修正し、2 行以内で」</td>
+              <td>スタイル＋長さ指定</td>
+            </tr>
+            <tr>
+              <td><strong>分岐型回答</strong></td>
+              <td>「知識ゼロなら❶入門、経験者なら❷応用に分けて説明」</td>
+              <td><span class="highlight">条件分岐指示</span>が要点</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="🔄">3. チューニングのステップバイステップ</h2>
+        <div class="card">
+          <ol>
+            <li><strong class="marker">Base Prompt</strong> を書く
+              <ul>
+                <li>目的・対象・制約を 3 行で。</li>
+              </ul>
+            </li>
+            <li><strong class="marker">Few-Shot 例示</strong>
+              <ul>
+                <li>★同じフォーマットで 1〜3 例入れると安定。</li>
+              </ul>
+            </li>
+            <li><strong class="marker">指標で評価</strong>
+              <ul>
+                <li>例: BLEU>0.6、コード実行テスト 100% Pass</li>
+              </ul>
+            </li>
+            <li><strong class="marker">反復改良</strong>
+              <ul>
+                <li>指標が未達 → ロール／制約強化 or 例増加。</li>
+              </ul>
+            </li>
+            <li><strong class="marker">System vs. User 分離</strong>
+              <ul>
+                <li><code>system:</code> にルール、<code>user:</code> に可変データ。</li>
+              </ul>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="⚠️">4. よくある失敗と対策</h2>
+        <div class="card">
+          <table>
+            <tr>
+              <th>症状</th>
+              <th>原因</th>
+              <th>処方箋</th>
+            </tr>
+            <tr>
+              <td>出力が長過ぎる</td>
+              <td>長さ制約不足</td>
+              <td>「80 字以内」「300 words」など明示</td>
+            </tr>
+            <tr>
+              <td>ハルシネーション</td>
+              <td>情報源を与えてない</td>
+              <td><strong class="marker">RAG</strong> 併用 or 引用文献を先に渡す</td>
+            </tr>
+            <tr>
+              <td>フォーマット崩れ</td>
+              <td>曖昧指示</td>
+              <td>Markdown テンプレを <code>&lt;template&gt;</code> 内に貼る</td>
+            </tr>
+            <tr>
+              <td>正確だが硬い</td>
+              <td>ロール未設定</td>
+              <td>「フレンドリーな口調で」と追加</td>
+            </tr>
+            <tr>
+              <td>処理落ちエラー</td>
+              <td>Token 超過</td>
+              <td>要約して縮めるか段階分け (Split Prompt)</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="🧰">5. 便利ツール & ライブラリ</h2>
+        <div class="card">
+          <table>
+            <tr>
+              <th>ツール</th>
+              <th>用途</th>
+              <th>特徴</th>
+            </tr>
+            <tr>
+              <td><strong>PromptLayer</strong></td>
+              <td>バージョン管理</td>
+              <td>"Git for prompts"</td>
+            </tr>
+            <tr>
+              <td><strong>LangChain</strong></td>
+              <td>プロンプトテンプレ</td>
+              <td>Jinja2 で動的生成</td>
+            </tr>
+            <tr>
+              <td><strong>LlamaIndex</strong></td>
+              <td>RAG 用コンテキスト連携</td>
+              <td>ベクトル＋テンプレ一元管理</td>
+            </tr>
+            <tr>
+              <td><strong>EvalLM</strong></td>
+              <td>自動評価</td>
+              <td>BLEU / ROUGE / CodeExec スコア</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="🔬">6. 実践例：社内 FAQ ボットのプロンプト</h2>
+        <div class="card">
+          <div class="code-block">
+            system:<br>
+            You are an IT support expert for ACME Inc. Answer only from the provided context.<br>
+            Use markdown bullet points. Cite sources with [docX] tags.<br>
+            <br>
+            user:<br>
+            【質問】<br>
+            VPN が突然切断されます。考えられる原因と対処を教えてください。<br>
+            <br>
+            【コンテキスト】<br>
+            [doc1] 社内 VPN の接続要件…<br>
+            [doc2] Windows クライアントで多いエラーコード…
+          </div>
+          
+          <div class="bubble">
+            <ul>
+              <li><strong>Role</strong>: "IT support expert"</li>
+              <li><strong>制約</strong>: Markdown・引用必須</li>
+              <li><strong>Few-Shot</strong>: 無しでもコンテキストが保証</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="✅">7. チェックリスト（コピー用）</h2>
+        <div class="card">
+          <ul>
+            <li>ロールを指定したか</li>
+            <li>ゴール・制約を数値で示したか</li>
+            <li>必要なら Few-Shot 例を挿入したか</li>
+            <li>Token 上限を超えていないか</li>
+            <li>評価指標を定義したか</li>
+          </ul>
+        </div>
+      </section>
+
+      <section class="section">
+        <h2 class="section-title" data-icon="📊">8. まとめ</h2>
+        <div class="card">
+          <ol>
+            <li><strong class="marker">Role・Task・Constraint</strong> の 3 本柱を先に決める</li>
+            <li><strong class="marker">Few-Shot</strong> と <strong class="marker">Chain-of-Thought</strong> で精度＆一貫性向上</li>
+            <li>反復評価→改良サイクルを <strong class="marker">PromptOps</strong> として運用</li>
+            <li>社内ナレッジ連携 (RAG) でハルシネ抑止＆即時最新化</li>
+          </ol>
+          
+          <div class="bubble">
+            <strong>次の一手</strong><br>
+            まずは日常業務のメール下書きやコード補完で「+1 行」プロンプトを試し、<br>
+            効果計測 → パターン化 → テンプレ集をチーム共有してみましょう。
+          </div>
+        </div>
+      </section>
+    </div>
+    
+    <footer class="footer">
+      <p>出典: プロンプトエンジニアリング大全 — 基本原則と実践テクニック (2025-04-29)</p>
+    </footer>
+  </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 

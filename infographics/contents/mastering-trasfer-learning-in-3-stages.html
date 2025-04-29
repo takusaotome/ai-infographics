@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>転移学習ロードマップ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Kaisei+Decol:wght@400;700&family=Yomogi&family=Zen+Kurenaido&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --text-dark: #334155;
+      --heading: #1e40af;
+      --sub-heading: #475569;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Zen Kurenaido', sans-serif;
+      background-color: #FAFAFA;
+      color: var(--text-dark);
+      line-height: 1.4;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 3px solid var(--fashion-3);
+      padding-bottom: 20px;
+      position: relative;
+    }
+    
+    .title-container {
+      width: 70%;
+    }
+    
+    .date-container {
+      text-align: right;
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      color: var(--sub-heading);
+    }
+    
+    h1 {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 10px;
+      position: relative;
+      background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+    }
+    
+    .subtitle {
+      font-size: 16px;
+      color: var(--sub-heading);
+      margin-bottom: 10px;
+      font-family: 'Zen Kurenaido', sans-serif;
+    }
+    
+    .content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+    
+    .section {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: 2px dashed var(--fashion-3);
+    }
+    
+    .section-full {
+      grid-column: span 3;
+    }
+    
+    .section-wide {
+      grid-column: span 2;
+    }
+    
+    h2 {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      color: var(--heading);
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid var(--fashion-2);
+      display: flex;
+      align-items: center;
+    }
+    
+    h2 .icon {
+      margin-right: 8px;
+      font-size: 22px;
+    }
+    
+    p {
+      font-size: 14px;
+      margin-bottom: 10px;
+    }
+    
+    .arrow {
+      position: absolute;
+      width: 40px;
+      height: 20px;
+      color: var(--fashion-4);
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .highlight {
+      display: inline-block;
+      position: relative;
+      font-weight: bold;
+      color: var(--fashion-5);
+    }
+    
+    .highlight::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: var(--fashion-2);
+      opacity: 0.4;
+      z-index: -1;
+      border-radius: 4px;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    
+    .table th, .table td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .table th {
+      font-weight: bold;
+      background-color: rgba(242, 198, 61, 0.2);
+    }
+    
+    .card {
+      background: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(5px);
+      border-left: 4px solid var(--fashion-4);
+    }
+    
+    .steps {
+      margin-left: 25px;
+    }
+    
+    .step {
+      position: relative;
+      margin-bottom: 15px;
+      padding-left: 30px;
+    }
+    
+    .step-number {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 25px;
+      height: 25px;
+      background-color: var(--fashion-3);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      font-size: 14px;
+    }
+    
+    .quote {
+      font-family: 'Yomogi', cursive;
+      font-size: 16px;
+      background-color: rgba(89, 60, 71, 0.05);
+      padding: 15px;
+      border-radius: 8px;
+      position: relative;
+      margin: 20px 0;
+      border-left: 4px solid var(--fashion-1);
+    }
+    
+    .quote::before {
+      content: "❝";
+      font-size: 24px;
+      color: var(--fashion-1);
+      position: absolute;
+      top: -5px;
+      left: 5px;
+    }
+    
+    .quote::after {
+      content: "❞";
+      font-size: 24px;
+      color: var(--fashion-1);
+      position: absolute;
+      bottom: -15px;
+      right: 5px;
+    }
+    
+    .method-table {
+      width: 100%;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    
+    .method-table th, .method-table td {
+      padding: 8px;
+      text-align: left;
+      border: 1px solid #eee;
+    }
+    
+    .method-table th {
+      background-color: rgba(242, 198, 61, 0.2);
+    }
+    
+    .code-block {
+      background-color: #f8f8f8;
+      padding: 12px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 12px;
+      margin: 10px 0;
+      white-space: pre-wrap;
+      color: #333;
+      border-left: 3px solid var(--fashion-4);
+      overflow-x: auto;
+    }
+    
+    .stage-flow {
+      display: flex;
+      justify-content: space-between;
+      margin: 25px 0;
+      position: relative;
+    }
+    
+    .stage-box {
+      width: 22%;
+      background-color: white;
+      border-radius: 8px;
+      padding: 12px;
+      text-align: center;
+      box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .stage-0 { background-color: rgba(242, 230, 61, 0.15); border: 2px solid var(--fashion-2); }
+    .stage-1 { background-color: rgba(242, 198, 61, 0.15); border: 2px solid var(--fashion-3); }
+    .stage-2 { background-color: rgba(242, 91, 5, 0.15); border: 2px solid var(--fashion-4); }
+    .stage-3 { background-color: rgba(242, 68, 5, 0.15); border: 2px solid var(--fashion-5); }
+    
+    .stage-title {
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 5px;
+      font-family: 'Kaisei Decol', serif;
+    }
+    
+    .stage-desc {
+      font-size: 12px;
+    }
+    
+    .stage-flow::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background-color: var(--fashion-1);
+      z-index: 0;
+      transform: translateY(-50%);
+    }
+    
+    .arrow-right {
+      position: absolute;
+      top: 50%;
+      right: -15px;
+      transform: translateY(-50%);
+      width: 0;
+      height: 0;
+      border-top: 8px solid transparent;
+      border-bottom: 8px solid transparent;
+      border-left: 12px solid var(--fashion-1);
+      z-index: 2;
+    }
+    
+    .callout {
+      background-color: rgba(242, 91, 5, 0.1);
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      position: relative;
+    }
+    
+    .callout::before {
+      content: "📌";
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      font-size: 20px;
+    }
+    
+    .callout-content {
+      margin-top: 5px;
+    }
+    
+    .data-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-size: 13px;
+    }
+    
+    .data-table th, .data-table td {
+      padding: 6px 8px;
+      text-align: left;
+      border: 1px solid #ddd;
+    }
+    
+    .data-table th {
+      background-color: rgba(89, 60, 71, 0.1);
+      font-weight: bold;
+    }
+    
+    .qa-item {
+      margin-bottom: 15px;
+      position: relative;
+    }
+    
+    .qa-question {
+      font-weight: bold;
+      color: var(--heading);
+      margin-bottom: 5px;
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .qa-question::before {
+      content: "❓";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    .qa-answer {
+      padding-left: 20px;
+      position: relative;
+    }
+    
+    .qa-answer::before {
+      content: "🔍";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    .checklist {
+      list-style-type: none;
+      margin: 10px 0;
+    }
+    
+    .checklist li {
+      margin-bottom: 8px;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checklist li::before {
+      content: "✅";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    footer {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px dashed var(--fashion-1);
+      font-size: 12px;
+      color: var(--sub-heading);
+      text-align: center;
+    }
+    
+    .action-items {
+      margin-top: 20px;
+      background-color: rgba(242, 68, 5, 0.1);
+      padding: 12px;
+      border-radius: 8px;
+      border-left: 4px solid var(--fashion-5);
+    }
+    
+    .action-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--fashion-5);
+    }
+    
+    .action-list {
+      padding-left: 25px;
+    }
+    
+    .action-list li {
+      margin-bottom: 8px;
+      position: relative;
+    }
+    
+    .action-list li::before {
+      content: "→";
+      position: absolute;
+      left: -15px;
+      top: 0;
+      color: var(--fashion-4);
+      font-weight: bold;
+    }
+    
+    .hand-drawn {
+      font-family: 'Yomogi', cursive;
+    }
+    
+    @media (max-width: 900px) {
+      .content {
+        grid-template-columns: 1fr;
+      }
+      
+      .section-wide, .section-full {
+        grid-column: span 1;
+      }
+      
+      .stage-flow {
+        flex-direction: column;
+        gap: 20px;
+      }
+      
+      .stage-box {
+        width: 100%;
+      }
+      
+      .stage-flow::before {
+        display: none;
+      }
+      
+      .arrow-right {
+        transform: rotate(90deg);
+        top: auto;
+        right: auto;
+        bottom: -15px;
+        left: 50%;
+        margin-left: -6px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-container">
+        <h1>転移学習ロードマップ</h1>
+        <div class="subtitle">3ステージでマスターする『学習済みモデルの賢い使い方』</div>
+      </div>
+      <div class="date-container">
+        <div>📅 2025-04-28</div>
+      </div>
+    </header>
+    
+    <div class="content">
+      <!-- なぜ転移学習か？ -->
+      <div class="section section-full">
+        <h2><span class="icon">🔍</span> なぜ転移学習か？</h2>
+        
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>フルスクラッチ</th>
+              <th>転移学習</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>学習データ</td>
+              <td>数十万〜数千万</td>
+              <td><span class="highlight">100〜数千で OK</span> 👍</td>
+            </tr>
+            <tr>
+              <td>学習時間</td>
+              <td>数時間〜数週間</td>
+              <td><span class="highlight">数分〜数時間</span> ⏱️</td>
+            </tr>
+            <tr>
+              <td>GPU コスト</td>
+              <td>$$$</td>
+              <td><span class="highlight">$</span> 💰</td>
+            </tr>
+            <tr>
+              <td>精度</td>
+              <td>データが多ければ最強</td>
+              <td><span class="highlight">小データでも高精度</span> 📈</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="quote">
+          <strong>エッセンス：</strong>大規模データで得た"基礎知識"を <span class="highlight">再利用</span> し、少データのタスクへ "引き継ぐ"
+        </div>
+      </div>
+      
+      <!-- ロードマップ全体像 -->
+      <div class="section section-full">
+        <h2><span class="icon">🗺️</span> ロードマップ全体像</h2>
+        
+        <div class="stage-flow">
+          <div class="stage-box stage-0">
+            <div class="stage-title">Stage 0</div>
+            <div class="stage-desc">特徴量抽出<br>(Feature Extract)</div>
+            <div class="arrow-right"></div>
+          </div>
+          
+          <div class="stage-box stage-1">
+            <div class="stage-title">Stage 1</div>
+            <div class="stage-desc">フルファインチューン<br>(Full Fine-tune)</div>
+            <div class="arrow-right"></div>
+          </div>
+          
+          <div class="stage-box stage-2">
+            <div class="stage-title">Stage 2</div>
+            <div class="stage-desc">軽量微調整<br>(LoRA / QLoRA)</div>
+            <div class="arrow-right"></div>
+          </div>
+          
+          <div class="stage-box stage-3">
+            <div class="stage-title">Stage 3</div>
+            <div class="stage-desc">Few-shot<br>Prompting</div>
+          </div>
+        </div>
+        
+        <div class="callout">
+          <div class="callout-content hand-drawn">
+            <p>• Stage 0: 重みを凍結し「特徴量抽出器」として使う</p>
+            <p>• Stage 1: 全層を再学習＝フルファインチューニング</p>
+            <p>• Stage 2: アダプタ層のみ学習＝軽量ファインチューニング</p>
+            <p>• Stage 3: 重みを一切触らず、プロンプトや数個の例で性能を引き出す</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stage 0 特徴量抽出 -->
+      <div class="section">
+        <h2><span class="icon">0️⃣</span> Stage 0 — 特徴量抽出（全凍結）</h2>
+        
+        <div class="card">
+          <strong>使いどころ</strong> 🎯
+          <ul class="hand-drawn" style="margin-left: 20px; margin-top: 5px;">
+            <li>データがごく少量（&lt;1k）</li>
+            <li>モデルを"下流モデル"の前処理に使いたい</li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <strong>実装例（画像分類 × PyTorch）</strong> 💻
+          <div class="code-block">from torchvision import models
+backbone = models.efficientnet_b0(weights="IMAGENET1K_V1")
+backbone.classifier[1].requires_grad_(False)  # 全層凍結
+
+# 特徴量 1280-d → 自前分類器
+import torch.nn as nn
+model = nn.Sequential(
+    backbone,
+    nn.Linear(1000, 128),
+    nn.ReLU(),
+    nn.Linear(128, 5)  # クラス数
+)</div>
+        </div>
+        
+        <div class="callout">
+          <div class="callout-content hand-drawn">
+            <p>• メリット：学習パラメータが最後の層のみ → 過学習しにくい</p>
+            <p>• デメリット：データが増えても"基礎特徴"を更新できない</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stage 1 フルファインチューニング -->
+      <div class="section">
+        <h2><span class="icon">1️⃣</span> Stage 1 — フルファインチューニング</h2>
+        
+        <div class="card">
+          <strong>使いどころ</strong> 🎯
+          <ul class="hand-drawn" style="margin-left: 20px; margin-top: 5px;">
+            <li>データ 5k〜数万</li>
+            <li>ハード要件：GPU RAM ≧ 24 GB（Vision） / 48 GB（LLM）</li>
+          </ul>
+        </div>
+        
+        <div class="card">
+          <strong>実装例（NLP × Hugging Face）</strong> 💻
+          <div class="code-block">from transformers import AutoModelForSequenceClassification, Trainer
+model = AutoModelForSequenceClassification.from_pretrained(
+    "microsoft/deberta-v3-base", 
+    num_labels=3
+)
+trainer = Trainer(
+    model=model, 
+    train_dataset=train_ds, 
+    eval_dataset=val_ds
+)
+trainer.train()</div>
+        </div>
+        
+        <div class="callout">
+          <div class="callout-content hand-drawn">
+            <p>• テクニック：学習率を 1e-5〜2e-5、Layer-wise LR Decay を使うと安定</p>
+            <p>• 注意：Catastrophic Forgetting（元知識の喪失）を避けるため小 LR & Early Stop</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Stage 2 軽量ファインチューニング -->
+      <div class="section">
+        <h2><span class="icon">2️⃣</span> Stage 2 — 軽量ファインチューニング</h2>
+        
+        <table class="method-table">
+          <thead>
+            <tr>
+              <th>メソッド</th>
+              <th>仕組み</th>
+              <th>メモリ削減</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>LoRA</td>
+              <td>重みに ΔW = ABᵀ を追加（低ランク行列のみ学習）</td>
+              <td>↓ 10–30×</td>
+            </tr>
+            <tr>
+              <td>QLoRA</td>
+              <td>4bit 量子化 + LoRA</td>
+              <td>↓ 20–40×</td>
+            </tr>
+            <tr>
+              <td>IA³, Adapter</td>
+              <td>各層に 1D ゲインを学習</td>
+              <td>↓ 15×</td>
+            </tr>
+          </tbody>
+        </table>
+        
+        <div class="card">
+          <strong>実装例（QLoRA × 8 GB GPU）</strong> 💻
+          <div class="code-block">from peft import LoraConfig, get_peft_model
+base = "meta-llama3-8b"
+model = AutoModelForCausalLM.from_pretrained(
+    base, 
+    load_in_4bit=True
+)
+lora_cfg = LoraConfig(
+    task_type="CAUSAL_LM", 
+    r=8, 
+    lora_alpha=32, 
+    target_modules=["q_proj","v_proj"]
+)
+model = get_peft_model(model, lora_cfg)
+model.train()  # 数時間で完了</div>
+        </div>
+      </div>
+      
+      <!-- Stage 3 Few-shot / Prompt Tuning -->
+      <div class="section section-wide">
+        <h2><span class="icon">3️⃣</span> Stage 3 — Few-shot / Prompt Tuning</h2>
+        
+        <div class="card">
+          <strong>パターン</strong> 🔄
+          <ol class="hand-drawn" style="margin-left: 30px; margin-top: 5px;">
+            <li>
+              <strong>Few-shot Prompt</strong>
+              <div class="code-block" style="margin-left: 20px; font-size: 12px;">
+Q: テキスト → ポジ/ネガ？
+A: ネガ
+...
+              </div>
+            </li>
+            <li>
+              <strong>Instruction Tuning（例: Alpaca, Flan）</strong>
+              <div style="margin-left: 20px; font-size: 12px;">
+                ・ 既存データを"指示＋応答"形式へ再構成
+              </div>
+            </li>
+            <li>
+              <strong>Prefix / Soft Prompt</strong>
+              <div style="margin-left: 20px; font-size: 12px;">
+                ・ Embedding に学習可能な"仮想トークン"を追加（パラメータ 1–5 %）
+              </div>
+            </li>
+          </ol>
+        </div>
+        
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>データ量</th>
+              <th>ベストプラクティス</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>10 件未満</td>
+              <td>Zero/Few-shot Prompt</td>
+            </tr>
+            <tr>
+              <td>10–1000</td>
+              <td>Prefix Tuning / Soft Prompt</td>
+            </tr>
+            <tr>
+              <td>1k 以上</td>
+              <td>LoRA → フルファイン ←データが多ければ</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- ケーススタディ -->
+      <div class="section">
+        <h2><span class="icon">📊</span> ケーススタディ</h2>
+        
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>業界</th>
+              <th>タスク</th>
+              <th>Stage</th>
+              <th>成果</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>医療</td>
+              <td>CT 画像の腫瘍分類</td>
+              <td>Stage 0 (EffNet)</td>
+              <td>精度 89→94 % / データ 800 枚</td>
+            </tr>
+            <tr>
+              <td>チャットサポート</td>
+              <td>FAQ ボット</td>
+              <td>Stage 2 (QLoRA)</td>
+              <td>精度 74→92 %、RAM 12 GB</td>
+            </tr>
+            <tr>
+              <td>金融</td>
+              <td>決算要約</td>
+              <td>Stage 3 (Instr. Tuned Llama)</td>
+              <td>要約品質 +1.2 ROUGE</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <!-- よくある Q&A -->
+      <div class="section section-wide">
+        <h2><span class="icon">❓</span> よくある Q&A</h2>
+        
+        <div class="qa-item">
+          <div class="qa-question">Q1. どのプレトレモデルを選ぶ？</div>
+          <div class="qa-answer hand-drawn">
+            Vision: 自然画像→ImageNet ViT/ConvNeXt。特殊なら MedSAM・PlantDoc 等を探す<br>
+            NLP : モノリンガル→Llama-3, 多言語→XLM-R or mT5
+          </div>
+        </div>
+        
+        <div class="qa-item">
+          <div class="qa-question">Q2. データが極端に偏っている</div>
+          <div class="qa-answer hand-drawn">
+            Stage 0 or 2 で Class Weight/ Focal Loss。必要なら Data Augment (MixUp, CutMix)
+          </div>
+        </div>
+        
+        <div class="qa-item">
+          <div class="qa-question">Q3. ライセンス問題は？</div>
+          <div class="qa-answer hand-drawn">
+            商用利用なら Apache-2 or MIT を選択。Llama-3 は Community License で制限あり。
+          </div>
+        </div>
+      </div>
+      
+      <!-- チェックリスト -->
+      <div class="section">
+        <h2><span class="icon">✅</span> チェックリスト</h2>
+        
+        <ul class="checklist">
+          <li>プレトレモデルとタスクのドメイン整合を確認</li>
+          <li>GPU/VRAM とメソッド選択 (LoRA ≒ 8 GB, QLoRA ≒ 6 GB)</li>
+          <li>評価指標（F1, ROUGE, mAP …）を事前定義</li>
+          <li>早期停止 & 学習曲線で過学習監視</li>
+          <li>推論時量子化 (INT8) の有無でサービングコスト最小化</li>
+        </ul>
+      </div>
+      
+      <!-- まとめ -->
+      <div class="section section-full">
+        <h2><span class="icon">📝</span> まとめ</h2>
+        
+        <ol class="steps">
+          <li class="step">
+            <div class="step-number">1</div>
+            <div>転移学習は Stage 0 → 3 の階段。データ量・リソース・精度で選択。</div>
+          </li>
+          <li class="step">
+            <div class="step-number">2</div>
+            <div>軽量化手法（LoRA/QLoRA）により ノート PC でも LLM 微調整が現実的。</div>
+          </li>
+          <li class="step">
+            <div class="step-number">3</div>
+            <div>成功の鍵は ドメイン近接性 と 適切な正則化。</div>
+          </li>
+          <li class="step">
+            <div class="step-number">4</div>
+            <div>実装は Hugging Face + PEFT が最速。まずは Stage 0 → 逐次アップグレードがおすすめ。</div>
+          </li>
+        </ol>
+        
+        <div class="action-items">
+          <div class="action-title">行動アイテム</div>
+          <ol class="action-list">
+            <li>自分のデータサイズを数えて Stage を決定</li>
+            <li>ベースモデルをライセンス込みで選定</li>
+            <li>PEFT or Trainer でファインチューニングを試してみましょう！</li>
+          </ol>
+        </div>
+      </div>
+      
+      <footer>
+        転移学習ロードマップ — 3 ステージでマスターする『学習済みモデルの賢い使い方』 | 2025-04-28
+      </footer>

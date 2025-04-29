@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI時代のデータ基盤設計 - グラフィックレコーディング</title>
+  <link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --text-dark: #334155;
+      --heading-blue: #1e40af;
+      --subheading: #475569;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      margin: 0;
+      padding: 20px;
+      background-color: #FAFAFA;
+      color: var(--text-dark);
+      line-height: 1.4;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      border-bottom: 4px dashed var(--fashion-1);
+      padding-bottom: 20px;
+      position: relative;
+    }
+    
+    .title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      margin: 0;
+      max-width: 80%;
+      position: relative;
+    }
+    
+    .title::after {
+      content: "";
+      position: absolute;
+      bottom: -10px;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: url("data:image/svg+xml,%3Csvg width='100' height='6' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0,3 C 10,0 15,6 20,3 S 30,0 40,3 50,6 60,3 70,0 80,3 90,6 100,3' stroke='%23F25C05' stroke-width='2' fill='none'/%3E%3C/svg%3E") repeat-x;
+      background-size: 100px 6px;
+    }
+    
+    .date-source {
+      font-family: 'Yomogi', cursive;
+      text-align: right;
+      font-size: 14px;
+      color: var(--subheading);
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+    
+    .section {
+      margin-bottom: 25px;
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+      position: relative;
+      backdrop-filter: blur(10px);
+      border: 2px solid;
+      border-image: linear-gradient(45deg, var(--fashion-3), var(--fashion-2)) 1;
+    }
+    
+    .section-title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 18px;
+      color: var(--heading-blue);
+      margin-top: 0;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 2px dotted var(--fashion-4);
+    }
+    
+    .section-title::before {
+      content: "✏️";
+      margin-right: 8px;
+    }
+    
+    .section-content {
+      font-size: 14px;
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+      font-weight: bold;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: -5px;
+      left: 10px;
+      width: 20px;
+      height: 20px;
+      background-color: var(--fashion-2);
+      border-radius: 50%;
+      z-index: -1;
+      opacity: 0.5;
+    }
+    
+    .arrow {
+      position: absolute;
+      width: 50px;
+      height: 30px;
+      background: url("data:image/svg+xml,%3Csvg width='50' height='30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M 0,15 C 10,5 20,25 30,15 S 40,5 45,15 L 50,15 L 45,10 M 45,15 L 45,20' stroke='%23F25C05' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    
+    th, td {
+      border: 2px dashed var(--fashion-1);
+      padding: 8px;
+      text-align: left;
+      font-size: 14px;
+    }
+    
+    th {
+      background-color: rgba(242, 198, 61, 0.3);
+      font-weight: bold;
+    }
+    
+    .icon {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+    
+    .key-component {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 10px;
+    }
+    
+    .key-component-icon {
+      flex: 0 0 30px;
+      font-size: 20px;
+      color: var(--fashion-4);
+    }
+    
+    .key-component-content {
+      flex: 1;
+    }
+    
+    .key-component-title {
+      font-weight: bold;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+    
+    .bubble {
+      position: relative;
+      background-color: rgba(242, 230, 61, 0.2);
+      border-radius: 20px;
+      padding: 12px 15px;
+      margin: 15px 0;
+      border: 2px solid var(--fashion-3);
+    }
+    
+    .bubble::before {
+      content: "";
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-left: 8px solid transparent;
+      border-right: 8px solid transparent;
+      border-bottom: 12px solid var(--fashion-3);
+    }
+    
+    .doodle-circle {
+      position: absolute;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      border: 3px dashed var(--fashion-2);
+      opacity: 0.2;
+      z-index: -1;
+    }
+    
+    .banner {
+      position: relative;
+      background-color: var(--fashion-1);
+      color: white;
+      padding: 8px 15px;
+      border-radius: 6px;
+      margin: 15px 0;
+      text-align: center;
+      transform: rotate(-1deg);
+    }
+    
+    .banner::before,
+    .banner::after {
+      content: "";
+      position: absolute;
+      width: 15px;
+      height: 15px;
+      background-color: var(--fashion-1);
+      top: 50%;
+      transform: translateY(-50%) rotate(45deg);
+    }
+    
+    .banner::before {
+      left: -7px;
+    }
+    
+    .banner::after {
+      right: -7px;
+    }
+    
+    .handdrawn-box {
+      border: 3px solid;
+      border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='5' y='5' width='90' height='90' rx='10' stroke='%23593C47' stroke-width='4' fill='none' stroke-dasharray='10 5'/%3E%3C/svg%3E") 20 / 10px round;
+      padding: 15px;
+      margin: 15px 0;
+    }
+    
+    .flow-diagram {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      margin: 15px 0;
+    }
+    
+    .flow-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      background-color: rgba(242, 92, 5, 0.1);
+      border-radius: 8px;
+      position: relative;
+    }
+    
+    .flow-item::after {
+      content: "↓";
+      position: absolute;
+      bottom: -14px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 18px;
+      color: var(--fashion-4);
+    }
+    
+    .flow-item:last-child::after {
+      content: "";
+    }
+    
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
+    
+    .footer {
+      text-align: center;
+      margin-top: 30px;
+      padding-top: 15px;
+      font-size: 12px;
+      color: var(--subheading);
+      border-top: 2px dashed var(--fashion-1);
+    }
+    
+    /* レスポンシブ対応 */
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+      
+      .title {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <div class="header">
+      <h1 class="title">AI 時代のデータ基盤設計</h1>
+      <div class="date-source">
+        2025-04-28 📅<br>
+        Feature Store・Vector DB・ストリーミングを組み込むモダンアーキテクチャ
+      </div>
+    </div>
+    
+    <!-- メインコンテンツ -->
+    <div class="main-content">
+      <!-- 左カラム -->
+      <div>
+        <!-- ゴールと課題整理 -->
+        <div class="section">
+          <h2 class="section-title">📌 ゴールと課題整理</h2>
+          <div class="section-content">
+            <div class="bubble">
+              <p><span class="highlight">洞察</span>：AI には <strong>バッチ × ストリーム × 特徴量共有 × ベクトル検索</strong> が同居する基盤が必要。</p>
+            </div>
+            <table>
+              <tr>
+                <th>目的</th>
+                <th>従来型 DWH だけでは起きる課題</th>
+              </tr>
+              <tr>
+                <td><strong>① データ品質の一貫性</strong></td>
+                <td>Notebook ごとに前処理がバラバラ → 本番とテストで食い違う</td>
+              </tr>
+              <tr>
+                <td><strong>② オンライン推論高速化</strong></td>
+                <td>API が低レイテンシ (&lt;100 ms) 必須 → DWH には遅い</td>
+              </tr>
+              <tr>
+                <td><strong>③ 非構造データ対応</strong></td>
+                <td>画像・テキストを SQL 型に無理矢理詰めると検索が困難</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <!-- アーキテクチャ概要 -->
+        <div class="section">
+          <h2 class="section-title">🏗️ 3階層アーキテクチャ概要</h2>
+          <div class="section-content">
+            <div class="handdrawn-box">
+              <div class="banner">Real-time layer</div>
+              <div class="flow-diagram">
+                <div class="flow-item">CDC / IoT / Kafka</div>
+                <div class="flow-item">Stream Processing (Flink / Spark S.)</div>
+                <div class="grid-2col">
+                  <div class="flow-item">Online Feature Store<br>(Feast / Tecton OCF)</div>
+                  <div class="flow-item">Vector DB<br>(Pinecone / Weaviate)</div>
+                </div>
+              </div>
+              
+              <div class="banner">Batch layer</div>
+              <div class="flow-diagram">
+                <div class="flow-item">Data Lake (S3 / GCS / ADLS)</div>
+                <div class="flow-item">ETL (Spark / dbt)</div>
+                <div class="flow-item">Offline Feature Store</div>
+              </div>
+              
+              <div style="text-align: center; margin-top: 20px;">
+                <div style="display: inline-block; padding: 10px; border: 2px solid var(--fashion-4); border-radius: 8px;">
+                  Prediction Service &lt;50ms
+                </div>
+              </div>
+            </div>
+            
+            <div class="key-component">
+              <div class="key-component-icon">🔄</div>
+              <div class="key-component-content">
+                <div class="key-component-title">Stream Ingest</div>
+                <p>Kafka, Pulsar, Kinesis<br>高頻度データをマイクロバッチ／Exactly-once</p>
+              </div>
+            </div>
+            
+            <div class="key-component">
+              <div class="key-component-icon">⚙️</div>
+              <div class="key-component-content">
+                <div class="key-component-title">Stream Proc.</div>
+                <p>Apache Flink, Spark Structured Streaming<br>Online aggregation, Window join</p>
+              </div>
+            </div>
+            
+            <div class="key-component">
+              <div class="key-component-icon">🗃️</div>
+              <div class="key-component-content">
+                <div class="key-component-title">Feature Store</div>
+                <p>Feast, Tecton, Vertex AI FS<br>"同一計算ロジック" を Offline / Online 共有</p>
+              </div>
+            </div>
+            
+            <div class="key-component">
+              <div class="key-component-icon">🔍</div>
+              <div class="key-component-content">
+                <div class="key-component-title">Vector DB</div>
+                <p>Pinecone, Weaviate, pgvector<br>埋め込み検索 (RAG, 近似 kNN)</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 中央カラム -->
+      <div>
+        <!-- Feature Store 設計の要点 -->
+        <div class="section">
+          <h2 class="section-title">🗄️ Feature Store 設計の要点</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>項目</th>
+                <th>推奨ベストプラクティス</th>
+              </tr>
+              <tr>
+                <td>エンティティキー</td>
+                <td>user_id, item_id など一意キーを定義</td>
+              </tr>
+              <tr>
+                <td>ティンギング</td>
+                <td>Event-time と Ingest-time の2列で遅延補正</td>
+              </tr>
+              <tr>
+                <td>オンライン Store</td>
+                <td>Redis / DynamoDB (&lt;10 ms), Scylla(低レイテンシ)</td>
+              </tr>
+              <tr>
+                <td>オフライン Store</td>
+                <td>Parquet + Hive Metastore / BigQuery</td>
+              </tr>
+            </table>
+            
+            <div class="bubble">
+              <p><span class="highlight">メリット</span>:</p>
+              <ul>
+                <li>"学習と推論の特徴量ずれ" を根絶</li>
+                <li>再利用で 80% の重複コード削減 (Airbnb, 事例)</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Vector DB を織り込む理由 -->
+        <div class="section">
+          <h2 class="section-title">🧩 Vector DB を織り込む理由</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>ユースケース</th>
+                <th>従来型 DB の限界</th>
+                <th>Vector DB の利点</th>
+              </tr>
+              <tr>
+                <td>RAG</td>
+                <td>LIKE / TF-IDF 検索のみ</td>
+                <td>句読点や言い回しが違っても意味近傍を取得</td>
+              </tr>
+              <tr>
+                <td>レコメンド</td>
+                <td>単一 key ルックアップ</td>
+                <td>user/item embedding で Cold-start を軽減</td>
+              </tr>
+              <tr>
+                <td>異常検知</td>
+                <td>閾値判定</td>
+                <td>高次元センサー埋め込みの外れ点探索</td>
+              </tr>
+            </table>
+            
+            <div class="card">
+              <p><span class="highlight">インデックス</span>: HNSW (高速 & 高再現)、IVF-PQ (低メモリ)</p>
+              <p><span class="highlight">ハイブリッド検索</span>: BM25 + Embedding で "キーワード"＋"意味" を両取り</p>
+            </div>
+          </div>
+        </div>
+        
+        <!-- データ更新パターン -->
+        <div class="section">
+          <h2 class="section-title">🔄 データ更新パターン</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>パターン</th>
+                <th>適合例</th>
+                <th>更新頻度</th>
+                <th>技術</th>
+              </tr>
+              <tr>
+                <td>Lambda</td>
+                <td>IoT デバイス + 月次分析</td>
+                <td>高 + 低</td>
+                <td>Kafka (リアル) + Spark Batch</td>
+              </tr>
+              <tr>
+                <td>Kappa</td>
+                <td>クリックストリームのみ</td>
+                <td>高</td>
+                <td>Flink (永続ログ)</td>
+              </tr>
+              <tr>
+                <td>Delta</td>
+                <td>SaaS ログ + 日次 ETL</td>
+                <td>中</td>
+                <td>Delta Lake Merge-on-Read</td>
+              </tr>
+            </table>
+            
+            <div class="bubble">
+              <p><span class="highlight">Tip</span>：Vector DB は Delta 方式 と相性良 (DELETE, UPSERT を nightly で一括)</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右カラム -->
+      <div>
+        <!-- ガバナンス & セキュリティ -->
+        <div class="section">
+          <h2 class="section-title">🔒 ガバナンス & セキュリティ</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>項目</th>
+                <th>推奨</th>
+              </tr>
+              <tr>
+                <td>データリネージ</td>
+                <td>OpenLineage + Marquez</td>
+              </tr>
+              <tr>
+                <td>カタログ</td>
+                <td>DataHub / Amundsen でスキーマ＆権限</td>
+              </tr>
+              <tr>
+                <td>PII マスキング</td>
+                <td>LakeFS Hooks + Encryption</td>
+              </tr>
+              <tr>
+                <td>アクセス制御</td>
+                <td>RBAC + Attribute-based (email domain, region)</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <!-- 運用指標 (SLO) -->
+        <div class="section">
+          <h2 class="section-title">📊 運用指標 (SLO)</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>レイヤ</th>
+                <th>指標</th>
+                <th>目標例</th>
+              </tr>
+              <tr>
+                <td>Stream Ingest</td>
+                <td>Lag</td>
+                <td>&lt; 5 s</td>
+              </tr>
+              <tr>
+                <td>Online FS</td>
+                <td>p95 GET</td>
+                <td>&lt; 10 ms</td>
+              </tr>
+              <tr>
+                <td>Vector DB</td>
+                <td>Recall@10</td>
+                <td>&gt; 0.93</td>
+              </tr>
+              <tr>
+                <td>全体</td>
+                <td>Feature Freshness</td>
+                <td>&lt; 15 min</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+        
+        <!-- スタック別リファレンスアーキテクチャ -->
+        <div class="section">
+          <h2 class="section-title">🧰 スタック別リファレンスアーキテクチャ</h2>
+          <div class="section-content">
+            <div class="card">
+              <p><span class="highlight">オール OSS (低コスト & カスタム自由)</span></p>
+              <ul>
+                <li>Kafka → Flink → Feast + Redis / pgvector → FastAPI サービング</li>
+                <li>IaC: Terraform + Helm</li>
+                <li>監視: Prometheus / Grafana / OpenTelemetry</li>
+              </ul>
+            </div>
+            
+            <div class="card">
+              <p><span class="highlight">マネージド重視 (保守最低限)</span></p>
+              <ul>
+                <li>GCP: Pub/Sub → Dataflow → Vertex AI Feature Store → Pinecone SaaS → Cloud Run</li>
+                <li>AWS: Kinesis → Glue Streaming → SageMaker Feature Store → OpenSearch k-NN → SageMaker Endpoint</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+        
+        <!-- よくある落とし穴 -->
+        <div class="section">
+          <h2 class="section-title">⚠️ よくある落とし穴</h2>
+          <div class="section-content">
+            <table>
+              <tr>
+                <th>症状</th>
+                <th>原因</th>
+                <th>解決策</th>
+              </tr>
+              <tr>
+                <td>Feature 再計算遅延</td>
+                <td>バッチ再実行が全量</td>
+                <td>Incremental Merge (Delta/iCEberg)</td>
+              </tr>
+              <tr>
+                <td>オンライン Store 同期漏れ</td>
+                <td>スケジューラ分散</td>
+                <td>Feast On-Demand Feature + CDC</td>
+              </tr>
+              <tr>
+                <td>Vector DB メモリ爆発</td>
+                <td>Embedding サイズ大</td>
+                <td>① 量子化 ② Top-N TTL 削除</td>
+              </tr>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- まとめと次アクション -->
+    <div class="section" style="grid-column: span 3; margin-top: 20px;">
+      <h2 class="section-title">✅ まとめと次アクション</h2>
+      <div class="section-content">
+        <ol>
+          <li>AI 時代の基盤は <span class="highlight">"Feature Store × Vector DB × ストリーム"</span> の三本柱</li>
+          <li>オンライン / オフライン差異をなくす 設計が精度と運用コストを両立</li>
+          <li>ガバナンスは OSS (DataHub) or マネージド (Databricks Unity) を早期導入</li>
+          <li>PoC は Kafka → Feast Local → Pinecone Free Plan で 1 週間 で動く</li>
+        </ol>
+        
+        <div class="banner" style="background-color: var(--fashion-3); color: var(--fashion-1); font-weight: bold;">
+          Takeaway
+        </div>
+        <p>まず Feature Store を立て、学習と推論で同じコードを再利用できる状態を作る。その後に Vector DB を追加して検索拡張系ユースケースへ展開しましょう。</p>
+      </div>
+    </div>
+    
+    <!-- フッター -->
+    <div class="footer">
+      <p>© 2025 AI時代のデータ基盤設計 — Feature Store・Vector DB・ストリーミングを組み込むモダンアーキテクチャ</p>
+    </div>
+    
+    <!-- 装飾的な要素 -->
+    <div class="doodle-circle" style="top: 120px; right: 50px;"></div>
+    <div class="doodle-circle" style="bottom: 180px; left: 80px;"></div>
+  </div>
+</body>
+</html>

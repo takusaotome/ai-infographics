@@ -1,0 +1,688 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIセキュリティ対策10章 — 企画〜運用まで守りを固める完全ガイド</title>
+    <link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <style>
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-section: #1e40af;
+            --text-subtitle: #475569;
+            --bg-light: #ffffff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+
+        body {
+            font-family: 'Kaisei Decol', serif;
+            color: var(--text-dark);
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+            background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23593c47' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: var(--bg-light);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px var(--shadow);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 2px dashed var(--fashion-4);
+            padding-bottom: 10px;
+        }
+
+        .title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin: 0;
+            padding: 10px 0;
+            background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .date {
+            font-family: 'Yomogi', cursive;
+            color: var(--text-subtitle);
+            font-size: 14px;
+            text-align: right;
+        }
+
+        .description {
+            font-family: 'Kaisei Decol', serif;
+            color: var(--text-subtitle);
+            font-size: 16px;
+            margin-bottom: 20px;
+            padding: 15px;
+            background-color: rgba(242, 230, 61, 0.1);
+            border-left: 3px solid var(--fashion-3);
+            border-radius: 6px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .chapter-map {
+            grid-column: 1 / -1;
+            padding: 15px;
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 4px 8px var(--shadow);
+            border: 1px solid rgba(89, 60, 71, 0.2);
+        }
+
+        .map-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--text-section);
+            font-weight: bold;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            position: relative;
+        }
+
+        .map-title::before {
+            content: "📍";
+            margin-right: 8px;
+        }
+
+        .quick-map {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-family: 'Kaisei Decol', serif;
+        }
+
+        .quick-map th {
+            background-color: rgba(89, 60, 71, 0.1);
+            color: var(--fashion-1);
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .quick-map td {
+            padding: 8px;
+            border: 1px solid #ddd;
+            font-size: 14px;
+        }
+
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 4px 8px var(--shadow);
+            border: 1px solid rgba(89, 60, 71, 0.2);
+            margin-bottom: 20px;
+        }
+
+        .chapter-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--text-section);
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--fashion-4);
+            display: flex;
+            align-items: center;
+        }
+
+        .chapter-title::before {
+            margin-right: 8px;
+        }
+
+        .chapter-1::before { content: "🔒"; }
+        .chapter-2::before { content: "🔑"; }
+        .chapter-3::before { content: "🛡️"; }
+        .chapter-4::before { content: "⚠️"; }
+        .chapter-5::before { content: "🔍"; }
+        .chapter-6::before { content: "🔏"; }
+        .chapter-7::before { content: "🔧"; }
+        .chapter-8::before { content: "🗝️"; }
+        .chapter-9::before { content: "📊"; }
+        .chapter-10::before { content: "👥"; }
+
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+            font-weight: bold;
+        }
+
+        .threat {
+            margin-top: 10px;
+            padding: 8px;
+            background-color: rgba(242, 92, 5, 0.1);
+            border-left: 3px solid var(--fashion-4);
+            border-radius: 6px;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .threat::before {
+            content: "⚡ 脅威例: ";
+            font-weight: bold;
+        }
+
+        .alert {
+            margin-top: 5px;
+            padding: 8px;
+            background-color: rgba(242, 68, 5, 0.1);
+            border-left: 3px solid var(--fashion-5);
+            border-radius: 6px;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .alert::before {
+            content: "🚨 アラート: ";
+            font-weight: bold;
+        }
+
+        .measures {
+            margin-top: 10px;
+        }
+
+        .measures::before {
+            content: "🛠️ 対策";
+            font-weight: bold;
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .measure-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+
+        .measure-list li {
+            position: relative;
+            margin-bottom: 5px;
+            font-size: 14px;
+            padding-left: 15px;
+        }
+
+        .measure-list li::before {
+            content: "→";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+        }
+
+        .mini-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .mini-table th {
+            background-color: rgba(89, 60, 71, 0.1);
+            color: var(--fashion-1);
+            padding: 6px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+
+        .mini-table td {
+            padding: 6px;
+            border: 1px solid #ddd;
+        }
+
+        .checklist {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+        }
+
+        .checklist-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--text-section);
+            margin-bottom: 10px;
+        }
+
+        .checklist-items {
+            list-style-type: none;
+            padding-left: 0;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 10px;
+        }
+
+        .checklist-items li {
+            padding: 8px;
+            background-color: rgba(242, 197, 61, 0.1);
+            border-left: 3px solid var(--fashion-3);
+            border-radius: 6px;
+            font-size: 14px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .checklist-items li::before {
+            content: "☐";
+            margin-right: 8px;
+            color: var(--fashion-4);
+        }
+
+        .summary {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+            padding: 15px;
+            background-color: rgba(89, 60, 71, 0.05);
+            border-radius: 12px;
+            font-family: 'Kaisei Decol', serif;
+        }
+
+        .summary-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--text-section);
+            margin-bottom: 10px;
+        }
+
+        .summary-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+
+        .summary-list li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+
+        .summary-list li::before {
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            color: var(--fashion-1);
+        }
+
+        .summary-list li:nth-child(1)::before { content: "1."; }
+        .summary-list li:nth-child(2)::before { content: "2."; }
+        .summary-list li:nth-child(3)::before { content: "3."; }
+        .summary-list li:nth-child(4)::before { content: "4."; }
+
+        .quote {
+            margin-top: 15px;
+            padding: 10px 15px;
+            background-color: rgba(242, 230, 61, 0.15);
+            border-left: 3px solid var(--fashion-2);
+            border-right: 3px solid var(--fashion-2);
+            border-radius: 6px;
+            font-style: italic;
+            position: relative;
+        }
+
+        .quote::before {
+            content: """;
+            font-size: 24px;
+            color: var(--fashion-3);
+            position: absolute;
+            left: 5px;
+            top: 0;
+        }
+
+        .quote::after {
+            content: """;
+            font-size: 24px;
+            color: var(--fashion-3);
+            position: absolute;
+            right: 5px;
+            bottom: 0;
+        }
+
+        .hand-drawn {
+            font-family: 'Yomogi', cursive;
+        }
+
+        .key-point {
+            display: inline-block;
+            font-weight: bold;
+            border-bottom: 2px solid var(--fashion-4);
+            margin: 0 2px;
+        }
+
+        .footer {
+            grid-column: 1 / -1;
+            margin-top: 20px;
+            padding-top: 10px;
+            border-top: 2px dashed var(--fashion-4);
+            font-size: 12px;
+            text-align: center;
+            color: var(--text-subtitle);
+        }
+
+        /* 手書き風の要素 */
+        .hand-arrow {
+            display: inline-block;
+            font-family: 'Yomogi', cursive;
+            color: var(--fashion-4);
+            transform: rotate(2deg);
+        }
+
+        .bubble {
+            position: relative;
+            background-color: rgba(242, 230, 61, 0.2);
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: 'Yomogi', cursive;
+        }
+
+        .bubble::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(242, 230, 61, 0.2) transparent;
+        }
+
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .checklist-items {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">AIセキュリティ対策10章 🔐</h1>
+            <div class="date">2025年4月28日</div>
+        </div>
+
+        <div class="description">
+            モデル改ざん・データ漏えい・逆摂動攻撃……。AIを業務に組み込むと露出する新しいリスクを10の章立てで網羅。ビジネス責任者でも腑に落ちるよう、脅威→対策→実装チェックリストをセットで整理しました。
+        </div>
+
+        <div class="grid">
+            <div class="chapter-map">
+                <h2 class="map-title">章構成とクイックマップ</h2>
+                <table class="quick-map">
+                    <thead>
+                        <tr>
+                            <th>章</th>
+                            <th>攻撃・脅威</th>
+                            <th>主要対策</th>
+                            <th>関連規格</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td><strong>データ汚染</strong><br>(Data Poisoning)</td>
+                            <td>データ検疫・ハッシュ検証</td>
+                            <td>ISO/IEC 27001</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td><strong>モデル盗難</strong><br>(Model Stealing)</td>
+                            <td>API Rate Limit・水印</td>
+                            <td>NIST SP 800-53</td>
+                        </tr>
+                        <tr>
+                            <td>3</td>
+                            <td><strong>逆摂動攻撃</strong><br>(Adversarial Example)</td>
+                            <td>防御的学習・入力サニタイズ</td>
+                            <td>NIST RMF</td>
+                        </tr>
+                        <tr>
+                            <td>4</td>
+                            <td><strong>入力インジェクション</strong><br>(Prompt Injection)</td>
+                            <td>コンテンツフィルタ・RAG 並用</td>
+                            <td>OWASP LLM Top10</td>
+                        </tr>
+                        <tr>
+                            <td>5</td>
+                            <td><strong>推論漏えい</strong><br>(Membership / Attribute Inference)</td>
+                            <td>差分プライバシー・DP-SGD</td>
+                            <td>GDPR, CCPA</td>
+                        </tr>
+                        <tr>
+                            <td>6</td>
+                            <td><strong>モデル改ざん</strong></td>
+                            <td>署名付きモデル + Verify</td>
+                            <td>SLSA</td>
+                        </tr>
+                        <tr>
+                            <td>7</td>
+                            <td><strong>システム脆弱性</strong></td>
+                            <td>SBOM・脆弱性スキャン</td>
+                            <td>OWASP SAMM</td>
+                        </tr>
+                        <tr>
+                            <td>8</td>
+                            <td><strong>鍵・シークレット管理</strong></td>
+                            <td>HSM / KMS / Vault</td>
+                            <td>ISO/IEC 27017</td>
+                        </tr>
+                        <tr>
+                            <td>9</td>
+                            <td><strong>ロギング & インシデント対応</strong></td>
+                            <td>不正リクエスト検知 SIEM 連携</td>
+                            <td>NIST CSF v2</td>
+                        </tr>
+                        <tr>
+                            <td>10</td>
+                            <td><strong>責任共有 & ガバナンス</strong></td>
+                            <td>攻撃階層マトリクス・RACI</td>
+                            <td>EU AI Act, NIST AI RMF</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-1">データ汚染 — "ゴミを入れればゴミが出る"</h3>
+                <div class="threat">サプライヤが納入するセンサーデータに悪意の行を混入</div>
+                <div class="alert">突然モデル精度が下落・特定クラスで異常</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li>ハッシュ値 / メタデータで <span class="highlight">データ整合性検疫</span></li>
+                        <li><span class="highlight">Outlier Detection</span> (Isolation Forest) を ETL に挿入</li>
+                        <li>DVC / LakeFS で <span class="highlight">データバージョン固定</span> → ロールバック</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-2">モデル盗難 — "中身を丸ごとコピー"</h3>
+                <div class="threat">REST API へ大量クエリ ⇒ 重みを近似</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li><span class="highlight">API レート制限</span> + 遅延</li>
+                        <li>クエリパターンを WAF/IDS で監視</li>
+                        <li><span class="highlight">水印 (Guard Model)</span>: 盗用モデルに特定パターンを出力</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-3">逆摂動攻撃 — "見えないノイズで誤判定"</h3>
+                <table class="mini-table">
+                    <thead>
+                        <tr>
+                            <th>攻撃手法</th>
+                            <th>例</th>
+                            <th>防御</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>FGSM</td>
+                            <td>画像に微小ノイズ → STOP標識を最高速標識に</td>
+                            <td><span class="highlight">Adversarial Training</span></td>
+                        </tr>
+                        <tr>
+                            <td>Patch</td>
+                            <td>物理シールで誤検出</td>
+                            <td>入力ノイズ除去・多視点 Ensemble</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-4">入力インジェクション (Prompt Injection)</h3>
+                <div class="threat"><span class="hand-drawn">LLM 特有</span>: 「Ignore previous instructions…」で機密漏えい</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li>プロンプト分離 (システム / ユーザ)</li>
+                        <li><span class="highlight">コンテンツフィルタ</span>: OpenAI Moderation / self-host LLM</li>
+                        <li><span class="highlight">RAG</span> で外部知識に依存し過ぎない</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-5">推論漏えい</h3>
+                <div class="threat"><span class="hand-drawn">Membership Inference</span>: "この患者データは学習に使われた？"</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li>差分プライバシー学習 (DP-SGD, Opacus)</li>
+                        <li>出力摂動 (ε-DP) でシグナルをぼかす</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-6">モデル改ざん</h3>
+                <div class="threat"><span class="hand-drawn">サプライチェーンリスク</span>: 外部モデル / 重みファイル</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li><span class="highlight">署名付きモデル (cosign, Sigstore)</span></li>
+                        <li>SBOM に ML Asset を追加</li>
+                        <li>CI パイプラインで自動署名・検証</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-7">システム脆弱性</h3>
+                <div class="threat"><span class="hand-drawn">ライブラリ CVE</span>: Torch <=1.13 の DLL 競合 etc.</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li><span class="key-point">pip-audit</span>, <span class="key-point">trivy</span>, <span class="key-point">grype</span> でイメージスキャン</li>
+                        <li>Dependabot で自動 PR & GitHub Actions テスト</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-8">鍵・シークレット管理</h3>
+                <div class="threat"><span class="hand-drawn">アンチパターン</span>: `AWS_SECRET=` がソースに残る</div>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li>HashiCorp Vault / AWS KMS / Azure Key Vault</li>
+                        <li>"環境変数より Vault" をルール化</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-9">ロギング & インシデント対応</h3>
+                <table class="mini-table">
+                    <thead>
+                        <tr>
+                            <th>要素</th>
+                            <th>例</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><strong>リクエストログ</strong></td>
+                            <td>入力ハッシュ、ユーザID、応答ID</td>
+                        </tr>
+                        <tr>
+                            <td><strong>モデルメトリクス</strong></td>
+                            <td>レイテンシ、失敗率、精度ドリフト</td>
+                        </tr>
+                        <tr>
+                            <td><strong>SIEM 統合</strong></td>
+                            <td>Splunk / ELK → PagerDuty で自動チケット</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <h3 class="chapter-title chapter-10">責任共有 & ガバナンス</h3>
+                <div class="measures">
+                    <ul class="measure-list">
+                        <li><span class="highlight">RACI マトリクス</span> で役割明確化 (Data, Model, Infrastructure)</li>
+                        <li><span class="highlight">攻撃階層マトリクス</span> (MITRE ATLAS) を年次レビュー</li>
+                        <li>ドキュメンテーション: <span class="highlight">Model Card + Risk Register</span></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="checklist">
+                <h3 class="checklist-title">📋 全章チェックリスト（縮約版）</h3>
+                <ul class="checklist-items">
+                    <li>データ取り込み時に <span class="key-point">ハッシュ照合 & 異常検知</span></li>
+                    <li>API に <span class="key-point">レート制限 & WAF</span></li>
+                    <li>逆摂動耐性テスト (AdvBox, CleverHans)</li>
+                    <li>Prompt Injection シナリオを <span class="key-point">Red Team</span> 実施</li>
+                    <li>DP or 出力フィルタで推論漏えい対策</li>
+                    <li>署名付きモデル & SBOM 生成</li>
+                    <li>CI/CD で CVE スキャン</li>
+                    <li>Secrets は Vault／KMS に保管</li>
+                    <li>ログ → SIEM → PagerDuty の監視ループ</li>
+                    <li>年 1 回の AI リスクレビューと RACI 更新</li>
+                </ul>
+            </div>
+
+            <div class="summary">
+                <h3 class="summary-title">🎯 まとめ</h3>
+                <ul class="summary-list">
+                    <li><span class="key-point">AI セキュリティ</span> は「モデル＋データ＋システム」の三位一体</li>
+                    <li><span class="key-point">リスク分析 → 多層防御 → 運用監視</span> の 3 ステップで実装</li>
+                    <li>規格・ガイドラインを"写経"ではなく <span class="key-point">脅威ベースでマッピング</span> すると抜け漏れが少ない</li>
+                    <li>最初の一手は <span class="key-point">データ検疫 + モデル署名</span> の 2 点から。</li>
+                </ul>
+                <div class="quote">
+                    <span class="hand-drawn">Next Action</span>: 自社モデルを <span class="key-point">pip-audit</span> と <span class="key-point">cosign verify</span> で今すぐ健康診断してみましょう！
+                </div>
+            </div>
+
+            <div class="footer">
+                © 2025 AIセキュリティ対策ガイド | 作成日: 2025年4月28日
+            </div>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>バイアスとバリアンスのトレードオフ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      background-color: #f9f9f9;
+      color: #334155;
+      line-height: 1.4;
+      padding: 20px;
+      font-size: 14px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3z' fill='%23593c47' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      overflow: hidden;
+      padding: 30px;
+      position: relative;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      border-bottom: 2px dashed #593C47;
+      padding-bottom: 15px;
+    }
+    
+    .title-container {
+      width: 70%;
+    }
+    
+    h1 {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-shadow: 1px 1px 1px rgba(0,0,0,0.1);
+      background: linear-gradient(45deg, #593C47, #F24405);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      position: relative;
+    }
+    
+    h1::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      height: 3px;
+      width: 100%;
+      background: linear-gradient(90deg, #F2E63D, #F25C05);
+      border-radius: 3px;
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      color: #475569;
+      font-size: 14px;
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .section {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      position: relative;
+      border: 2px solid transparent;
+      background-clip: padding-box;
+      overflow: visible;
+    }
+    
+    .section::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      z-index: -1;
+      border-radius: 14px;
+      background: linear-gradient(120deg, #F2C53D, #F25C05, #593C47);
+      opacity: 0.7;
+    }
+    
+    h2 {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 20px;
+      color: #593C47;
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid #F2C53D;
+      padding-bottom: 5px;
+    }
+    
+    .column {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+      border: 1px solid #F2E63D;
+      position: relative;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+      font-family: 'Kaisei Decol', serif;
+    }
+    
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px dashed #593C47;
+    }
+    
+    th {
+      background-color: rgba(242, 196, 61, 0.2);
+      font-weight: bold;
+      color: #593C47;
+    }
+    
+    blockquote {
+      background-color: rgba(242, 230, 61, 0.2);
+      border-left: 4px solid #F2C53D;
+      padding: 10px 15px;
+      margin: 15px 0;
+      font-family: 'Yomogi', cursive;
+      position: relative;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    blockquote::before {
+      content: "💡";
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      font-size: 24px;
+    }
+    
+    .formula {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: 1px dashed #593C47;
+      font-family: 'Kaisei Decol', serif;
+      text-align: center;
+    }
+    
+    .checkitem {
+      display: flex;
+      align-items: flex-start;
+      margin-bottom: 12px;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .checkitem::before {
+      content: "✓";
+      display: inline-block;
+      color: #F25C05;
+      font-weight: bold;
+      font-size: 18px;
+      position: absolute;
+      left: 0;
+    }
+    
+    .handdrawn-box {
+      border: 2px solid #593C47;
+      border-radius: 10px;
+      position: relative;
+      padding: 15px;
+      margin: 20px 0;
+      background-color: white;
+    }
+    
+    .key-point {
+      background-color: rgba(242, 68, 5, 0.1);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-left: 4px solid #F24405;
+      font-weight: bold;
+    }
+    
+    .marker-highlight {
+      background: linear-gradient(transparent 60%, rgba(242, 92, 5, 0.3) 40%);
+      padding: 0 2px;
+      font-weight: bold;
+    }
+    
+    .highlights {
+      font-weight: bold;
+      background: linear-gradient(transparent 60%, rgba(242, 196, 61, 0.4) 40%);
+      padding: 0 2px;
+    }
+    
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #475569;
+      font-size: 12px;
+      border-top: 1px dashed #593C47;
+      padding-top: 15px;
+    }
+    
+    .dartboard-container {
+      display: flex;
+      justify-content: space-around;
+      margin: 20px 0;
+    }
+    
+    .dartboard {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      background: radial-gradient(circle, #F25C05 0%, #F25C05 20%, #F2C53D 20%, #F2C53D 40%, #F2E63D 40%, #F2E63D 60%, white 60%, white 80%, #593C47 80%);
+      position: relative;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .learning-curve {
+      width: 100%;
+      height: 180px;
+      background-color: white;
+      border-radius: 8px;
+      position: relative;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .speech-bubble {
+      position: relative;
+      background: rgba(242, 196, 61, 0.2);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 20px 0;
+      font-family: 'Yomogi', cursive;
+    }
+    
+    .speech-bubble::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 20%;
+      width: 0;
+      height: 0;
+      border: 15px solid transparent;
+      border-top-color: rgba(242, 196, 61, 0.2);
+      border-bottom: 0;
+      margin-left: -15px;
+      margin-bottom: -15px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <div class="title-container">
+        <h1>バイアスとバリアンスのトレードオフ</h1>
+        <div>やさしく深掘りする機械学習の核心</div>
+      </div>
+      <div class="date">
+        <div>📅 2025-04-28</div>
+        <div>📊 機械学習解説シリーズ</div>
+      </div>
+    </header>
+    
+    <div class="grid">
+      <!-- 左カラム -->
+      <div class="column">
+        <div class="section">
+          <h2>📌 1. 用語をざっくり定義</h2>
+          <table>
+            <tr>
+              <th>用語</th>
+              <th>ざっくり意味</th>
+              <th>イメージ</th>
+            </tr>
+            <tr>
+              <td><span class="highlights">バイアス (Bias)</span></td>
+              <td>モデルの"かたより"<br>真値からどれだけズレているか</td>
+              <td>ダーツが<b>的の外周</b>にまとまって外れている</td>
+            </tr>
+            <tr>
+              <td><span class="highlights">バリアンス (Variance)</span></td>
+              <td>予測の"ばらつき"<br>データが変わると結果がどれだけ動くか</td>
+              <td>ダーツが<b>あちこち</b>に散らばる</td>
+            </tr>
+          </table>
+          
+          <blockquote>
+            <strong>直感</strong><br>
+            <span class="marker-highlight">高バイアス</span> ＝ 頭が固い → <span class="marker-highlight">学習不足（Underfitting）</span><br>
+            <span class="marker-highlight">高バリアンス</span> ＝ 神経質 → <span class="marker-highlight">学習しすぎ（Overfitting）</span>
+          </blockquote>
+          
+          <div class="dartboard-container">
+            <div>
+              <div class="dartboard" style="position:relative;">
+                <span style="position:absolute; top:10px; left:80px;">🎯</span>
+                <span style="position:absolute; top:15px; left:85px;">🎯</span>
+                <span style="position:absolute; top:20px; left:90px;">🎯</span>
+                <span style="position:absolute; top:25px; left:95px;">🎯</span>
+                <div style="text-align:center; position:absolute; bottom:-25px; left:0; right:0; font-family:'Yomogi',cursive;">高バイアス</div>
+              </div>
+            </div>
+            
+            <div>
+              <div class="dartboard" style="position:relative;">
+                <span style="position:absolute; top:10px; left:40px;">🎯</span>
+                <span style="position:absolute; top:80px; left:60px;">🎯</span>
+                <span style="position:absolute; top:60px; left:20px;">🎯</span>
+                <span style="position:absolute; top:30px; left:90px;">🎯</span>
+                <div style="text-align:center; position:absolute; bottom:-25px; left:0; right:0; font-family:'Yomogi',cursive;">高バリアンス</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>🧮 2. 数式で見る関係 — MSE の分解</h2>
+          <div class="formula">
+            <div style="font-size:20px; font-weight:bold;">
+              <span style="position:relative; display:inline-block;">
+                MSE
+                <span style="position:absolute; top:-20px; left:0; right:0; text-align:center; font-size:12px;">平均二乗誤差</span>
+              </span>
+              = 
+              <span style="position:relative; display:inline-block;">
+                (Bias)²
+                <span style="position:absolute; top:-20px; left:0; right:0; text-align:center; font-size:12px;">かたより</span>
+              </span>
+              + 
+              <span style="position:relative; display:inline-block;">
+                Variance
+                <span style="position:absolute; top:-20px; left:0; right:0; text-align:center; font-size:12px;">ばらつき</span>
+              </span>
+              + 
+              <span style="position:relative; display:inline-block;">
+                σ²
+                <span style="position:absolute; top:-20px; left:0; right:0; text-align:center; font-size:12px;">観測ノイズ</span>
+              </span>
+            </div>
+          </div>
+          
+          <div style="display:flex; justify-content:space-around; flex-wrap:wrap; margin-top:15px;">
+            <div style="text-align:center; padding:5px; max-width:120px;">
+              <div style="font-weight:bold; color:#F25C05;">Bias²</div>
+              <div>モデルの構造的ズレ</div>
+            </div>
+            <div style="text-align:center; padding:5px; max-width:120px;">
+              <div style="font-weight:bold; color:#F25C05;">Variance</div>
+              <div>学習データが変わるたびの不安定さ</div>
+            </div>
+            <div style="text-align:center; padding:5px; max-width:120px;">
+              <div style="font-weight:bold; color:#F25C05;">σ²</div>
+              <div>どうにもできないノイズ</div>
+            </div>
+          </div>
+          
+          <div class="key-point">
+            <div>📍 <span style="font-family:'Yomogi',cursive;">ゴール</span>:</div>
+            <div>Bias² と Variance を<span class="highlights">同時に</span>最小化。</div>
+            <div>ただし片方を下げるともう片方が上がりやすい</div>
+            <div>＝<span class="marker-highlight">トレードオフ</span></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>🔄 3. モデル複雑度との関係</h2>
+          <div style="width:100%; height:200px; background-color:white; border-radius:8px; padding:15px; position:relative; box-shadow:0 2px 5px rgba(0,0,0,0.05);">
+            <div style="position:absolute; height:2px; background-color:#1e40af; top:50%; left:10%; right:10%; transform:translateY(-50%);"></div>
+            
+            <div style="position:absolute; width:12px; height:12px; border-radius:50%; background-color:#F24405; top:50%; left:20%; transform:translate(-50%,-50%); box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
+            <div style="position:absolute; width:12px; height:12px; border-radius:50%; background-color:#F24405; top:50%; left:50%; transform:translate(-50%,-50%); box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
+            <div style="position:absolute; width:12px; height:12px; border-radius:50%; background-color:#F24405; top:50%; left:80%; transform:translate(-50%,-50%); box-shadow:0 2px 4px rgba(0,0,0,0.2);"></div>
+            
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:20%; top:15%;">シンプル<br>(線形回帰)</div>
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:50%; top:15%;">最適領域</div>
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:80%; top:15%;">複雑<br>(高次数多項式)</div>
+            
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:20%; top:75%;">高バイアス<br>低バリアンス</div>
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:50%; top:75%;"><span style="color:#F24405;">ベストバランス</span></div>
+            <div style="position:absolute; font-size:12px; transform:translateX(-50%); width:80px; text-align:center; left:80%; top:75%;">低バイアス<br>高バリアンス</div>
+            
+            <div style="position:absolute; left:30%; top:40%; transform:rotate(-10deg); font-family:'Yomogi',cursive; color:#F25C05;">
+              <svg width="80" height="30">
+                <path d="M5,25 Q40,0 75,25" stroke="#F25C05" stroke-width="2" fill="none" stroke-dasharray="5,2"/>
+                <text x="30" y="10" fill="#F25C05" font-size="12">バイアス</text>
+              </svg>
+            </div>
+            
+            <div style="position:absolute; left:55%; top:40%; transform:rotate(15deg); font-family:'Yomogi',cursive; color:#593C47;">
+              <svg width="80" height="30">
+                <path d="M5,5 Q40,30 75,5" stroke="#593C47" stroke-width="2" fill="none" stroke-dasharray="5,2"/>
+                <text x="25" y="25" fill="#593C47" font-size="12">バリアンス</text>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="handdrawn-box">
+            <div style="font-family:'Yomogi',cursive; margin-bottom:10px;">モデル複雑度の影響:</div>
+            <div class="checkitem">左端: 直線で全部表そうとして外しまくる → 高バイアス</div>
+            <div class="checkitem">右端: 全点を通る多項式で"記憶"→新データに弱い → 高バリアンス</div>
+            <div class="checkitem">真ん中あたりに <span class="marker-highlight">最適解</span> がある</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 中央カラム -->
+      <div class="column">
+        <div class="section">
+          <h2>🧪 4. 実験で体感してみる（Python）</h2>
+          <div class="card">
+            <div style="font-size:12px; overflow-x:auto; white-space:pre-wrap; padding:10px; background:#f8f8f8; border-radius:5px; font-family:monospace;">
+# 疑似データ: sin波 + ノイズ
+X = np.linspace(0, 2*np.pi, 100)[:, None]
+y = np.sin(X).ravel() + rng.normal(scale=0.3, size=X.shape[0])
+
+# データ分割
+Xtr, Xte, ytr, yte = train_test_split(X, y, test_size=0.5)
+
+# 多項式次数を変えて誤差を計測
+degrees = range(1, 16)
+train_err, test_err = [], []
+
+for d in degrees:
+    model = make_pipeline(PolynomialFeatures(d), LinearRegression())
+    model.fit(Xtr, ytr)
+    train_err.append(mean_squared_error(ytr, model.predict(Xtr)))
+    test_err.append(mean_squared_error(yte, model.predict(Xte)))
+            </div>
+          </div>
+          
+          <div class="learning-curve">
+            <svg width="100%" height="180" viewBox="0 0 300 180">
+              <!-- 座標軸 -->
+              <line x1="40" y1="150" x2="280" y2="150" stroke="#334155" stroke-width="2"/>
+              <line x1="40" y1="30" x2="40" y2="150" stroke="#334155" stroke-width="2"/>
+              
+              <!-- x軸ラベル -->
+              <text x="160" y="170" font-family="Kaisei Decol" font-size="12" text-anchor="middle" fill="#334155">モデル次数</text>
+              
+              <!-- y軸ラベル -->
+              <text x="20" y="90" font-family="Kaisei Decol" font-size="12" text-anchor="middle" fill="#334155" transform="rotate(-90, 20, 90)">MSE</text>
+              
+              <!-- 訓練誤差曲線 -->
+              <path d="M40,140 C60,130 80,110 100,90 C120,70 140,50 160,30 C180,15 200,10 220,5 C240,2 260,1 280,0" stroke="#593C47" stroke-width="2" fill="none"/>
+              
+              <!-- テスト誤差曲線 -->
+              <path d="M40,140 C60,130 80,110 100,80 C120,70 140,75 160,90 C180,110 200,120 220,130 C240,140 260,145 280,150" stroke="#F24405" stroke-width="2" fill="none"/>
+              
+              <!-- 凡例 -->
+              <circle cx="220" cy="30" r="4" fill="#593C47"/>
+              <text x="230" y="34" font-family="Kaisei Decol" font-size="10" fill="#593C47">Train</text>
+              
+              <circle cx="220" cy="50" r="4" fill="#F24405"/>
+              <text x="230" y="54" font-family="Kaisei Decol" font-size="10" fill="#F24405">Test</text>
+              
+              <!-- 注釈 -->
+              <rect x="60" y="100" width="60" height="20" rx="5" fill="rgba(242, 196, 61, 0.3)"/>
+              <text x="90" y="115" font-family="Yomogi" font-size="10" text-anchor="middle" fill="#334155">高バイアス領域</text>
+              
+              <rect x="180" y="100" width="60" height="20" rx="5" fill="rgba(242, 196, 61, 0.3)"/>
+              <text x="210" y="115" font-family="Yomogi" font-size="10" text-anchor="middle" fill="#334155">高バリアンス領域</text>
+              
+              <rect x="120" y="60" width="60" height="20" rx="5" fill="rgba(242, 68, 5, 0.3)"/>
+              <text x="150" y="75" font-family="Yomogi" font-size="10" text-anchor="middle" fill="#334155">最適領域</text>
+            </svg>
+          </div>
+          
+          <div class="handdrawn-box">
+            <div style="font-family:'Yomogi',cursive; margin-bottom:10px;">実験から得られる知見:</div>
+            <div class="checkitem">低次数(1–2): Train/Test とも誤差大 → 高バイアス</div>
+            <div class="checkitem">高次数(11–15): Train 誤差ほぼ 0、Test は急上昇 → 高バリアンス</div>
+            <div class="checkitem">中間(4–6) が<span class="marker-highlight">最適領域</span></div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>🛠 5. バイアスとバリアンスを調整する5つの手段</h2>
+          <table>
+            <tr>
+              <th>手段</th>
+              <th>バイアス</th>
+              <th>バリアンス</th>
+              <th>コアアイデア</th>
+            </tr>
+            <tr>
+              <td>モデルを複雑に</td>
+              <td>↓</td>
+              <td>↑</td>
+              <td>非線形層を追加、深い NN</td>
+            </tr>
+            <tr>
+              <td>正則化 (L1/L2, Dropout)</td>
+              <td>↑</td>
+              <td>↓</td>
+              <td>重みを縛り過学習抑制</td>
+            </tr>
+            <tr>
+              <td>データを増やす</td>
+              <td>→</td>
+              <td>↓</td>
+              <td>バリアンスが統計的に安定</td>
+            </tr>
+            <tr>
+              <td>アンサンブル (Bagging)</td>
+              <td>→</td>
+              <td>↓</td>
+              <td>複数モデルの平均でばらつきを打ち消す</td>
+            </tr>
+            <tr>
+              <td>クロスバリデーション</td>
+              <td>観測</td>
+              <td>観測</td>
+              <td>汎化性能を見積もり最適複雑度を選択</td>
+            </tr>
+          </table>
+          
+          <div class="speech-bubble">
+            <div style="font-weight:bold; margin-bottom:5px;">💡 モデル調整のコツ</div>
+            <div>過学習に悩む時は「データ増量」と「正則化」の<span class="marker-highlight">両方</span>を試してみよう！</div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右カラム -->
+      <div class="column">
+        <div class="section">
+          <h2>📋 6. 実務でのチェックリスト</h2>
+          <div class="card">
+            <div class="checkitem">
+              <div>
+                <strong>学習曲線を描く</strong><br>
+                <span style="font-size:12px;">データ量 vs 精度で"バリアンス優勢"か"バイアス優勢"か判断</span>
+              </div>
+            </div>
+            
+            <div class="checkitem">
+              <div>
+                <strong>正則化パラメータ λ をグリッドサーチ</strong><br>
+                <span style="font-size:12px;">λ 大 → バイアス↑/バリアンス↓、λ 小 → 逆</span>
+              </div>
+            </div>
+            
+            <div class="checkitem">
+              <div>
+                <strong>特徴量の質を高める</strong><br>
+                <span style="font-size:12px;">重要変数を増やすとバイアス↓; ただし過剰だとバリアンス↑</span>
+              </div>
+            </div>
+            
+            <div class="checkitem">
+              <div>
+                <strong>可視化で直感を補強</strong><br>
+                <span style="font-size:12px;">残差グラフ、部分依存プロットで偏りを目視</span>
+              </div>
+            </div>
+          </div>
+          
+          <div style="margin:20px 0;">
+            <svg width="100%" height="120" viewBox="0 0 300 120">
+              <!-- 背景 -->
+              <rect x="20" y="20" width="260" height="80" rx="10" fill="#fff" stroke="#593C47" stroke-width="1" stroke-dasharray="5,3"/>
+              
+              <!-- ステップ矢印 -->
+              <g fill="#F25C05">
+                <path d="M40,60 L60,60 L55,55 L60,60 L55,65 Z"/>
+                <path d="M100,60 L120,60 L115,55 L120,60 L115,65 Z"/>
+                <path d="M160,60 L180,60 L175,55 L180,60 L175,65 Z"/>
+                <path d="M220,60 L240,60 L235,55 L240,60 L235,65 Z"/>
+              </g>
+              
+              <!-- ステップテキスト -->
+              <g fill="#334155" font-family="Yomogi" font-size="10" text-anchor="middle">
+                <text x="80" y="45">データを見る</text>
+                <text x="80" y="85">EDA・可視化</text>
+                
+                <text x="140" y="45">現状を把握</text>
+                <text x="140" y="85">バイアス/バリアンス</text>
+                
+                <text x="200" y="45">施策を選定</text>
+                <text x="200" y="85">手法の明確化</text>
+                
+                <text x="260" y="45">効果を測定</text>
+                <text x="260" y="85">改善の定量化</text>
+              </g>
+            </svg>
+          </div>
+          
+          <div class="speech-bubble">
+            <div style="font-weight:bold; margin-bottom:5px;">💡 覚えておこう</div>
+            <div>実務では<span class="marker-highlight">「手を動かしながら考える」</span>のが最短ルート！</div>
+            <div>実験→考察→再実験のサイクルを回そう</div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2>📝 7. まとめ</h2>
+          <div class="handdrawn-box">
+            <div class="checkitem">モデル誤差は Bias² + Variance + ノイズ に分解できる</div>
+            <div class="checkitem">高バイアス＝学習不足、高バリアンス＝学習しすぎ</div>
+            <div class="checkitem">最適複雑度 は実験・可視化・正則化で探る</div>
+            <div class="checkitem">「データを増やす」はバリアンス低減に効く"万能薬"</div>
+            <div class="checkitem">迷ったら クロスバリデーション + 学習曲線 で状況を定量化しよう</div>
+          </div>
+          
+          <div class="key-point" style="margin-top:30px; text-align:center; background-color:rgba(242, 196, 61, 0.3); border-left:none; border-radius:16px; padding:15px;">
+            <div style="font-size:16px; font-family:'Zen Kurenaido',sans-serif; margin-bottom:10px;">📢 キーフレーズ</div>
+            <div style="font-family:'Yomogi',cursive;">「シンプルすぎは鈍感、複雑すぎは神経質。<br>ちょうどよい"気の利いたモデル"を目指そう。」</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <div>作成日: 2025-04-28</div>
+      <div>📊 機械学習解説シリーズ © 2025</div>
+    </footer>
+  </div>
+</body>
+</html>

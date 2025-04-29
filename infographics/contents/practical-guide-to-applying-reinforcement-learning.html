@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>強化学習 (RL) の基本と実ビジネス応用</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Zen+Kurenaido&family=Kaisei+Decol&family=Yomogi&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-heading: #1e40af;
+            --bg-light: #f8fafc;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .graphic-recording {
+            width: 100%;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title-area {
+            width: 70%;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-4));
+            border-radius: 3px;
+        }
+        
+        .title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            position: relative;
+            display: inline-block;
+            background: linear-gradient(to right, var(--fashion-5), var(--fashion-4));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.2));
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--fashion-5), var(--fashion-4));
+            border-radius: 3px;
+        }
+        
+        .subtitle {
+            font-size: 16px;
+            color: #475569;
+            font-family: 'Kaisei Decol', sans-serif;
+            margin-bottom: 5px;
+        }
+        
+        .date-source {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            font-size: 14px;
+        }
+        
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 30%;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(4px);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            border: 2px solid transparent;
+            background-clip: padding-box;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            z-index: -1;
+            background: linear-gradient(45deg, var(--fashion-2), var(--fashion-3), var(--fashion-4));
+            border-radius: 14px;
+            opacity: 0.3;
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: var(--text-heading);
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px dashed var(--fashion-3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .section-icon {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 30px;
+            height: 30px;
+            background: var(--fashion-2);
+            border-radius: 50%;
+            color: var(--fashion-1);
+            font-weight: bold;
+        }
+        
+        .content-block {
+            margin-bottom: 15px;
+        }
+        
+        .highlight-text {
+            position: relative;
+            font-weight: bold;
+            z-index: 1;
+        }
+        
+        .highlight-text::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 8px;
+            background-color: var(--fashion-3);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .handwritten {
+            font-family: 'Yomogi', cursive;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            border-spacing: 0;
+            margin: 15px 0;
+        }
+        
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        th {
+            background-color: var(--fashion-1);
+            color: white;
+        }
+        
+        tr:nth-child(even) {
+            background-color: rgba(242, 230, 61, 0.1);
+        }
+        
+        .arrow {
+            position: relative;
+            display: inline-block;
+            width: 30px;
+            height: 10px;
+            margin: 0 10px;
+            vertical-align: middle;
+        }
+        
+        .arrow::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: var(--fashion-4);
+        }
+        
+        .arrow::after {
+            content: "";
+            position: absolute;
+            top: -4px;
+            right: -2px;
+            width: 10px;
+            height: 10px;
+            border-right: 2px solid var(--fashion-4);
+            border-top: 2px solid var(--fashion-4);
+            transform: rotate(45deg);
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 12px;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            font-size: 12px;
+            margin-right: 5px;
+            font-weight: bold;
+        }
+        
+        .workflow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 15px 0;
+            flex-wrap: wrap;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            width: 100px;
+            font-size: 12px;
+            position: relative;
+        }
+        
+        .workflow-step::after {
+            content: "→";
+            position: absolute;
+            right: -20px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--fashion-4);
+            font-size: 20px;
+        }
+        
+        .workflow-step:last-child::after {
+            display: none;
+        }
+        
+        .workflow-icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 50px;
+            height: 50px;
+            background-color: var(--fashion-2);
+            border-radius: 50%;
+            margin: 0 auto 5px;
+            font-size: 24px;
+            color: var(--fashion-1);
+        }
+        
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .tag {
+            padding: 3px 8px;
+            background-color: rgba(242, 198, 61, 0.2);
+            border-radius: 12px;
+            font-size: 12px;
+            border: 1px dashed var(--fashion-3);
+        }
+        
+        .note {
+            position: relative;
+            padding: 15px;
+            background-color: rgba(242, 230, 61, 0.2);
+            border-left: 3px solid var(--fashion-3);
+            margin: 15px 0;
+            font-style: italic;
+        }
+        
+        .note::before {
+            content: "📝";
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            font-size: 20px;
+        }
+        
+        .circle-step {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 25px;
+            height: 25px;
+            background-color: var(--fashion-1);
+            border-radius: 50%;
+            color: white;
+            margin-right: 10px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .connect-line {
+            position: absolute;
+            border-left: 2px dashed var(--fashion-4);
+        }
+        
+        .diagram {
+            margin: 20px 0;
+            position: relative;
+            padding: 10px;
+            border: 2px dashed var(--fashion-3);
+            border-radius: 10px;
+        }
+        
+        .diagram-title {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .code-block {
+            background-color: rgba(89, 60, 71, 0.1);
+            padding: 15px;
+            border-radius: 6px;
+            margin: 15px 0;
+            font-family: monospace;
+            white-space: pre-wrap;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-block::before {
+            content: "Python";
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        
+        .summary-list {
+            list-style-type: none;
+            padding-left: 30px;
+        }
+        
+        .summary-list li {
+            margin-bottom: 10px;
+            position: relative;
+        }
+        
+        .summary-list li::before {
+            content: "✓";
+            position: absolute;
+            left: -25px;
+            color: var(--fashion-4);
+            font-weight: bold;
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            color: #64748b;
+            font-size: 14px;
+            border-top: 1px solid #e2e8f0;
+            padding-top: 20px;
+        }
+        
+        .bubble {
+            position: relative;
+            background-color: white;
+            border: 2px solid var(--fashion-3);
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin: 20px 0;
+            display: inline-block;
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            width: 20px;
+            height: 10px;
+            background-color: white;
+            border-right: 2px solid var(--fashion-3);
+            border-bottom: 2px solid var(--fashion-3);
+            transform: rotate(45deg);
+        }
+        
+        .term-table {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin: 10px 0;
+        }
+        
+        .term-row {
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .term-name {
+            flex: 0 0 100px;
+            font-weight: bold;
+            padding: 5px;
+            background-color: rgba(242, 198, 61, 0.2);
+            border-radius: 5px 0 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .term-desc {
+            flex: 1;
+            padding: 5px;
+            border-left: 2px dashed var(--fashion-3);
+        }
+        
+        .example {
+            font-style: italic;
+            color: #64748b;
+            padding-left: 5px;
+            border-left: 2px solid var(--fashion-3);
+        }
+        
+        .sequence-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 15px 0;
+            gap: 20px;
+        }
+        
+        .diagram-box {
+            text-align: center;
+            padding: 10px;
+            border: 2px solid var(--fashion-1);
+            border-radius: 8px;
+            min-width: 100px;
+        }
+        
+        .diagram-arrow {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+        }
+        
+        .diagram-arrow-line {
+            width: 50px;
+            height: 2px;
+            background-color: var(--fashion-4);
+            position: relative;
+        }
+        
+        .diagram-arrow-line::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: -4px;
+            width: 10px;
+            height: 10px;
+            border-top: 2px solid var(--fashion-4);
+            border-right: 2px solid var(--fashion-4);
+            transform: rotate(45deg);
+        }
+        
+        .diagram-arrow-text {
+            font-size: 12px;
+        }
+        
+        .algorithm-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .algorithm-row {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .algorithm-row:first-child {
+            font-weight: bold;
+            background-color: var(--fashion-1);
+            color: white;
+        }
+        
+        .algorithm-cell {
+            padding: 8px;
+            flex: 1;
+        }
+        
+        .marker {
+            position: relative;
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .marker::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: var(--fashion-2);
+            z-index: -1;
+            opacity: 0.5;
+        }
+        
+        .biz-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .biz-row {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .biz-row:first-child {
+            font-weight: bold;
+            background-color: var(--fashion-1);
+            color: white;
+        }
+        
+        .biz-cell {
+            padding: 8px;
+            flex: 1;
+            display: flex;
+            align-items: center;
+            font-size: 13px;
+        }
+        
+        .biz-cell-icon {
+            margin-right: 5px;
+            font-size: 16px;
+        }
+        
+        .roadmap {
+            margin: 15px 0;
+        }
+        
+        .roadmap-step {
+            display: flex;
+            margin-bottom: 15px;
+            align-items: flex-start;
+        }
+        
+        .roadmap-number {
+            flex: 0 0 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--fashion-3);
+            color: var(--fashion-1);
+            border-radius: 50%;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .roadmap-content {
+            flex: 1;
+            padding-bottom: 15px;
+            border-bottom: 1px dashed #e2e8f0;
+        }
+        
+        .roadmap-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .roadmap-desc {
+            font-size: 14px;
+        }
+        
+        .roadmap-time {
+            margin-left: auto;
+            background-color: rgba(242, 198, 61, 0.2);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        .trap-table {
+            width: 100%;
+            margin: 15px 0;
+        }
+        
+        .trap-row {
+            display: flex;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .trap-row:first-child {
+            font-weight: bold;
+            background-color: var(--fashion-1);
+            color: white;
+        }
+        
+        .trap-cell {
+            padding: 8px;
+            flex: 1;
+            font-size: 13px;
+        }
+        
+        .resources-list {
+            margin: 15px 0;
+        }
+        
+        .resource-category {
+            margin-bottom: 15px;
+        }
+        
+        .resource-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .resource-title-icon {
+            margin-right: 10px;
+            width: 25px;
+            height: 25px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: var(--fashion-2);
+            color: var(--fashion-1);
+            border-radius: 50%;
+            font-size: 14px;
+        }
+        
+        .resource-items {
+            margin-left: 35px;
+        }
+        
+        .resource-item {
+            position: relative;
+            margin-bottom: 5px;
+            padding-left: 15px;
+        }
+        
+        .resource-item::before {
+            content: "•";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+        }
+        
+        .next-action {
+            background-color: rgba(242, 92, 5, 0.1);
+            border: 2px solid var(--fashion-4);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .next-action-title {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: white;
+            padding: 0 10px;
+            font-weight: bold;
+            color: var(--fashion-4);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                flex-direction: column;
+            }
+            
+            .column {
+                width: 100%;
+            }
+            
+            .header {
+                flex-direction: column;
+            }
+            
+            .title-area {
+                width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .date-source {
+                align-items: flex-start;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="graphic-recording">
+        <div class="header">
+            <div class="title-area">
+                <h1 class="title">強化学習 (RL) の基本と実ビジネス応用</h1>
+                <p class="subtitle">シミュレータから収益改善までつなげる完全ガイド</p>
+            </div>
+            <div class="date-source">
+                <div>📅 2025-04-28</div>
+                <div>👩‍💻 グラフィックレコーディング版</div>
+            </div>
+        </div>
+        
+        <div class="container">
+            <!-- 左カラム -->
+            <div class="column">
+                <!-- 1. 強化学習とは？ -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">1</span>
+                        強化学習とは？
+                    </h2>
+                    
+                    <div class="bubble handwritten">
+                        <span class="highlight-text">エージェントが環境と対話し、行動→報酬を受け取りながら累積報酬の最大化を学ぶ枠組み</span>
+                    </div>
+                
+                
+
+                    
+                    <div class="term-table">
+                        <div class="term-row">
+                            <div class="term-name">状態<br>(State)</div>
+                            <div class="term-desc">
+                                今どんな状況か
+                                <div class="example">例：迷路での現在地</div>
+                            </div>
+                        </div>
+                        <div class="term-row">
+                            <div class="term-name">行動<br>(Action)</div>
+                            <div class="term-desc">
+                                次に何をするか
+                                <div class="example">例："上に進む/右に進む"</div>
+                            </div>
+                        </div>
+                        <div class="term-row">
+                            <div class="term-name">報酬<br>(Reward)</div>
+                            <div class="term-desc">
+                                良かった度合い
+                                <div class="example">例：ゴールで+10、壁衝突で-1</div>
+                            </div>
+                        </div>
+                        <div class="term-row">
+                            <div class="term-name">方策<br>(Policy)</div>
+                            <div class="term-desc">
+                                状態→行動のルール
+                                <div class="example">例：地図を見ながら進む作戦表</div>
+                            </div>
+                        </div>
+                        <div class="term-row">
+                            <div class="term-name">価値<br>(Value)</div>
+                            <div class="term-desc">
+                                将来報酬の期待値
+                                <div class="example">例：今ここにいる価値</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="sequence-diagram">
+                        <div class="diagram-box">Agent<br>🤖</div>
+                        <div class="diagram-arrow">
+                            <div class="diagram-arrow-line"></div>
+                            <div class="diagram-arrow-text">行動 a_t</div>
+                        </div>
+                        <div class="diagram-box">Environment<br>🌍</div>
+                        <div class="diagram-arrow" style="transform: rotate(180deg);">
+                            <div class="diagram-arrow-line"></div>
+                            <div class="diagram-arrow-text" style="transform: rotate(180deg);">状態 s_{t+1}, 報酬 r_t</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 2. 基本アルゴリズム -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">2</span>
+                        基本アルゴリズムをざっくり整理
+                    </h2>
+                    
+                    <div class="algorithm-table">
+                        <div class="algorithm-row">
+                            <div class="algorithm-cell">系統</div>
+                            <div class="algorithm-cell">代表</div>
+                            <div class="algorithm-cell">特徴</div>
+                            <div class="algorithm-cell">用途</div>
+                        </div>
+                        <div class="algorithm-row">
+                            <div class="algorithm-cell">価値ベース</div>
+                            <div class="algorithm-cell">Q-Learning, DQN</div>
+                            <div class="algorithm-cell">行動価値 Q(s,a) を更新</div>
+                            <div class="algorithm-cell">離散行動、ゲーム</div>
+                        </div>
+                        <div class="algorithm-row">
+                            <div class="algorithm-cell">方策ベース</div>
+                            <div class="algorithm-cell">REINFORCE</div>
+                            <div class="algorithm-cell">方策 π(a|s) を直接更新</div>
+                            <div class="algorithm-cell">シンプル設計</div>
+                        </div>
+                        <div class="algorithm-row">
+                            <div class="algorithm-cell">アクター・クリティック</div>
+                            <div class="algorithm-cell">A2C, PPO, SAC</div>
+                            <div class="algorithm-cell">方策＋価値の二重構造</div>
+                            <div class="algorithm-cell">安定・高速、現状主流</div>
+                        </div>
+                        <div class="algorithm-row">
+                            <div class="algorithm-cell">モデルベース</div>
+                            <div class="algorithm-cell">MuZero, Dreamer</div>
+                            <div class="algorithm-cell">環境モデルも学習</div>
+                            <div class="algorithm-cell">シミュレータ高価な領域</div>
+                        </div>
+                    </div>
+                    
+                    <div class="note handwritten">
+                        <div><span class="marker">Q-Learning</span> = 表でメモ → 小規模</div>
+                        <div><span class="marker">DQN</span> = CNN で Q を近似 → 画像入力</div>
+                        <div><span class="marker">PPO</span> = 方策を少しずつ更新 → 安定</div>
+                        <div><span class="marker">SAC</span> = "エントロピー" で探索拡大 → 連続制御に強い</div>
+                    </div>
+                </div>
+                
+                <!-- 3. Python で動かす -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">3</span>
+                        Python で 5 行だけ動かす
+                    </h2>
+                    
+                    <div class="code-block">
+import gymnasium as gym
+from stable_baselines3 import PPO
+
+env = gym.make("CartPole-v1")
+model = PPO("MlpPolicy", env, verbose=0).learn(10_000)
+model.save("cartpole_ppo")
+print("平均スコア:", model.evaluate_policy(env, n_eval_episodes=20)[0])
+                    </div>
+                    
+                    <div class="tag-list">
+                        <div class="tag">🎮 シミュレータ = Gym（実世界の高コスト試行 → 安価に代替）</div>
+                        <div class="tag">🔄 学習ステップ は 10k–1M で調整</div>
+                        <div class="tag">🛠️ Stable-Baselines3 が PPO / DQN / A2C を1行切替</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中央カラム -->
+            <div class="column">
+                <!-- 4. 実ビジネス応用 -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">4</span>
+                        実ビジネス応用 5 選
+                    </h2>
+                    
+                    <div class="biz-table">
+                        <div class="biz-row">
+                            <div class="biz-cell">業界</div>
+                            <div class="biz-cell">課題</div>
+                            <div class="biz-cell">RL ソリューション</div>
+                            <div class="biz-cell">成果例</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">🏭</span> 物流</div>
+                            <div class="biz-cell">AGV 経路最適化</div>
+                            <div class="biz-cell">PPO × 3D 倉庫シム</div>
+                            <div class="biz-cell">ピッキング距離 ▼18%</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">🛒</span> 小売</div>
+                            <div class="biz-cell">動的価格設定</div>
+                            <div class="biz-cell">DQN (離散価格帯)</div>
+                            <div class="biz-cell">粗利 ▲6% / 在庫▼12%</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">📢</span> 広告</div>
+                            <div class="biz-cell">入札戦略</div>
+                            <div class="biz-cell">SAC (連続入札額)</div>
+                            <div class="biz-cell">ROAS ▲15% / CPC▼9%</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">🔋</span> エネルギー</div>
+                            <div class="biz-cell">HVAC 制御</div>
+                            <div class="biz-cell">Model-based RL</div>
+                            <div class="biz-cell">消費電力 ▼22%</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">🔧</span> 製造</div>
+                            <div class="biz-cell">生産スケジューリング</div>
+                            <div class="biz-cell">Multi-Agent PPO</div>
+                            <div class="biz-cell">リードタイム ▼25%</div>
+                        </div>
+                    </div>
+                    
+                    <div class="note handwritten">
+                        <span class="highlight-text">共通パターン</span><br>
+                        ① デジタルツイン/シミュレータを用意<br>
+                        ② オフラインで初期学習<br>
+                        ③ 安全探索付きでオンライン微調整
+                    </div>
+                </div>
+                
+                <!-- 5. 導入ステップ -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">5</span>
+                        導入ステップ（ロードマップ）
+                    </h2>
+                    
+                    <div class="roadmap">
+                        <div class="roadmap-step">
+                            <div class="roadmap-number">0</div>
+                            <div class="roadmap-content">
+                                <div class="roadmap-title">概念実証 (PoC)</div>
+                                <div class="roadmap-desc">Gym or Unity ML-Agents で KPI 模擬</div>
+                                <div class="roadmap-time">1–2 週</div>
+                            </div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="roadmap-number">1</div>
+                            <div class="roadmap-content">
+                                <div class="roadmap-title">シミュレータ精緻化</div>
+                                <div class="roadmap-desc">実データでパラメータ校正</div>
+                                <div class="roadmap-time">1–2 か月</div>
+                            </div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="roadmap-number">2</div>
+                            <div class="roadmap-content">
+                                <div class="roadmap-title">オフライン学習</div>
+                                <div class="roadmap-desc">バッチログ → Offline RL (BCQ, CQL)</div>
+                                <div class="roadmap-time">2–4 週</div>
+                            </div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="roadmap-number">3</div>
+                            <div class="roadmap-content">
+                                <div class="roadmap-title">サンドボックスA/B</div>
+                                <div class="roadmap-desc">限定環境で安全評価 (Safe RL)</div>
+                                <div class="roadmap-time">1 か月</div>
+                            </div>
+                        </div>
+                        <div class="roadmap-step">
+                            <div class="roadmap-number">4</div>
+                            <div class="roadmap-content">
+                                <div class="roadmap-title">本番ロールアウト</div>
+                                <div class="roadmap-desc">KPI モニタ＋自動ロールバック</div>
+                                <div class="roadmap-time">継続</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                                        <!-- 6. 評価 & 運用指標 -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">6</span>
+                        評価 & 運用指標
+                    </h2>
+                    
+                    <div class="biz-table">
+                        <div class="biz-row">
+                            <div class="biz-cell">カテゴリ</div>
+                            <div class="biz-cell">指標</div>
+                            <div class="biz-cell">目標例</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">📈</span> 学習</div>
+                            <div class="biz-cell">エピソード報酬</div>
+                            <div class="biz-cell">上昇傾向 & 収束</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">💰</span> 実運用</div>
+                            <div class="biz-cell">リアル KPI (利益、歩留り)</div>
+                            <div class="biz-cell">+5〜20 %</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">🛡️</span> 安全</div>
+                            <div class="biz-cell">Constraint Violation Rate</div>
+                            <div class="biz-cell">< 0.1 %</div>
+                        </div>
+                        <div class="biz-row">
+                            <div class="biz-cell"><span class="biz-cell-icon">📊</span> データ</div>
+                            <div class="biz-cell">Off-policy Divergence</div>
+                            <div class="biz-cell">< 0.05 (KL 距離)</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div class="column">
+                <!-- 7. よくある落とし穴 -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">7</span>
+                        よくある落とし穴 & 回避策
+                    </h2>
+                    
+                    <div class="trap-table">
+                        <div class="trap-row">
+                            <div class="trap-cell">罠</div>
+                            <div class="trap-cell">症状</div>
+                            <div class="trap-cell">処方箋</div>
+                        </div>
+                        <div class="trap-row">
+                            <div class="trap-cell">⚠️ 報酬設計ミス</div>
+                            <div class="trap-cell">望まぬ行動を最大化</div>
+                            <div class="trap-cell">報酬を多段階に分割 / 罰則追加</div>
+                        </div>
+                        <div class="trap-row">
+                            <div class="trap-cell">⚠️ 探索不足</div>
+                            <div class="trap-cell">局所解で停滞</div>
+                            <div class="trap-cell">ε-greedy → NoisyNet / Entropy Bonus</div>
+                        </div>
+                        <div class="trap-row">
+                            <div class="trap-cell">⚠️ シミュレータ乖離</div>
+                            <div class="trap-cell">本番で性能低下</div>
+                            <div class="trap-cell">ドメインランダム化 / 実データ Fine-Tuning</div>
+                        </div>
+                        <div class="trap-row">
+                            <div class="trap-cell">⚠️ 安全性軽視</div>
+                            <div class="trap-cell">KPI は良いが規制違反</div>
+                            <div class="trap-cell">Safe RL (Lyapunov), オンラインモニタ</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 8. 学習リソース -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">8</span>
+                        学習リソース
+                    </h2>
+                    
+                    <div class="resources-list">
+                        <div class="resource-category">
+                            <div class="resource-title">
+                                <div class="resource-title-icon">📚</div>
+                                書籍
+                            </div>
+                            <div class="resource-items">
+                                <div class="resource-item">Reinforcement Learning, 2nd Ed. (Sutton & Barto, 日本語翻訳 2025)</div>
+                                <div class="resource-item">Practical RL in Production (O'Reilly 2024)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-category">
+                            <div class="resource-title">
+                                <div class="resource-title-icon">🎓</div>
+                                オンラインコース
+                            </div>
+                            <div class="resource-items">
+                                <div class="resource-item">DeepMind RL Bootcamp (無料)</div>
+                                <div class="resource-item">Coursera Practical RL (HSE University)</div>
+                            </div>
+                        </div>
+                        
+                        <div class="resource-category">
+                            <div class="resource-title">
+                                <div class="resource-title-icon">💻</div>
+                                OSS & シミュレータ
+                            </div>
+                            <div class="resource-items">
+                                <div class="resource-item">Stable-Baselines3 / Ray RLlib</div>
+                                <div class="resource-item">PettingZoo（マルチエージェント）</div>
+                                <div class="resource-item">Unity ML-Agents（3D 環境）</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- まとめ -->
+                <div class="card">
+                    <h2 class="section-title">
+                        <span class="section-icon">✓</span>
+                        まとめ
+                    </h2>
+                    
+                    <ul class="summary-list">
+                        <li><span class="highlight-text">状態・行動・報酬</span> の三要素を設計することが RL 成功の鍵</li>
+                        <li>最新実務では <span class="highlight-text">PPO / SAC＋シミュレータ＋Safe RL</span> が定番</li>
+                        <li>PoC は Gym + Stable-Baselines3 で <span class="highlight-text">1 週間以内に可視化</span></li>
+                        <li>ビジネス価値は <span class="highlight-text">自律最適化 (24/7) × 人的負荷削減</span> で回収しやすい</li>
+                        <li><span class="highlight-text">"報酬設計 → シミュレータ品質 → オンライン安全"</span> の 3 点セットで本番投入</li>
+                    </ul>
+                    
+                    <div class="next-action">
+                        <div class="next-action-title">Next Action</div>
+                        まずは CartPole → LunarLander で PPO を動かし、報酬と学習曲線を観察。その感覚を持って自社の KPI を"報酬信号"に落とし込みましょう。
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+        <div class="footer">
+            グラフィックレコーディング ✏️ 2025-04-28 | 強化学習 (RL) の基本と実ビジネス応用 — シミュレータから収益改善までつなげる完全ガイド
+        </div>
+            <!-- 装飾的な要素 -->
+    <div class="doodle-circle" style="top: 120px; right: 50px;"></div>
+    <div class="doodle-circle" style="bottom: 180px; left: 80px;"></div>
+        </div>
+</body>
+</html>
+
