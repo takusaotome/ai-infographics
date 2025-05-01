@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIプログラミングの未来シナリオ：2027-2035年展望</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --text-main: #334155;
+      --text-heading: #1e40af;
+      --text-subtitle: #475569;
+      --bg-card: rgba(255, 255, 255, 0.8);
+      --bg-main: #f8fafc;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      background-color: var(--bg-main);
+      color: var(--text-main);
+      line-height: 1.4;
+      padding: 20px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23593c47' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+      overflow: hidden;
+      backdrop-filter: blur(10px);
+      padding: 20px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--fashion-1);
+      border-image: linear-gradient(to right, var(--fashion-1), var(--fashion-4)) 1;
+    }
+    
+    h1 {
+      font-family: 'Yomogi', cursive;
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(90deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+      display: inline-block;
+    }
+    
+    h1::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, var(--fashion-3), var(--fashion-4));
+      border-radius: 2px;
+    }
+    
+    .date {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 16px;
+      color: var(--text-subtitle);
+    }
+    
+    .intro {
+      margin-bottom: 30px;
+      padding: 15px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      border-left: 4px solid var(--fashion-3);
+      position: relative;
+    }
+    
+    .intro::after {
+      content: "✏️";
+      position: absolute;
+      top: -15px;
+      right: 20px;
+      font-size: 24px;
+      background: white;
+      padding: 5px;
+      border-radius: 50%;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    
+    .intro p {
+      margin-bottom: 10px;
+    }
+    
+    .grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .col {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .timeline-wrapper {
+      margin-bottom: 40px;
+      position: relative;
+    }
+    
+    .timeline-title {
+      font-family: 'Yomogi', cursive;
+      font-size: 18px;
+      color: var(--fashion-1);
+      margin-bottom: 20px;
+      padding: 10px 15px;
+      background: linear-gradient(to right, rgba(242, 230, 61, 0.3), rgba(242, 196, 61, 0.1));
+      border-radius: 30px;
+      display: inline-block;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      position: relative;
+    }
+    
+    .timeline-title::before {
+      content: "🕒";
+      margin-right: 8px;
+    }
+    
+    .scenario-card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 25px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .scenario-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 5px;
+      height: 100%;
+      background: linear-gradient(to bottom, var(--fashion-3), var(--fashion-4));
+      border-radius: 3px 0 0 3px;
+    }
+    
+    .scenario-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+    }
+    
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 12px;
+      border-bottom: 1px dashed var(--fashion-3);
+      padding-bottom: 8px;
+    }
+    
+    .scenario-name {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--fashion-5);
+      margin-left: 10px;
+    }
+    
+    .scenario-icon {
+      font-size: 24px;
+      background: linear-gradient(135deg, var(--fashion-2), var(--fashion-3));
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+    }
+    
+    .key-driver {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 14px;
+      background-color: rgba(242, 196, 61, 0.2);
+      padding: 8px 12px;
+      border-radius: 8px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+    
+    .key-driver::before {
+      content: "🔑 キードライバー:";
+      font-weight: bold;
+      margin-right: 5px;
+      color: var(--fashion-4);
+    }
+    
+    .impact-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 12px;
+    }
+    
+    .impact-item {
+      background-color: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(89, 60, 71, 0.1);
+      border-radius: 8px;
+      padding: 8px;
+      position: relative;
+    }
+    
+    .impact-title {
+      font-weight: bold;
+      font-size: 14px;
+      margin-bottom: 5px;
+      color: var(--fashion-1);
+      border-bottom: 1px dotted var(--fashion-2);
+      padding-bottom: 3px;
+    }
+    
+    .impact-content {
+      font-size: 14px;
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+      font-weight: bold;
+    }
+    
+    .arrow-connector {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      font-size: 24px;
+      color: var(--fashion-4);
+      bottom: -25px;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+    
+    .summary {
+      background-color: white;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      margin-top: 40px;
+      position: relative;
+      border: 2px dashed var(--fashion-3);
+    }
+    
+    .summary-title {
+      font-family: 'Yomogi', cursive;
+      font-size: 22px;
+      color: var(--fashion-5);
+      margin-bottom: 15px;
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background-color: white;
+      padding: 0 10px;
+    }
+    
+    .summary-title::before {
+      content: "📝";
+      margin-right: 8px;
+    }
+    
+    .action-list {
+      list-style: none;
+    }
+    
+    .action-list li {
+      margin-bottom: 12px;
+      padding-left: 25px;
+      position: relative;
+    }
+    
+    .action-list li::before {
+      content: "▶️";
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    
+    .action-heading {
+      font-weight: bold;
+      color: var(--fashion-1);
+      margin-bottom: 5px;
+    }
+    
+    footer {
+      margin-top: 30px;
+      padding-top: 15px;
+      border-top: 1px solid var(--fashion-1);
+      font-size: 12px;
+      color: var(--text-subtitle);
+      text-align: center;
+    }
+    
+    .emphasis {
+      font-weight: bold;
+      color: var(--fashion-5);
+    }
+    
+    .scenario-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-size: 14px;
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+    
+    .scenario-table th {
+      background-color: var(--fashion-1);
+      color: white;
+      text-align: left;
+      padding: 12px;
+    }
+    
+    .scenario-table tr:nth-child(even) {
+      background-color: rgba(242, 230, 61, 0.1);
+    }
+    
+    .scenario-table td {
+      padding: 10px;
+      border-bottom: 1px solid rgba(89, 60, 71, 0.1);
+    }
+    
+    .scenario-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .hand-drawn {
+      font-family: 'Yomogi', cursive;
+    }
+    
+    /* 手描き風の装飾要素 */
+    .bubble {
+      position: relative;
+      background: white;
+      border-radius: 20px;
+      padding: 10px 15px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+      margin: 20px 0;
+      border: 2px solid var(--fashion-3);
+    }
+    
+    .bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -15px;
+      left: 30px;
+      border-width: 15px 15px 0;
+      border-style: solid;
+      border-color: var(--fashion-3) transparent;
+      display: block;
+      width: 0;
+    }
+    
+    .bubble::before {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 32px;
+      border-width: 13px 13px 0;
+      border-style: solid;
+      border-color: white transparent;
+      display: block;
+      width: 0;
+      z-index: 1;
+    }
+    
+    .sticky-note {
+      background: var(--fashion-2);
+      padding: 15px;
+      box-shadow: 5px 5px 10px rgba(0,0,0,0.1);
+      transform: rotate(2deg);
+      font-family: 'Yomogi', cursive;
+      position: relative;
+      width: fit-content;
+      margin: 20px auto;
+    }
+    
+    .sticky-note::after {
+      content: "";
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      background: rgba(0,0,0,0.05);
+      box-shadow: -2px 2px 3px rgba(0,0,0,0.1);
+      transform: rotate(45deg);
+    }
+    
+    @media (max-width: 768px) {
+      .col {
+        flex: 100%;
+      }
+      
+      .scenario-table {
+        font-size: 12px;
+      }
+      
+      .scenario-table th, .scenario-table td {
+        padding: 8px;
+      }
+      
+      .impact-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>AIプログラミングの未来シナリオ：2027-2035年展望</h1>
+      <div class="date">2025年5月1日</div>
+    </header>
+    
+    <div class="intro">
+      <p>Satya Nadella (Microsoft CEO) が「<span class="highlight">自社リポジトリの 20〜30 % はすでにソフトウェア（＝AI）によって書かれている</span>」と語った背景には、</p>
+      <p>・<span class="highlight">GitHub Copilot／Microsoft 365 Copilot の高い採用率</span><br>
+      ・<span class="highlight">Azure OpenAI Service によるエンタープライズ向け LLM 活用の急拡大</span></p>
+      <p>があります。この潮流を踏まえ、<span class="emphasis">Web／モバイル／エンタープライズ SaaS</span> を対象に <span class="emphasis">生産性向上・コスト削減・開発者キャリア</span> の３観点で、<span class="emphasis">短期（〜2年）／中期（3-5年）／長期（5-10年）</span> のシナリオを整理しました。</p>
+    </div>
+    
+    <div class="bubble">
+      <span class="hand-drawn">未来の開発環境では、AIがただのツールではなく、パートナーとして機能します。コードを書く人から、AIを操る人へ。プログラマーの定義が変わります。</span>
+    </div>
+    
+    <div class="scenario-table">
+      <table>
+        <tr>
+          <th>期間</th>
+          <th>シナリオ名</th>
+          <th>キードライバー</th>
+          <th>生産性</th>
+          <th>コスト</th>
+          <th>開発者キャリア</th>
+        </tr>
+        <tr>
+          <td rowspan="2"><span class="hand-drawn">短期<br>(〜2027)</span></td>
+          <td>① AIペアプロ開発の標準化</td>
+          <td>IDE統合LLM・コード補完</td>
+          <td>+20-40 %</td>
+          <td>-10-30 %</td>
+          <td>"フルスタック＋AI操縦"が基本スキル</td>
+        </tr>
+        <tr>
+          <td>② コーディング≒レビュー時代</td>
+          <td>自動テスト・PR要約</td>
+          <td>+25 %</td>
+          <td>-15 %</td>
+          <td>コードレビュー比率↑、設計力の差が顕在化</td>
+        </tr>
+        <tr>
+          <td rowspan="2"><span class="hand-drawn">中期<br>(2028-2030)</span></td>
+          <td>③ AIファーストSaaS工場</td>
+          <td>テンプレート生成・CI/CD自動化</td>
+          <td>+50-70 %</td>
+          <td>-40 %</td>
+          <td>"プロダクトアーキテクト"が花形職</td>
+        </tr>
+        <tr>
+          <td>④ ガバナンスbyコード</td>
+          <td>セキュリティ／法規制LLM</td>
+          <td>+35 %</td>
+          <td>±0</td>
+          <td>ガバDevSecOpsへ再教育必須</td>
+        </tr>
+        <tr>
+          <td rowspan="2"><span class="hand-drawn">長期<br>(2031-2035)</span></td>
+          <td>⑤ 自律ソフトウェアと人間の管制塔</td>
+          <td>エージェント指向開発</td>
+          <td>+80-95 %</td>
+          <td>-60 %</td>
+          <td>"AI制御官"に集中、人数は1/5-1/10</td>
+        </tr>
+        <tr>
+          <td>⑥ 市民開発の大衆化 & プロ高付加価値化</td>
+          <td>ノーコードLLM, 自己修復</td>
+          <td>+∞*<br><small>(*需要創出型)</small></td>
+          <td>コスト構造再編</td>
+          <td>プロは"プラットフォーム番人"へ</td>
+        </tr>
+      </table>
+    </div>
+    
+    <div class="grid">
+      <div class="col">
+        <div class="timeline-wrapper">
+          <div class="timeline-title">短期（〜2年）：AIペアプロが当たり前に</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">①</div>
+              <div class="scenario-name">AIペアプロ開発の標準化</div>
+            </div>
+            <div class="key-driver">GitHub Copilot Enterprise、JetBrains AI Assistant、VS Code Copilot Chat</div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - コード入力量 20-40 %削減<br>
+                  - PR 作成・要約の自動化でレビュー待ち時間↓
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - エンジニア当たりの開発コスト 10-30 %↓<br>
+                  - 小規模スタートアップでも少人数で MVP 開発可能
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - "AI を書く"ではなく"AI に書かせる"スキルがコアに<br>
+                  - ジュニア層は<span class="highlight">テスト・デバッグ起点</span>で学習する傾向
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="arrow-connector">↓</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">②</div>
+              <div class="scenario-name">「コード = レビュー」時代</div>
+            </div>
+            <div class="key-driver">Copilot PR reviewer、Unit Test Auto-Gen、CodeQL 自動脆弱性修正</div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - レビュー指摘の自動反映でリードタイム 25 %短縮
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - 品質欠陥の早期検出 → 保守費用 15 %↓
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - 設計レビュー・アーキテクチャ指針ができる開発者へ需要集中
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="timeline-wrapper">
+          <div class="timeline-title">中期（3-5年）：AIファーストなSaaS工場化</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">③</div>
+              <div class="scenario-name">AIファーストSaaS工場</div>
+            </div>
+            <div class="key-driver"><span class="highlight">Domain-specific LLM</span> (財務、人事、医療) を使った<span class="highlight">プロダクトテンプレ生成</span></div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - 新機能開発サイクルが月次→週次へ<br>
+                  - マルチプラットフォーム (Web/Mobile/PWA) を同時生成
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - CI/CD・IaaS 運用自動最適化でインフラ＆人件費 40 %↓
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - <span class="highlight">プロダクトアーキテクト</span>：要求→LLMプロンプト→AIがコード生成→人が統合という新職種
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="arrow-connector">↓</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">④</div>
+              <div class="scenario-name">ガバナンスbyコード</div>
+            </div>
+            <div class="key-driver"><span class="highlight">セキュリティ/コンプライアンス LLM</span> (PCI-DSS, HIPAA, GDPR を自動チェック)</div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - 手動監査の待ち時間を 70 %削減
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - 罰金・リーガルリスクは減るが、コンプラAI利用料↑でネットコスト±0
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - DevOps ⇒ <span class="highlight">DevSecOps ⇒ ガバDevSecOps</span> へ。<br>
+                  - 規制ドメイン知識 × LLM チューニングの価値が急騰
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col">
+        <div class="timeline-wrapper">
+          <div class="timeline-title">長期（5-10年）：自律ソフトウェアと人の管制塔</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">⑤</div>
+              <div class="scenario-name">自律ソフトウェアと人間の管制塔</div>
+            </div>
+            <div class="key-driver"><span class="highlight">マルチエージェント LLM</span>（要件定義→UIデザイン→実装→テスト→デプロイを協調）</div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - 開発者が "仕様を書くだけ" で MVP が自動生成 (80-95 %効率化)
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - 同種プロジェクトの再利用率↑でランニングコスト 60 %↓
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - <span class="highlight">AI 制御官 / プラットフォーム演算監督</span> が主流職<br>
+                  - 開発者総数は 1/5-1/10 に、報酬は"操縦スキル"に連動
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div class="arrow-connector">↓</div>
+          
+          <div class="scenario-card">
+            <div class="card-header">
+              <div class="scenario-icon">⑥</div>
+              <div class="scenario-name">市民開発の大衆化 & プロ高付加価値化</div>
+            </div>
+            <div class="key-driver">ノーコードLLM＋自己修復ランタイム (Production-autonomous Agents)</div>
+            <div class="impact-grid">
+              <div class="impact-item">
+                <div class="impact-title">📈 生産性</div>
+                <div class="impact-content">
+                  - 非エンジニアでも機能追加→需要創出が爆発的に<br>
+                  - プロは<span class="highlight">プラットフォーム番人</span>として品質・秩序を保つ
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">💰 コスト</div>
+                <div class="impact-content">
+                  - コード所有コストは下がるが、<span class="highlight">データ品質・倫理監視コスト</span>が新規発生
+                </div>
+              </div>
+              <div class="impact-item">
+                <div class="impact-title">👩‍💻 キャリア</div>
+                <div class="impact-content">
+                  - <span class="highlight">AI 倫理監査員、データキュレーター</span>など新職が台頭<br>
+                  - コードを書くプロは"クラフトマン枠"として希少高単価に
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="sticky-note">
+      "コードの 20〜30%をAIが書く"は、もはや現実になりつつあります。重要なのは、これを受け入れ、活用する準備をどれだけ整えられるかです。
+    </div>
+    
+    <div class="summary">
+      <div class="summary-title">まとめ：次のアクション</div>
+      <ul class="action-list">
+        <li>
+          <div class="action-heading">1. スキル投資</div>
+          <p>- 今すぐ：Copilot 等を日常開発フローへ統合し、"AI に説明できる設計力"を磨く。<br>
+          - 1-2 年：DevSecOps ＋ LLM 評価基盤を整え、ガバナンス自動化に備える。</p>
+        </li>
+        <li>
+          <div class="action-heading">2. 組織再設計</div>
+          <p>- <span class="highlight">アーキテクト／AI制御官</span>ロールを定義し、将来のコア人材を育成。<br>
+          - 市民開発増加に備え、<span class="highlight">ガードレールとガイドライン</span>を整備。</p>
+        </li>
+        <li>
+          <div class="action-heading">3. コスト構造の見直し</div>
+          <p>- "人件費"から"AIサービス＋高付加価値人材"へのシフトを財務計画に反映。</p>
+        </li>
+      </ul>
+      <p style="margin-top: 15px;">こうした布石を打つことで、Microsoft が示唆する "コードの 20〜30 % を AI が担う世界" を、競争優位へと変換できます。</p>
+    </div>
+    
+    <footer>
+      グラフィックレコーディング作成：Claude 3.7 Sonnet - 2025年5月1日
+    </footer>
