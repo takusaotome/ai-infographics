@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RAGエージェントを50行で作る！</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --bg-color: #faf8f5;
+            --text-color: #334155;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            position: relative;
+            z-index: 2;
+            width: 70%;
+        }
+        
+        .date {
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: #475569;
+            text-align: right;
+        }
+        
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            position: relative;
+        }
+        
+        .column {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            border: 2px solid transparent;
+            border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 C20,10 50,10 100,0 L100,100 C50,90 20,90 0,100 Z' fill='none' stroke='%23593C47' stroke-width='2' stroke-dasharray='5,5'/%3E%3C/svg%3E") 1;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -5px;
+            width: 80px;
+            height: 80px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100' fill='none'%3E%3Cpath d='M0,0 C30,20 70,20 100,0 C80,30 80,70 100,100 C70,80 30,80 0,100 C20,70 20,30 0,0 Z' stroke='%23F2C53D' stroke-width='3' stroke-dasharray='5,3'/%3E%3C/svg%3E");
+            background-size: contain;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e40af;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .section-title::before {
+            content: attr(data-icon);
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .section-title::after {
+            content: "";
+            flex-grow: 1;
+            height: 2px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='4' viewBox='0 0 100 4'%3E%3Cpath d='M0,2 C20,1 40,3 60,2 C80,1 90,3 100,2' stroke='%23F25C05' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-repeat: repeat-x;
+            margin-left: 10px;
+        }
+        
+        .text {
+            font-size: 14px;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 50%, rgba(242, 196, 60, 0.3) 50%);
+            padding: 0 2px;
+            font-weight: bold;
+        }
+        
+        .code-block {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 10px 0;
+            font-family: monospace;
+            font-size: 12px;
+            position: relative;
+            overflow: auto;
+            max-height: 300px;
+            border-left: 3px solid var(--fashion-4);
+            white-space: pre !important;
+            line-height: 1.5 !important;
+        }
+        
+        .step {
+            display: flex;
+            margin-bottom: 10px;
+            align-items: flex-start;
+        }
+        
+        .step-number {
+            background: var(--fashion-3);
+            color: var(--fashion-1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-weight: bold;
+            flex-shrink: 0;
+        }
+        
+        .bubble {
+            position: relative;
+            background: white;
+            border-radius: 15px;
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border: 2px solid var(--fashion-1);
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: var(--fashion-1) transparent;
+        }
+        
+        .bubble::before {
+            content: "";
+            position: absolute;
+            bottom: -7px;
+            left: 22px;
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: white transparent;
+            z-index: 1;
+        }
+        
+        .arrow {
+            position: relative;
+            margin: 20px auto;
+            width: 30px;
+            height: 40px;
+        }
+        
+        .arrow::before {
+            content: "";
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='3' viewBox='0 0 100 3'%3E%3Cpath d='M0,2 C30,1 70,3 100,2' stroke='%23F24405' stroke-width='2' stroke-dasharray='5,3' fill='none'/%3E%3C/svg%3E");
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .arrow::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: -10px;
+            width: 20px;
+            height: 20px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='20' height='20' viewBox='0 0 20 20'%3E%3Cpath d='M0,10 L20,0 L15,10 L20,20 Z' fill='%23F24405'/%3E%3C/svg%3E");
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .tag {
+            display: inline-block;
+            background: var(--fashion-2);
+            color: var(--fashion-1);
+            border-radius: 15px;
+            padding: 2px 8px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        .icon-box {
+            display: flex;
+            justify-content: center;
+            margin: 15px 0;
+        }
+        
+        .icon-circle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin: 0 10px;
+            border: 2px dashed var(--fashion-3);
+            font-size: 24px;
+        }
+        
+        .connection-line {
+            position: absolute;
+            border-top: 2px dashed var(--fashion-4);
+            transform-origin: 0 0;
+            z-index: 0;
+        }
+        
+        .badge {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: var(--fashion-5);
+            color: white;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Yomogi', cursive;
+            transform: rotate(15deg);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+        
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+            font-size: 12px;
+        }
+        
+        .table th {
+            background: var(--fashion-1);
+            color: white;
+            padding: 8px;
+            text-align: left;
+        }
+        
+        .table td {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .table tr:nth-child(even) {
+            background: rgba(242, 230, 61, 0.1);
+        }
+        
+        .footer {
+            font-size: 12px;
+            color: #64748b;
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--fashion-3);
+            font-family: 'Yomogi', cursive;
+        }
+        
+        /* 手書き風のアイコンや矢印などの装飾要素 */
+        .decoration {
+            position: absolute;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .deco-1 {
+            top: 60px;
+            right: 30px;
+            width: 80px;
+            height: 80px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 100 100' fill='none'%3E%3Cpath d='M20,20 C40,10 60,30 80,20 M30,50 C50,40 70,60 90,50 M10,80 C30,70 50,90 70,80' stroke='%23F25C05' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+        
+        .deco-2 {
+            bottom: 40px;
+            left: 40px;
+            width: 100px;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100' viewBox='0 0 100 100' fill='none'%3E%3Ccircle cx='50' cy='50' r='45' stroke='%23593C47' stroke-width='2' stroke-dasharray='5,5'/%3E%3C/svg%3E");
+            background-size: contain;
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .content {
+                flex-direction: column;
+            }
+            
+            .column {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="decoration deco-1"></div>
+        <div class="decoration deco-2"></div>
+        
+        <div class="header">
+            <h1 class="title">✨ RAG エージェントを "50 行" で作る！</h1>
+            <div class="date">2025-04-29</div>
+        </div>
+        
+        <div class="content">
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="🚀">やること</h2>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="text">ドキュメントをベクトル化して <span class="highlight">Postgres (pgvector)</span> に格納</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="text">LangChain の <span class="highlight">RetrievalQA + ReAct Agent</span> を合体</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="text">"EU AI Act はいつ施行？" を質問 → <span class="highlight">出典付きで回答</span></div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="🛠️">前提</h2>
+                    <div class="code-block">pip install langchain openai psycopg2-binary pgvector-python tiktoken
+export OPENAI_API_KEY="sk-..."
+
+Docker で Postgres + pgvector を立てておくと楽：
+
+docker run --name rag_pg -e POSTGRES_PASSWORD=rag -p 5432:5432 \
+  ankane/pgvector</div>
+                </div>
+                
+                <div class="bubble">
+                    "検索 × LLM が合体した RAG エージェントを、たった 50 行の Python で爆速構築。手元の PDF や社内ドキュメントを読み込ませ、根拠付きで答えるボットを動かします。"
+                </div>
+                
+                <div class="card">
+                    <div class="badge">50行</div>
+                    <h2 class="section-title" data-icon="💻">コード全文</h2>
+                    <div class="text">01_rag_agent.py ← そのままコピペ OK！</div>
+                    <div class="code-block" style="white-space: pre; overflow-x: auto; line-height: 1.5;"># 01_rag_agent.py
+import os, textract, glob
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.pgvector import PGVector
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.docstore.document import Document
+from langchain.tools import Tool
+from langchain.chat_models import ChatOpenAI
+from langchain.agents import initialize_agent
+from langchain.chains import RetrievalQA
+
+### 1) ベクトルストア接続 ------------------------
+CONN = "postgresql://postgres:rag@localhost:5432/postgres"
+COLL = "eu_docs"
+
+embed = OpenAIEmbeddings()
+vectordb = PGVector(
+    connection_string=CONN,
+    collection_name=COLL,
+    embedding_function=embed)
+
+### 2) ドキュメント投入 (初回のみ) --------------
+if not vectordb.check_if_collection_exists():
+    splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=80)
+    docs = []
+    for file in glob.glob("./docs/*.pdf"):
+        text = textract.process(file, method="pdftotext").decode()
+        for chunk in splitter.split_text(text):
+            docs.append(Document(page_content=chunk, metadata={"src": file}))
+    vectordb.add_documents(docs)
+    print(f"💾 {len(docs)} chunks embedded!")
+
+### 3) Retriever + QA チェーン -------------------
+retriever = vectordb.as_retriever(search_kwargs={"k":4})
+
+qa_chain = RetrievalQA.from_chain_type(
+    llm=ChatOpenAI(model="gpt-4o-mini", temperature=0),
+    chain_type="stuff",
+    retriever=retriever,
+    return_source_documents=True)
+
+def rag_tool(q: str) -> str:
+    res = qa_chain(q)
+    answer = res["result"]
+    sources = {d.metadata['src'].split('/')[-1] for d in res['source_documents']}
+    return f"{answer}\n\n🔖 Sources: {', '.join(sources)}"
+
+### 4) ReAct エージェント ------------------------
+tools = [Tool(name="RAG", func=rag_tool,
+              description="Use this tool to answer using internal docs")]
+agent = initialize_agent(tools, ChatOpenAI(model="gpt-4o-mini"),
+                         agent_type="chat-zero-shot-react-description")
+
+### 5) 試す！ ------------------------------------
+while True:
+    q = input("\n🗨 質問 > ")
+    print(agent.run(q))</div>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="🔍">RAG の仕組み</h2>
+                    <div class="icon-box">
+                        <div class="icon-circle">📄</div>
+                        <div class="icon-circle">🔍</div>
+                        <div class="icon-circle">🧠</div>
+                    </div>
+                    <div class="text">
+                        1. <span class="highlight">ドキュメント</span>をチャンク分割しベクトル化
+                        <br>↓
+                        <br>2. 質問に近い<span class="highlight">ドキュメント検索</span>
+                        <br>↓
+                        <br>3. <span class="highlight">LLM</span>が検索結果を元に回答
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="🚀">動かしてみよう</h2>
+                    <div class="code-block">python 01_rag_agent.py</div>
+                    <div class="bubble">
+                        <strong>質問 ></strong> EU AI Act はいつ発効？
+                        <br><br>
+                        EU AI Act は 2025 年 8 月から段階的に適用が始まり、2026 年 2 月に完全施行されます。  
+                        <br>🔖 Sources: eu_ai_act_final.pdf
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="⚙️">コードの流れ</h2>
+                    <div class="text">
+                        <div class="tag">Step 1</div> ベクトルストア接続
+                        <br>↓
+                        <br><div class="tag">Step 2</div> ドキュメント投入
+                        <br>↓
+                        <br><div class="tag">Step 3</div> Retriever + QA チェーン
+                        <br>↓
+                        <br><div class="tag">Step 4</div> ReAct エージェント
+                        <br>↓
+                        <br><div class="tag">Step 5</div> 質問応答ループ
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="✨">ワクワク拡張アイデア</h2>
+                    <table class="table">
+                        <tr>
+                            <th>レベル</th>
+                            <th>やること</th>
+                            <th>追加ライブラリ</th>
+                        </tr>
+                        <tr>
+                            <td>★</td>
+                            <td>PDF 以外に Confluence API も ingest</td>
+                            <td>atlassian-python-api</td>
+                        </tr>
+                        <tr>
+                            <td>★★</td>
+                            <td>引用箇所をハイライト付きで返す</td>
+                            <td>langchain.docstore.document</td>
+                        </tr>
+                        <tr>
+                            <td>★★★</td>
+                            <td>FastAPI で REST エンドポイント化</td>
+                            <td>fastapi, uvicorn</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="card">
+                    <h2 class="section-title" data-icon="🧩">コンポーネント解説</h2>
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="text"><span class="highlight">OpenAIEmbeddings</span> - テキストをベクトル化</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="text"><span class="highlight">PGVector</span> - Postgres + pgvector との連携</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="text"><span class="highlight">RecursiveCharacterTextSplitter</span> - 文書を小チャンクに分割</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="text"><span class="highlight">RetrievalQA</span> - 検索結果を使ったQ&Aチェーン</div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">5</div>
+                        <div class="text"><span class="highlight">Tool & ReAct Agent</span> - ツールを使って問題解決</div>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="💭">RAGのメリット</h2>
+                    <div class="text">
+                        <span class="highlight">✓ 最新情報を反映</span> - トレーニング後の情報も参照可能
+                        <br><br>
+                        <span class="highlight">✓ 出典を明示</span> - 根拠となるドキュメントを提示
+                        <br><br>
+                        <span class="highlight">✓ ハルシネーション低減</span> - 実データに基づく回答
+                        <br><br>
+                        <span class="highlight">✓ カスタマイズ性</span> - 独自ドキュメントを組み込み可能
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h2 class="section-title" data-icon="📝">まとめ</h2>
+                    <div class="text">
+                        <ul style="list-style-type: none; padding-left: 0;">
+                            <li>• RAG = ベクトル検索＋LLM で <span class="highlight">"最新＆根拠付き"</span> の回答が即完成</li>
+                            <li>• LangChain + pgvector なら <span class="highlight">50 行未満</span> で MVP が動く</li>
+                            <li>• ソース添付で<span class="highlight">ハルシネ率激減</span> → 実務導入への第一歩に！</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bubble">
+                    <strong>次のステップ</strong>
+                    <br>自社 Wiki / DB を突っ込んで、チームの"何でも答える社内 GPT"を一晩で立ち上げてみましょう 🚀
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Created with ✨ RAG エージェントを "50 行" で作る！ — コピペで動くミニチュートリアル | 2025-04-29
+        </div>
+    </div>
+</body>
+</html>

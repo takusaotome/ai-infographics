@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LangChain × CrewAI × AutoGen<br>マルチエージェント Framework 徹底比較 - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>マルチエージェント Framework 徹底比較</title>
+    <link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --gray-600: #475569;
+            --gray-700: #334155;
+            --blue-800: #1e40af;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--gray-700);
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: var(--shadow);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* 手書き風の装飾要素 */
+        .hand-drawn {
+            position: relative;
+        }
+        
+        .hand-drawn::before {
+            content: '';
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            z-index: -1;
+            transform: rotate(-0.5deg);
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            border-bottom: 3px dashed var(--fashion-4);
+            padding-bottom: 20px;
+        }
+        
+        .title {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .title::after {
+            content: '';
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--fashion-2), var(--fashion-4));
+            border-radius: 3px;
+        }
+        
+        .date {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--gray-600);
+            position: relative;
+            padding-left: 30px;
+        }
+        
+        .date::before {
+            content: '📅';
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-family: 'Yomogi', cursive;
+            font-size: 24px;
+            color: var(--blue-800);
+            margin-bottom: 20px;
+            padding-left: 35px;
+            position: relative;
+        }
+        
+        .section-title::before {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 24px;
+        }
+        
+        .section-title.positioning::before { content: '📊'; }
+        .section-title.matrix::before { content: '📋'; }
+        .section-title.code::before { content: '💻'; }
+        .section-title.checklist::before { content: '✅'; }
+        .section-title.summary::before { content: '📝'; }
+        
+        .card {
+            background-color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(to right, var(--fashion-2), var(--fashion-4));
+        }
+        
+        .highlight {
+            background-color: var(--fashion-3);
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-weight: bold;
+            display: inline-block;
+            transform: rotate(-1deg);
+        }
+        
+        .marker {
+            position: relative;
+            display: inline-block;
+        }
+        
+        .marker::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background-color: rgba(242, 92, 5, 0.3);
+            z-index: -1;
+        }
+        
+        .arrow {
+            position: relative;
+            padding-right: 30px;
+        }
+        
+        .arrow::after {
+            content: '→';
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 20px;
+            color: var(--fashion-4);
+        }
+        
+        .bubble {
+            position: relative;
+            background-color: rgba(242, 230, 60, 0.2);
+            border-radius: 15px;
+            padding: 10px 15px;
+            margin: 15px 0;
+        }
+        
+        .bubble::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+            border-bottom: 10px solid rgba(242, 230, 60, 0.2);
+        }
+        
+        .comparison-chart {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            font-size: 14px;
+        }
+        
+        .comparison-chart th {
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+        }
+        
+        .comparison-chart td {
+            padding: 10px;
+            border-bottom: 1px dashed var(--fashion-3);
+        }
+        
+        .comparison-chart tr:nth-child(even) {
+            background-color: rgba(242, 230, 60, 0.1);
+        }
+        
+        .comparison-chart .feature {
+            font-weight: bold;
+            color: var(--fashion-5);
+        }
+        
+        .code-section {
+            background-color: #f1f1f1;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 14px;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-section::before {
+            content: attr(data-lang);
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background-color: var(--fashion-4);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Kaisei Decol', serif;
+        }
+        
+        .checklist-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        
+        .checklist-header {
+            font-weight: bold;
+            text-align: center;
+            padding: 8px;
+            background-color: var(--fashion-1);
+            color: white;
+            border-radius: 8px 8px 0 0;
+        }
+        
+        .checklist-item {
+            padding: 8px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .sticky-note {
+            background-color: var(--fashion-2);
+            padding: 15px;
+            transform: rotate(1deg);
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+            margin: 20px 10px;
+        }
+        
+        .sticky-note::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 10px;
+            background-color: rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        
+        .footer {
+            text-align: right;
+            font-size: 12px;
+            color: var(--gray-600);
+            margin-top: 30px;
+            border-top: 2px dashed var(--fashion-4);
+            padding-top: 15px;
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .comparison-chart {
+                font-size: 12px;
+            }
+            
+            .checklist-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* 手書き風アイコン */
+        .icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            margin-right: 5px;
+            vertical-align: middle;
+        }
+        
+        .positioning-chart {
+            width: 100%;
+            height: 300px;
+            position: relative;
+            margin: 30px 0;
+            border: 2px dashed var(--fashion-1);
+            border-radius: 8px;
+            padding: 20px;
+        }
+        
+        .axis-x, .axis-y {
+            position: absolute;
+            background-color: var(--fashion-1);
+        }
+        
+        .axis-x {
+            bottom: 40px;
+            left: 40px;
+            right: 40px;
+            height: 2px;
+        }
+        
+        .axis-y {
+            top: 40px;
+            bottom: 40px;
+            left: 40px;
+            width: 2px;
+        }
+        
+        .axis-label-x, .axis-label-y {
+            position: absolute;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+        }
+        
+        .axis-label-x {
+            bottom: 10px;
+            right: 20px;
+        }
+        
+        .axis-label-y {
+            transform: rotate(-90deg);
+            top: 30px;
+            left: -30px;
+        }
+        
+        .framework-point {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-family: 'Zen Kurenaido', sans-serif;
+            text-align: center;
+            font-size: 12px;
+            box-shadow: var(--shadow);
+            z-index: 1;
+        }
+        
+        .autogen-point {
+            background-color: var(--fashion-5);
+            top: 60px;
+            left: 200px;
+        }
+        
+        .crewai-point {
+            background-color: var(--fashion-3);
+            top: 140px;
+            left: 260px;
+        }
+        
+        .langchain-point {
+            background-color: var(--fashion-1);
+            top: 220px;
+            left: 120px;
+        }
+        
+        .connector {
+            position: absolute;
+            background-color: rgba(89, 60, 71, 0.3);
+            z-index: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">LangChain × CrewAI × AutoGen<br>マルチエージェント Framework 徹底比較</h1>
+            <div class="date">2025年4月29日</div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title positioning">1. ポジショニング早見図</h2>
+            <div class="positioning-chart">
+                <div class="axis-x"></div>
+                <div class="axis-y"></div>
+                <div class="axis-label-x">ライブラリ統合度 ──────▶</div>
+                <div class="axis-label-y">Deployment Flexibility ▲</div>
+                
+                <div class="framework-point autogen-point">AutoGen<br>(研究/高度制御)</div>
+                <div class="framework-point crewai-point">CrewAI<br>(軽量マルチ)</div>
+                <div class="framework-point langchain-point">LangChain<br>(オールインワン)</div>
+                
+                <div class="connector" style="width: 2px; height: 80px; top: 140px; left: 240px; transform: rotate(45deg);"></div>
+                <div class="connector" style="width: 2px; height: 130px; top: 170px; left: 160px; transform: rotate(-45deg);"></div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title matrix">2. 比較マトリクス</h2>
+            <table class="comparison-chart">
+                <tr>
+                    <th>観点</th>
+                    <th>LangChain</th>
+                    <th>CrewAI</th>
+                    <th>AutoGen</th>
+                </tr>
+                <tr>
+                    <td class="feature">開発元 / 年</td>
+                    <td>LangChain Inc.<br>2022</td>
+                    <td>OSS (CrewAIInc)<br>2024</td>
+                    <td>Microsoft<br>2024</td>
+                </tr>
+                <tr>
+                    <td class="feature">主タスク</td>
+                    <td>RAG・Tool-Calling・ワン/マルチエージェント</td>
+                    <td>ロール分担型マルチエージェント</td>
+                    <td>研究向け多人数会話・ハイブリッド (LLM＋人)</td>
+                </tr>
+                <tr>
+                    <td class="feature">特徴</td>
+                    <td>
+                        <span class="marker">200↑公式ツール連携</span><br>
+                        Memory, RAG, Agents を一括提供
+                    </td>
+                    <td>
+                        Crew / Task / Agent 抽象で<br>
+                        <span class="highlight">役割設計が簡単</span>
+                    </td>
+                    <td>
+                        <span class="marker">会話ログに基づくフロー制御</span><br>
+                        AutoGen Studio のローコードUI
+                    </td>
+                </tr>
+                <tr>
+                    <td class="feature">プランニング</td>
+                    <td>ReAct / MRKL / ChatZeroShot などテンプレ多数</td>
+                    <td>Sequential（直列）と<br>Collaborate（並列β）</td>
+                    <td>チャット履歴を元に<span class="highlight">動的</span>に役割変更</td>
+                </tr>
+                <tr>
+                    <td class="feature">ツール実行</td>
+                    <td>`Tool` インタフェース。<br>Any Python fn を数行で登録</td>
+                    <td>LangChain Tool も流用可。<br>低レイヤ制御も◎</td>
+                    <td><span class="marker">Function Call 仕様に準拠</span>。<br>Timeout/Retry 標準装備</td>
+                </tr>
+                <tr>
+                    <td class="feature">メモリ / コンテキスト</td>
+                    <td>ConversationBufferMemory,<br>FAISS, pgvector</td>
+                    <td>Crew 全体で共有 / 個別保持を選択可</td>
+                    <td>チャット履歴がメモリ。<br>外部 VectorStore も接続可</td>
+                </tr>
+                <tr>
+                    <td class="feature">並列実行</td>
+                    <td>マルチ Thread / Async 対応</td>
+                    <td>2025.2 で Parallel Task β</td>
+                    <td>n_agents×n_threads 並列／人間介入モード</td>
+                </tr>
+                <tr>
+                    <td class="feature">ライセンス</td>
+                    <td>MIT</td>
+                    <td>MIT</td>
+                    <td>MIT + CC-BY (docs)</td>
+                </tr>
+                <tr>
+                    <td class="feature">エコシステム</td>
+                    <td>Slack 9.6k★ / Weekly pypi 40k DL</td>
+                    <td>GitHub 4.1k★ （急成長）</td>
+                    <td>GitHub 12k★ / 学術論文多数</td>
+                </tr>
+                <tr>
+                    <td class="feature">学習コスト(体感)</td>
+                    <td>★★☆（ドキュメント充実）</td>
+                    <td>★☆☆（シンプル API）</td>
+                    <td>★★★（概念が多い）</td>
+                </tr>
+                <tr>
+                    <td class="feature">向く用途</td>
+                    <td>SaaS ボット、RAG FAQ、社内ツール連携</td>
+                    <td>執筆チーム、コードレビュー、リサーチ作業</td>
+                    <td>研究実験、複雑タスクの自動交渉、ヒト協調</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title code">3. サンプルコード比較（同一タスク：FAQ 生成）</h2>
+            <div class="grid">
+                <div class="card">
+                    <h3 style="color: var(--fashion-1); margin-bottom: 15px;">LangChain（ReAct Agent）</h3>
+                    <div class="code-section" data-lang="Python">
+from langchain.agents import initialize_agent, Tool
+from langchain.chat_models import ChatOpenAI
+
+tools = [search_tool, rag_tool]
+agent  = initialize_agent(
+    tools, 
+    ChatOpenAI(), 
+    agent_type="chat-zero-shot-react-description"
+)
+agent("『EU AI Act 施行スケジュール』を 3 行で教えて")
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="color: var(--fashion-3); margin-bottom: 15px;">CrewAI（Crew + Task）</h3>
+                    <div class="code-section" data-lang="Python">
+from crewai import Agent, Task, Crew
+
+searcher = Agent(role="Researcher", tools=[search_tool])
+writer   = Agent(role="Writer",     tools=[format_tool])
+
+task1 = Task(searcher, "EU AI Act を調査し要点を200字で")
+task2 = Task(writer,   "task1 の結果を 3 行FAQ に整形")
+
+Crew(tasks=[task1, task2]).run()
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3 style="color: var(--fashion-5); margin-bottom: 15px;">AutoGen（2 Agent Conversation）</h3>
+                    <div class="code-section" data-lang="Python">
+from autogen import AssistantAgent, UserProxyAgent
+
+assistant = AssistantAgent(
+    "assistant", 
+    llm_config={"model": "gpt-4o-mini"}
+)
+user = UserProxyAgent("user")
+assistant.initiate_chat(
+    user, 
+    message="EU AI Act の施行スケジュールを 3 行で"
+)
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title checklist">4. 選定フロー（チェックリスト）</h2>
+            <div class="checklist-grid">
+                <div class="checklist-header">質問</div>
+                <div class="checklist-header">Yes</div>
+                <div class="checklist-header">No</div>
+                
+                <div class="checklist-item">RAG や Tool 呼び出しが中心？</div>
+                <div class="checklist-item" style="background-color: rgba(242, 230, 60, 0.2);">LangChain</div>
+                <div class="checklist-item">次へ</div>
+                
+                <div class="checklist-item">複数ロールで分担したい？</div>
+                <div class="checklist-item" style="background-color: rgba(242, 196, 60, 0.2);">CrewAI</div>
+                <div class="checklist-item">AutoGen</div>
+                
+                <div class="checklist-item">研究用に細かく挙動を実験？</div>
+                <div class="checklist-item" style="background-color: rgba(242, 68, 4, 0.2);">AutoGen</div>
+                <div class="checklist-item">CrewAI</div>
+                
+                <div class="checklist-item">ドキュメントとコミュニティ重視？</div>
+                <div class="checklist-item" style="background-color: rgba(89, 60, 71, 0.2);">LangChain</div>
+                <div class="checklist-item">—</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2 class="section-title summary">5. まとめ</h2>
+            <div class="bubble" style="background-color: rgba(89, 60, 71, 0.1);">
+                <span class="highlight">1. LangChain</span>：RAG＋ツール連携がワンパッケージ。初学者〜PoC最速。
+            </div>
+            <div class="bubble" style="background-color: rgba(242, 196, 60, 0.1);">
+                <span class="highlight">2. CrewAI</span>：ロール分担が簡単で小規模チームボットに好適。
+            </div>
+            <div class="bubble" style="background-color: rgba(242, 68, 4, 0.1);">
+                <span class="highlight">3. AutoGen</span>：マルチエージェント会話を柔軟制御。研究・高度タスク向け。
+            </div>
+            
+            <div class="sticky-note">
+                <strong>Tips:</strong> まず "小スコープ" を LangChain 1 エージェントで作り、複数ロールが必要になったら CrewAI／AutoGen にスケールするのが安全ルートです。
+            </div>
+        </div>
+        
+        <div class="footer-text">
+            出典: マルチエージェント Framework 徹底比較（2025年4月29日）
+        </div>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 

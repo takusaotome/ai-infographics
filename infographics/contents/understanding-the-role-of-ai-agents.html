@@ -1,0 +1,889 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AIエージェント超入門 — グラフィックレコーディング</title>
+  <link href="https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap" rel="stylesheet">
+  <!-- SVGアイコンを使用するためにFont Awesomeは削除 -->
+  <style>
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --gray-700: #334155;
+      --gray-600: #475569;
+      --blue-800: #1e40af;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      background-color: #f8f9fa;
+      color: var(--gray-700);
+      margin: 0;
+      padding: 20px;
+      line-height: 1.4;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      border-bottom: 3px solid var(--fashion-3);
+      padding-bottom: 15px;
+    }
+    
+    .title-container {
+      width: 70%;
+    }
+    
+    .title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      margin: 0 0 10px;
+      background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      position: relative;
+    }
+    
+    .title::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, var(--fashion-2), var(--fashion-4));
+      border-radius: 3px;
+    }
+    
+    .subtitle {
+      font-family: 'Yomogi', cursive;
+      font-size: 16px;
+      color: var(--gray-600);
+      margin: 5px 0;
+    }
+    
+    .date-source {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 14px;
+      color: var(--gray-600);
+      text-align: right;
+    }
+    
+    .main-content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .column {
+      flex: 1;
+      min-width: 300px;
+    }
+    
+    .section {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      position: relative;
+      border: 2px dashed var(--fashion-1);
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+    
+    .section-title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 18px;
+      color: var(--blue-800);
+      margin: 0;
+      position: relative;
+    }
+    
+    .section-title::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--fashion-3);
+      border-radius: 2px;
+    }
+    
+    .icon-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 30px;
+      background-color: var(--fashion-2);
+      border-radius: 50%;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .content-text {
+      font-size: 14px;
+      color: var(--gray-700);
+    }
+    
+    .key-point {
+      background-color: rgba(242, 196, 60, 0.2);
+      border-left: 3px solid var(--fashion-3);
+      padding: 10px 15px;
+      margin: 15px 0;
+      border-radius: 0 8px 8px 0;
+    }
+    
+    .key-point-title {
+      font-weight: bold;
+      color: var(--fashion-5);
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+    
+    .definition {
+      font-family: 'Kaisei Decol', serif;
+      padding: 15px;
+      background-color: rgba(89, 60, 71, 0.1);
+      border-radius: 8px;
+      margin: 15px 0;
+    }
+    
+    .definition-title {
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: var(--fashion-1);
+    }
+    
+    .definition-content {
+      font-family: 'Yomogi', cursive;
+      font-size: 15px;
+      line-height: 1.5;
+    }
+    
+    .keyword {
+      font-weight: bold;
+      color: var(--fashion-5);
+      position: relative;
+      display: inline-block;
+    }
+    
+    .keyword::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background-color: var(--fashion-3);
+      opacity: 0.5;
+      z-index: -1;
+      border-radius: 3px;
+    }
+    
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 20px 0;
+      font-family: 'Kaisei Decol', serif;
+    }
+    
+    .comparison-table th {
+      background-color: var(--fashion-1);
+      color: white;
+      padding: 10px;
+      text-align: left;
+      font-weight: normal;
+      border-radius: 8px 8px 0 0;
+    }
+    
+    .comparison-table td {
+      padding: 10px;
+      border-bottom: 1px dashed var(--gray-600);
+    }
+    
+    .comparison-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .comparison-table tr:nth-child(even) {
+      background-color: rgba(242, 230, 60, 0.1);
+    }
+    
+    .phase-cell {
+      font-weight: bold;
+      color: var(--fashion-1);
+      width: 25%;
+    }
+    
+    .human-cell {
+      width: 37.5%;
+      background-color: rgba(242, 196, 60, 0.1);
+      border-radius: 4px;
+    }
+    
+    .ai-cell {
+      width: 37.5%;
+      background-color: rgba(242, 92, 5, 0.1);
+      border-radius: 4px;
+    }
+    
+    .arrow {
+      position: relative;
+      font-size: 18px;
+      margin: 0 10px;
+      color: var(--fashion-4);
+    }
+    
+    .loop {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 15px;
+      margin: 20px 0;
+      padding: 15px;
+      background-color: rgba(242, 230, 60, 0.1);
+      border-radius: 12px;
+      position: relative;
+    }
+    
+    .step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      background-color: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      min-width: 80px;
+      position: relative;
+    }
+    
+    .step-number {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 25px;
+      height: 25px;
+      background-color: var(--fashion-1);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+    
+    .step-title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-weight: bold;
+      margin-bottom: 5px;
+      color: var(--fashion-5);
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 8px;
+      padding: 12px;
+      margin: 10px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-left: 3px solid var(--fashion-3);
+    }
+    
+    .card-title {
+      font-weight: bold;
+      color: var(--fashion-1);
+      margin-bottom: 5px;
+      font-size: 14px;
+    }
+    
+    .code-block {
+      background-color: #f1f5f9;
+      border-radius: 8px;
+      padding: 15px;
+      margin: 15px 0;
+      font-family: monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      position: relative;
+    }
+    
+    .code-title {
+      position: absolute;
+      top: -10px;
+      left: 15px;
+      background-color: var(--fashion-4);
+      color: white;
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    
+    .framework-card {
+      display: flex;
+      justify-content: space-between;
+      background-color: white;
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+      border-left: 3px solid var(--fashion-4);
+    }
+    
+    .framework-name {
+      font-weight: bold;
+      color: var(--fashion-5);
+    }
+    
+    .framework-description {
+      font-size: 13px;
+      color: var(--gray-600);
+    }
+    
+    .skill-level {
+      color: var(--fashion-2);
+      font-weight: bold;
+    }
+    
+    .footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 14px;
+      color: var(--gray-600);
+      border-top: 2px dashed var(--fashion-3);
+      padding-top: 20px;
+    }
+    
+    /* 手書き風の装飾 */
+    .hand-drawn-border {
+      position: relative;
+    }
+    
+    .hand-drawn-border::before {
+      content: '';
+      position: absolute;
+      top: -5px;
+      left: -5px;
+      right: -5px;
+      bottom: -5px;
+      border: 2px solid var(--fashion-1);
+      border-radius: 15px;
+      z-index: -1;
+      transform: rotate(-0.5deg);
+    }
+    
+    .hand-drawn-box {
+      position: relative;
+      padding: 15px;
+      margin: 25px 0;
+    }
+    
+    .hand-drawn-box::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(242, 196, 60, 0.1);
+      border: 2px solid var(--fashion-3);
+      border-radius: 12px;
+      z-index: -1;
+      transform: rotate(0.3deg);
+    }
+    
+    .note {
+      position: relative;
+      background-color: rgba(242, 230, 60, 0.2);
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 8px;
+    }
+    
+    .note::before {
+      content: '📌';
+      position: absolute;
+      top: -15px;
+      left: 10px;
+      font-size: 24px;
+      transform: rotate(5deg);
+    }
+    
+    .highlight {
+      position: relative;
+      z-index: 1;
+    }
+    
+    .highlight::after {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 8px;
+      bottom: 0;
+      left: 0;
+      background-color: var(--fashion-2);
+      opacity: 0.4;
+      z-index: -1;
+      border-radius: 4px;
+    }
+    
+    .bubble {
+      position: relative;
+      background-color: white;
+      border-radius: 20px;
+      padding: 15px;
+      margin: 15px 0;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+    
+    .bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -15px;
+      left: 20px;
+      width: 0;
+      height: 0;
+      border-left: 15px solid transparent;
+      border-right: 15px solid transparent;
+      border-top: 15px solid white;
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        flex-direction: column;
+      }
+      
+      .column {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="title-container">
+        <h1 class="title">AIエージェント超入門</h1>
+        <p class="subtitle">人間とボットの役割を並べて理解しよう ✨</p>
+      </div>>
+      <div class="date-source">
+        2025年4月29日<br>
+        <i class="fas fa-pen-fancy"></i> グラフィックレコーディング
+      </div>
+    </div>
+    
+    <div class="main-content">
+      <!-- 第1カラム -->
+      <div class="column">
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">🤖</span>
+            </div>
+            <h2 class="section-title">1. AIエージェントとは？</h2>
+          </div>
+          
+          <div class="definition">
+            <div class="definition-title">
+              💬 定義（シンプル版）
+            </div>
+            <div class="definition-content">
+              <span class="keyword">観測</span>→<span class="keyword">思考</span>→<span class="keyword">行動</span> を自律的にループできるソフトウェア。
+            </div>
+          </div>
+          
+          <div class="loop">
+            <div class="step">
+              <div class="step-title">観測</div>
+              <div class="content-text">外部入力を取得</div>
+              <div style="font-size: 24px; color: var(--fashion-3);">👁️</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+              <div class="step-title">思考</div>
+              <div class="content-text">LLMで判断</div>
+              <div style="font-size: 24px; color: var(--fashion-3);">🧠</div>
+            </div>
+            <div class="arrow">→</div>
+            <div class="step">
+              <div class="step-title">行動</div>
+              <div class="content-text">ツール実行</div>
+              <div style="font-size: 24px; color: var(--fashion-3);">🔧</div>
+            </div>
+                          <span style="position: absolute; bottom: 10px; right: 10px; color: var(--fashion-4); font-size: 24px;">🔄</span>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">👁️ 観測 (Perception)</div>
+            <div class="content-text">外部入力（テキスト, API, センサー）を取得</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">🧠 思考 (Reasoning)</div>
+            <div class="content-text">LLM やルールで判断・計画を立てる</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">🔧 行動 (Action)</div>
+            <div class="content-text">ツール実行、API 呼び出し、ユーザ返答</div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">🔄</span>
+            </div>
+            <h2 class="section-title">3. 3層アーキテクチャの全体像</h2>
+          </div>
+          
+          <div class="hand-drawn-box">
+            <div style="display: flex; flex-direction: column; align-items: center; gap: 10px;">
+              <div class="step" style="width: 80%;">
+                <div class="step-title">Input</div>
+                <div class="content-text">チャット / API</div>
+                <div style="font-size: 20px; color: var(--fashion-3);">📝</div>
+              </div>
+              <span style="color: var(--fashion-4); font-size: 20px;">⬇️</span>
+              <div class="step" style="width: 80%;">
+                <div class="step-title">Perception</div>
+                <div class="content-text">Tokenizer / Embedder</div>
+                <div style="font-size: 20px; color: var(--fashion-3);">👁️</div>
+              </div>
+              <i class="fas fa-arrow-down" style="color: var(--fashion-4);"></i>
+              <div class="step" style="width: 80%;">
+                <div class="step-title">Reasoning</div>
+                <div class="content-text">LLM / ルール / プランナー</div>
+                <div style="font-size: 20px; color: var(--fashion-3);">🧠</div>
+              </div>
+              <i class="fas fa-arrow-down" style="color: var(--fashion-4);"></i>
+              <div class="step" style="width: 80%;">
+                <div class="step-title">Action</div>
+                <div class="content-text">ツール呼び出し / DB 更新</div>
+                <div style="font-size: 20px; color: var(--fashion-3);">🔧</div>
+              </div>
+              <i class="fas fa-arrow-down" style="color: var(--fashion-4);"></i>
+              <div class="step" style="width: 80%;">
+                <div class="step-title">Output</div>
+                <div class="content-text">テキスト / タスク実行</div>
+                <div style="font-size: 20px; color: var(--fashion-3);">📊</div>
+              </div>
+            </div>
+            
+            <!-- ループの矢印 -->
+            <div style="position: absolute; right: 30px; top: 50%; transform: translateY(-50%);">
+              <span style="font-size: 24px; color: var(--fashion-4);">🔄</span>
+              <div style="font-size: 12px; color: var(--fashion-1); text-align: center;">Loop</div>
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">👁️ Perception</div>
+            <div class="content-text">テキスト→ベクトル化、画像→特徴量抽出など</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">🧠 Reasoning</div>
+            <div class="content-text">LLM + プラグインで「どのツールを使うか」計画</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">▶️ Action</div>
+            <div class="content-text">Python 関数・REST API・RPA Bot などを実行</div>
+          </div>
+        </div>
+      
+      <!-- 第3カラム -->
+      <div class="column">
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">📋</span>
+            </div>
+            <h2 class="section-title">5. 小さく作って動かす5ステップ</h2>
+          </div>
+          
+          <div class="step" style="width: 100%; margin-bottom: 15px;">
+            <div class="step-number">1</div>
+            <div class="step-title">ユースケースを絞る</div>
+            <div class="content-text">
+              💡 例：Salesforce チケット自動返信ドラフト
+            </div>
+          </div>
+          
+          <div class="step" style="width: 100%; margin-bottom: 15px;">
+            <div class="step-number">2</div>
+            <div class="step-title">ツール一覧を定義</div>
+            <div class="content-text">
+              🔍 検索
+              🗄️ RAG
+              ✉️ メール送信API など
+            </div>
+          </div>
+          
+          <div class="step" style="width: 100%; margin-bottom: 15px;">
+            <div class="step-number">3</div>
+            <div class="step-title">ベースプロンプト設計</div>
+            <div class="content-text">
+              👤 Role
+              🎯 Goal
+              📄 Output Format を明記
+            </div>
+          </div>
+          
+          <div class="step" style="width: 100%; margin-bottom: 15px;">
+            <div class="step-number">4</div>
+            <div class="step-title">LangChain Agentで試作</div>
+            <div class="code-block">
+              <div class="code-title">Python</div>
+              <code>
+from langchain.agents import initialize_agent, Tool
+from langchain.chat_models import ChatOpenAI
+
+tools = [search_tool, rag_tool, email_tool]
+llm   = ChatOpenAI(model="gpt-4o-mini")
+agent = initialize_agent(tools, llm, 
+        agent_type="chat-zero-shot-react-description")
+agent("顧客ID 123 の問い合わせに返信案を作成")
+              </code>
+            </div>
+          </div>
+          
+          <div class="step" style="width: 100%; margin-bottom: 15px;">
+            <div class="step-number">5</div>
+            <div class="step-title">評価 & ガードレール追加</div>
+            <div class="content-text">
+              🛡️ ハルシネ率・ツール誤使用チェック → フィルタ or 手動レビュー
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">🏆</span>
+            </div>
+            <h2 class="section-title">6. 成功させるコツ</h2>
+          </div>
+          
+          <table style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+            <tr>
+              <th style="background-color: var(--fashion-1); color: white; padding: 8px; text-align: left; width: 30%; border-radius: 8px 0 0 0;">観点</th>
+              <th style="background-color: var(--fashion-1); color: white; padding: 8px; text-align: left; border-radius: 0 8px 0 0;">ベストプラクティス</th>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600); font-weight: bold; color: var(--fashion-5);">スコープ</td>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600);">まず "メール下書き" など 1 タスクに限定</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600); font-weight: bold; color: var(--fashion-5);">データ接続</td>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600);">社内 DB/RAG で最新情報を与えハルシネ抑制</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600); font-weight: bold; color: var(--fashion-5);">監査ログ</td>
+              <td style="padding: 8px; border-bottom: 1px dashed var(--gray-600);">全プロンプト・出力・ツール実行を保存</td>
+            </tr>
+            <tr>
+              <td style="padding: 8px; font-weight: bold; color: var(--fashion-5);">人間の関与</td>
+              <td style="padding: 8px;"><span class="highlight">Approval Loop</span> を設け誤操作を防ぐ</td>
+            </tr>
+          </table>
+        </div>
+        
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">✅</span>
+            </div>
+            <h2 class="section-title">まとめ</h2>
+          </div>
+          
+          <div class="bubble">
+            AIエージェントは「観測→思考→行動」を自律ループする仕組み。
+          </div>
+          
+          <div class="note">
+            まずは <span class="keyword">目的を絞り</span>、<span class="keyword">ツールを安全に呼び出す</span> ガードレールと <span class="keyword">人間の最終確認</span> を入れた MVP から始めるのが成功への近道です。
+          </div>
+          
+          <div style="text-align: center; margin-top: 20px;">
+            <div style="font-size: 32px; color: var(--fashion-4);">🚀</div>
+            <div style="font-size: 14px; font-weight: bold; color: var(--fashion-5);">さっそく試してみよう！</div>
+          </div>
+        </div>
+      </div>
+      </div>
+      
+      <!-- 第2カラム -->
+      <div class="column">
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">👥</span>
+            </div>
+            <h2 class="section-title">2. 人間 vs. AIエージェント — タスク分担</h2>
+          </div>
+          
+          <table class="comparison-table">
+            <tr>
+              <th style="width: 25%;">フェーズ</th>
+              <th style="width: 37.5%;">人間担当</th>
+              <th style="width: 37.5%;">AIエージェント担当</th>
+            </tr>
+            <tr>
+              <td class="phase-cell">目的設定</td>
+              <td class="human-cell">
+                🎯 KPI を決める<br>
+                ✅ 成果判定
+              </td>
+              <td class="ai-cell">—</td>
+            </tr>
+            <tr>
+              <td class="phase-cell">情報収集</td>
+              <td class="human-cell">
+                ⌨️ 必要データを入力<br>
+                📋 確認
+              </td>
+              <td class="ai-cell">
+                🗄️ 社内 DB から Query<br>
+                🔍 Web 検索 (RAG)
+              </td>
+            </tr>
+            <tr>
+              <td class="phase-cell">推論・計画</td>
+              <td class="human-cell">
+                ♟️ 戦略・方針を決定
+              </td>
+              <td class="ai-cell">
+                📄 LLM で要約・選択肢生成<br>
+                🔧 ツール選定
+              </td>
+            </tr>
+            <tr>
+              <td class="phase-cell">細部実行</td>
+              <td class="human-cell">
+                👍 最終承認<br>
+                ⚠️ 例外処理
+              </td>
+              <td class="ai-cell">
+                ✉️ メール下書き作成<br>
+                🎫 チケット起票・API 呼び出し
+              </td>
+            </tr>
+            <tr>
+              <td class="phase-cell">レビュー</td>
+              <td class="human-cell">
+                ✏️ 出力をチェック<br>
+                🔄 修正
+              </td>
+              <td class="ai-cell">
+                —<br>
+                <span style="font-size: 12px; color: var(--gray-600);">(自己改善ログは残す)</span>
+              </td>
+            </tr>
+          </table>
+          
+          <div class="key-point">
+            <div class="key-point-title">
+              💡 ポイント
+            </div>
+            <ul style="margin: 0; padding-left: 20px;">
+              <li>エージェントは "繰り返し・細分化" が得意</li>
+              <li><span class="highlight">目的設定・最終判断は人間</span> が握るのが現状のベストプラクティス</li>
+            </ul>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">💻</span>
+            </div>
+            <h2 class="section-title">4. 代表フレームワーク</h2>
+          </div>
+          
+          <div class="framework-card">
+            <div>
+              <div class="framework-name">LangChain Agents</div>
+              <div class="framework-description">ツール選択・RAG をテンプレで実装</div>
+            </div>
+            <div class="skill-level">★★☆</div>
+          </div>
+          
+          <div class="framework-card">
+            <div>
+              <div class="framework-name">CrewAI</div>
+              <div class="framework-description">複数エージェントにロール分担</div>
+            </div>
+            <div class="skill-level">★★☆</div>
+          </div>
+          
+          <div class="framework-card">
+            <div>
+              <div class="framework-name">AutoGen</div>
+              <div class="framework-description">チャットベースのマルチエージェント協調</div>
+            </div>
+            <div class="skill-level">★★★</div>
+          </div>
+          
+          <div class="framework-card">
+            <div>
+              <div class="framework-name">ChatGPT Plugins</div>
+              <div class="framework-description">SaaS連携プラグインをかんたん登録</div>
+            </div>
+            <div class="skill-level">★☆☆</div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <div class="section-header">
+            <div class="icon-container">
+              <span style="color: var(--fashion-1); font-size: 18px;">⭐</span>
+            </div>
+            <h2 class="section-title">7. 参考リンク集</h2>
+          </div>
+          
+          <ul style="list-style-type: none; padding-left: 0;">
+            <li style="margin-bottom: 10px;">
+              🔗 LangChain Agents Quickstart
+            </li>
+            <li style="margin-bottom: 10px;">
+              🔗 Microsoft AutoGen Examples
+            </li>
+            <li style="margin-bottom: 10px;">
+              🔗 OpenAI "Function Calling" Cookbook
+            </li>
+            <li style="margin-bottom: 10px;">
+              🔗 MIT 6S897 "Agents for LLMs" 講義資料
+            </li>
+          </ul>
+        </div>
+      </div

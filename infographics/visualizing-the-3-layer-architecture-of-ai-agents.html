@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIエージェントの3層アーキテクチャ図解 - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIエージェントの3層アーキテクチャ図解</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: #334155;
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #593C47 0%, #F24405 100%);
+            color: white;
+            padding: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px solid #F2C53D;
+            position: relative;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 10px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 10" preserveAspectRatio="none"><path d="M0,0 Q50,20 100,0 L100,10 L0,10 Z" fill="%23F2C53D"/></svg>') no-repeat;
+            background-size: 100% 100%;
+        }
+        
+        .title-container {
+            max-width: 70%;
+        }
+        
+        .main-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .main-title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: #F2E63D;
+            border-radius: 2px;
+        }
+        
+        .subtitle {
+            font-family: 'Yomogi', cursive;
+            font-size: 16px;
+            color: #f0f0f0;
+        }
+        
+        .date-source {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 14px;
+            text-align: right;
+        }
+        
+        .content {
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .overview-section {
+            width: 100%;
+            margin-bottom: 30px;
+            padding: 20px;
+            background-color: rgba(242, 230, 61, 0.1);
+            border: 2px dashed #593C47;
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .overview-title {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background-color: white;
+            padding: 0 15px;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: #593C47;
+        }
+        
+        .mermaid-container {
+            width: 100%;
+            margin: 20px 0;
+            padding: 15px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+        }
+        
+        .flowchart {
+            width: 100%;
+            height: 240px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 240"><rect x="10" y="30" width="200" height="100" rx="10" fill="%23f5e7ff" stroke="%23593C47" stroke-width="2" stroke-dasharray="5,5"/><text x="110" y="60" text-anchor="middle" font-family="Arial" font-size="16" fill="%23593C47">Perception</text><text x="110" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="%23593C47">入力層</text><circle cx="50" cy="120" r="15" fill="%23F2E63D" stroke="%23593C47" stroke-width="2"/><text x="50" y="125" text-anchor="middle" font-family="Arial" font-size="16" fill="%23593C47">📥</text><rect x="90" y="105" width="100" height="40" rx="5" fill="white" stroke="%23593C47" stroke-width="2"/><text x="140" y="130" text-anchor="middle" font-family="Arial" font-size="14" fill="%23593C47">入力前処理</text><path d="M65 120 H 90" stroke="%23593C47" stroke-width="2" marker-end="url(%23arrow)"/><text x="78" y="115" text-anchor="middle" font-family="Arial" font-size="10" fill="%23593C47">Tokenizer</text><circle cx="170" cy="180" r="15" fill="%23F2C53D" stroke="%23593C47" stroke-width="2"/><text x="170" y="185" text-anchor="middle" font-family="Arial" font-size="16" fill="%23593C47">🗄️</text><path d="M140 145 L 170 165" stroke="%23593C47" stroke-width="2" marker-end="url(%23arrow)"/><text x="155" y="165" text-anchor="middle" font-family="Arial" font-size="10" fill="%23593C47">Vector/JSON</text><rect x="300" y="30" width="200" height="100" rx="10" fill="%23fff5e7" stroke="%23F25C05" stroke-width="2" stroke-dasharray="5,5"/><text x="400" y="60" text-anchor="middle" font-family="Arial" font-size="16" fill="%23F25C05">Reasoning</text><text x="400" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F25C05">推論層</text><rect x="320" y="100" width="80" height="40" rx="5" fill="white" stroke="%23F25C05" stroke-width="2"/><text x="360" y="120" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F25C05">LLM</text><rect x="410" y="100" width="80" height="40" rx="5" fill="white" stroke="%23F25C05" stroke-width="2"/><text x="450" y="120" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F25C05">Planner</text><path d="M400 140 L 400 180" stroke="%23F25C05" stroke-width="2" marker-end="url(%23arrow)"/><rect x="350" y="180" width="100" height="40" rx="5" fill="white" stroke="%23F25C05" stroke-width="2"/><text x="400" y="200" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F25C05">Chain-of-Thought</text><rect x="590" y="30" width="200" height="100" rx="10" fill="%23ffe7e7" stroke="%23F24405" stroke-width="2" stroke-dasharray="5,5"/><text x="690" y="60" text-anchor="middle" font-family="Arial" font-size="16" fill="%23F24405">Action</text><text x="690" y="80" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F24405">実行層</text><rect x="620" y="100" width="140" height="40" rx="5" fill="white" stroke="%23F24405" stroke-width="2"/><text x="690" y="120" text-anchor="middle" font-family="Arial" font-size="12" fill="%23F24405">🔧 ツール呼び出し</text><text x="690" y="135" text-anchor="middle" font-family="Arial" font-size="10" fill="%23F24405">API / DB / RPA</text><circle cx="740" cy="180" r="15" fill="%23F24405" stroke="%23593C47" stroke-width="2"/><text x="740" y="185" text-anchor="middle" font-family="Arial" font-size="16" fill="white">📤</text><path d="M690 140 L 740 165" stroke="%23F24405" stroke-width="2" marker-end="url(%23arrow)"/><path d="M190 180 L 320 120" stroke="%23593C47" stroke-width="2" marker-end="url(%23arrow)"/><path d="M450 200 L 620 120" stroke="%23F25C05" stroke-width="2" marker-end="url(%23arrow)"/><path d="M620 160 C 500 220 300 220 190 180" stroke="%23F24405" stroke-width="2" stroke-dasharray="3,3" marker-end="url(%23arrow)"/><text x="400" y="220" text-anchor="middle" font-family="Arial" font-size="12" fill="%23334155">optional loop</text><defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="%23593C47"/></marker></defs></svg>');
+            background-repeat: no-repeat;
+            background-position: center;
+            background-size: contain;
+            margin: 15px auto;
+        }
+        
+        .instruction {
+            font-family: 'Yomogi', cursive;
+            font-size: 16px;
+            padding: 10px;
+            background-color: rgba(242, 196, 61, 0.2);
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+        
+        .instruction-title {
+            font-weight: bold;
+            color: #593C47;
+            margin-bottom: 5px;
+            display: inline-block;
+            border-bottom: 2px solid #F25C05;
+        }
+        
+        .instruction-content {
+            margin-left: 10px;
+        }
+        
+        .section {
+            width: 33.33%;
+            padding: 15px;
+        }
+        
+        .section-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            height: 100%;
+            position: relative;
+            border-top: 3px solid;
+            backdrop-filter: blur(10px);
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .perception-card {
+            border-top-color: #593C47;
+        }
+        
+        .reasoning-card {
+            border-top-color: #F25C05;
+        }
+        
+        .action-card {
+            border-top-color: #F24405;
+        }
+        
+        .section-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed;
+        }
+        
+        .perception-header {
+            border-bottom-color: #593C47;
+        }
+        
+        .reasoning-header {
+            border-bottom-color: #F25C05;
+        }
+        
+        .action-header {
+            border-bottom-color: #F24405;
+        }
+        
+        .section-icon {
+            font-size: 24px;
+            margin-right: 10px;
+        }
+        
+        .section-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .section-subtitle {
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: #475569;
+            display: block;
+        }
+        
+        .table-container {
+            margin: 15px 0;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+        
+        th {
+            background-color: rgba(242, 196, 61, 0.3);
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #e2e8f0;
+            color: #593C47;
+        }
+        
+        td {
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        tr:last-child td {
+            border-bottom: none;
+        }
+        
+        .code-block {
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            padding: 12px;
+            margin: 15px 0;
+            font-family: monospace;
+            font-size: 13px;
+            overflow-x: auto;
+            position: relative;
+        }
+        
+        .code-label {
+            position: absolute;
+            top: -10px;
+            right: 10px;
+            background-color: #F2C53D;
+            color: #593C47;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, rgba(242, 230, 61, 0.6) 40%);
+            padding: 0 2px;
+        }
+        
+        .point-box {
+            background-color: #f8f9fa;
+            border-left: 3px solid #F2C53D;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+        }
+        
+        .point-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-weight: bold;
+            color: #593C47;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .point-title::before {
+            content: "📌";
+            margin-right: 5px;
+        }
+        
+        .point-list {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        
+        .point-list li {
+            margin-bottom: 8px;
+            position: relative;
+        }
+        
+        .point-list li::before {
+            content: "✓";
+            color: #F25C05;
+            position: absolute;
+            left: -18px;
+        }
+        
+        .recipe-section {
+            width: 100%;
+            margin: 30px 0;
+            padding: 20px;
+            background-color: rgba(242, 68, 5, 0.05);
+            border-radius: 12px;
+            position: relative;
+        }
+        
+        .recipe-title {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background-color: white;
+            padding: 0 15px;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: #F24405;
+            border: 1px dashed #F24405;
+            border-radius: 20px;
+        }
+        
+        .recipe-card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            padding: 15px;
+            margin: 15px 0;
+        }
+        
+        .step-list {
+            list-style-type: none;
+            counter-reset: step-counter;
+            padding-left: 0;
+        }
+        
+        .step-list li {
+            counter-increment: step-counter;
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .step-list li::before {
+            content: counter(step-counter);
+            background-color: #F2C53D;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #593C47;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        
+        .faq-section {
+            width: 100%;
+            margin: 30px 0;
+        }
+        
+        .faq-card {
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .faq-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: #593C47;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .faq-title::before {
+            content: "🔍";
+            margin-right: 10px;
+        }
+        
+        .faq-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .faq-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        .faq-q {
+            width: 30%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+            font-weight: bold;
+            color: #1e40af;
+        }
+        
+        .faq-a {
+            width: 70%;
+            padding: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .summary-section {
+            width: 100%;
+            margin: 30px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(89, 60, 71, 0.05) 0%, rgba(242, 68, 5, 0.05) 100%);
+            border-radius: 12px;
+            border: 2px solid #593C47;
+            position: relative;
+        }
+        
+        .summary-title {
+            position: absolute;
+            top: -15px;
+            left: 30px;
+            background-color: white;
+            padding: 0 15px;
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 18px;
+            color: #593C47;
+        }
+        
+        .summary-list {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        
+        .summary-list li {
+            margin-bottom: 10px;
+            padding-left: 30px;
+            position: relative;
+            font-family: 'Kaisei Decol', serif;
+        }
+        
+        .summary-list li::before {
+            content: "•";
+            color: #F25C05;
+            font-size: 24px;
+            position: absolute;
+            left: 10px;
+            top: -5px;
+        }
+        
+        .footer {
+            background-color: #593C47;
+            color: white;
+            padding: 15px;
+            text-align: center;
+            font-size: 12px;
+            border-radius: 0 0 12px 12px;
+        }
+        
+        .highlight-box {
+            background-color: rgba(242, 196, 61, 0.1);
+            border: 1px dashed #F2C53D;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+        }
+        
+        .handwritten-arrow {
+            font-family: 'Yomogi', cursive;
+            color: #F25C05;
+            font-size: 20px;
+            margin: 5px 0;
+            text-align: center;
+        }
+        
+        .handwritten-note {
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: #593C47;
+            transform: rotate(-2deg);
+            display: inline-block;
+            margin: 5px 0;
+            padding: 5px;
+            border-bottom: 1px solid #F25C05;
+        }
+        
+        @media screen and (max-width: 768px) {
+            .section {
+                width: 100%;
+                margin-bottom: 20px;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .title-container {
+                max-width: 100%;
+                margin-bottom: 15px;
+            }
+            
+            .date-source {
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="title-container">
+                <h1 class="main-title">AIエージェントの3層アーキテクチャ図解</h1>
+                <p class="subtitle">Perception / Reasoning / Action を直感的に理解</p>
+            </div>
+            <div class="date-source">
+                <p>2025年4月29日</p>
+            </div>
+        </div>
+        
+        <div class="content">
+            <div class="overview-section">
+                <div class="overview-title">全体像</div>
+                <div class="mermaid-container">
+                    <div class="flowchart"></div>
+                </div>
+                <div class="instruction">
+                    <div class="instruction-title">見かた</div>
+                    <div class="instruction-content">
+                        Perception で "理解できる形式" に変換 → Reasoning で計画 → Action で外部ツールを叩く。<br>
+                        1 ループ完了ごとに必要なら再度 Perception に戻り、連続タスクをこなします。
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-card perception-card">
+                    <div class="section-header perception-header">
+                        <span class="section-icon">👁️</span>
+                        <h2 class="section-title">1. Perception<span class="section-subtitle">入力層</span></h2>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>項目</th>
+                                <th>役割</th>
+                                <th>代表ライブラリ</th>
+                            </tr>
+                            <tr>
+                                <td>プリプロセッサ</td>
+                                <td>文書クレンジング・正規化</td>
+                                <td>langchain.text_splitter</td>
+                            </tr>
+                            <tr>
+                                <td>Tokenizer / Embedder</td>
+                                <td>テキスト → トークン or ベクトル</td>
+                                <td>OpenAI Embeddings, SentenceTransformers</td>
+                            </tr>
+                            <tr>
+                                <td>メモリ／コンテキスト</td>
+                                <td>過去会話・RAG ドキュメント保持</td>
+                                <td>langchain.memory, pgvector</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="point-box">
+                        <div class="point-title">ポイント</div>
+                        <ul class="point-list">
+                            <li><span class="highlight">ゴミ入力はゴミ出力（GIGO）</span>。正規化＆RAG で情報を"整えて"渡すとハルシネ減。</li>
+                            <li>ベクトル検索の k は 3〜5 件がベター：多すぎると推論が散漫に。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-card reasoning-card">
+                    <div class="section-header reasoning-header">
+                        <span class="section-icon">🧠</span>
+                        <h2 class="section-title">2. Reasoning<span class="section-subtitle">推論層</span></h2>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>コンポーネント</th>
+                                <th>役割</th>
+                            </tr>
+                            <tr>
+                                <td>LLM</td>
+                                <td>意味理解・推論・生成</td>
+                            </tr>
+                            <tr>
+                                <td>Planner</td>
+                                <td>どのツールをどう順番で使うか決定</td>
+                            </tr>
+                            <tr>
+                                <td>メモリ / CoT</td>
+                                <td>中間思考を外に出して一貫性を担保</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="code-block">
+                        <div class="code-label">LangChain 例</div>
+                        <pre style="margin: 0; white-space: pre-wrap;">from langchain.agents import initialize_agent, Tool
+agent = initialize_agent([search_tool, calc_tool], llm,
+                       agent_type="chat-zero-shot-react-description")
+agent("来週の東京の天気と平均気温を教えて")</pre>
+                    </div>
+                    
+                    <div class="point-box">
+                        <div class="point-title">ポイント</div>
+                        <ul class="point-list">
+                            <li>Chain-of-Thought を有効に → <span class="highlight">"Step-by-step"</span> 指示で精度向上。</li>
+                            <li>Planner ≠ LLM 本体 に分けるとルールベースの条件分岐も簡単。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="section">
+                <div class="section-card action-card">
+                    <div class="section-header action-header">
+                        <span class="section-icon">🚀</span>
+                        <h2 class="section-title">3. Action<span class="section-subtitle">実行層</span></h2>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table>
+                            <tr>
+                                <th>ツール種別</th>
+                                <th>例</th>
+                                <th>ライブラリ</th>
+                            </tr>
+                            <tr>
+                                <td>API 呼び出し</td>
+                                <td>Salesforce / Slack / Weather</td>
+                                <td>requests, langchain.tools.APITool</td>
+                            </tr>
+                            <tr>
+                                <td>DB / VectorStore</td>
+                                <td>Postgres / Redis</td>
+                                <td>psycopg2, redis-py</td>
+                            </tr>
+                            <tr>
+                                <td>外部プログラム</td>
+                                <td>Python 関数・Shell Cmd</td>
+                                <td>subprocess, LangChain PythonREPL</td>
+                            </tr>
+                            <tr>
+                                <td>RPA</td>
+                                <td>UIPath / Playwright 操作</td>
+                                <td>UIPath SDK, Playwright Python</td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="point-box">
+                        <div class="point-title">ポイント</div>
+                        <ul class="point-list">
+                            <li><span class="highlight">idempotent（再実行安全）</span> なツール設計に。</li>
+                            <li>ツール実行ログは 監査ログ として永続化 → ガバナンス対応可。</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="recipe-section">
+                <div class="recipe-title">4. 最小構成で動かすレシピ</div>
+                <div class="recipe-card">
+                    <div class="code-block">
+                        <pre style="margin: 0; white-space: pre-wrap;">from langchain import OpenAI
+from langchain.memory import ConversationBufferMemory
+from langchain.agents import initialize_agent, Tool
+
+memory = ConversationBufferMemory()
+tools  = [search_tool, email_draft_tool]
+
+llm    = OpenAI(temperature=0)
+agent  = initialize_agent(tools, llm, memory=memory,
+                          agent_type="chat-zero-shot-react-description")
+
+agent("顧客ID 512 の質問に回答メールを作って")</pre>
+                    </div>
+                    
+                    <ol class="step-list">
+                        <li><span class="highlight">Perception:</span> search_tool が社内 KB ベクトル検索</li>
+                        <li><span class="highlight">Reasoning:</span> "検索→要約→メールテンプレ" と計画</li>
+                        <li><span class="highlight">Action:</span> email_draft_tool が下書きを作成 → 人間が承認</li>
+                    </ol>
+                </div>
+            </div>
+            
+            <div class="faq-section">
+                <div class="faq-card">
+                    <div class="faq-title">5. よくある質問</div>
+                    <table class="faq-table">
+                        <tr>
+                            <td class="faq-q">どこまで自律させる？</td>
+                            <td class="faq-a">まずは "提案 → 人が承認" の半自動。KPI 安定後に自動実行域を拡大。</td>
+                        </tr>
+                        <tr>
+                            <td class="faq-q">複数エージェントの利点？</td>
+                            <td class="faq-a">役割分担で責務を明確化（例：Planner / Critic / Executor）。故障点を局所化できる。</td>
+                        </tr>
+                        <tr>
+                            <td class="faq-q">安全対策は？</td>
+                            <td class="faq-a">ガードレール層で RateLimit・ContentFilter・Auth。全アクションを監査ログへ。</td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="summary-section">
+                <div class="summary-title">6. まとめ</div>
+                <ul class="summary-list">
+                    <li><span class="highlight">Perception</span>＝"取り込み整える"、<span class="highlight">Reasoning</span>＝"考える／計画"、<span class="highlight">Action</span>＝"動く"</li>
+                    <li>まずは <span class="handwritten-note">小スコープ</span> で 1 ループを実装し、ガードレール＋評価指標を整備</li>
+                    <li>成熟したら <span class="handwritten-note">マルチエージェント化・自動改善</span> を段階的に導入しよう</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="footer-text">
+            出典: AIエージェントの3層アーキテクチャ図解 — Perception / Reasoning / Action を直感的に理解 (2025-04-29)
+        </div>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
