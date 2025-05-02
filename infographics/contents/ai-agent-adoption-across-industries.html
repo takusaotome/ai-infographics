@@ -1,0 +1,676 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>業界別AIエージェント活用事例インフォグラフィック</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --color1: #593C47; /* ファッション-1 */
+      --color2: #F2E63D; /* ファッション-2 */
+      --color3: #F2C53D; /* ファッション-3 */
+      --color4: #F25C05; /* ファッション-4 */
+      --color5: #F24405; /* ファッション-5 */
+      --text-main: #334155;
+      --text-title: #1e293b;
+      --text-subtitle: #475569;
+      --text-section: #1e40af;
+      --bg-card: rgba(255, 255, 255, 0.85);
+    }
+    
+    body {
+      font-family: 'Zen Kurenaido', 'Kaisei Decol', sans-serif;
+      line-height: 1.4;
+      background-color: #f8fafc;
+      color: var(--text-main);
+      padding: 20px;
+      position: relative;
+      overflow-x: hidden;
+    }
+    
+    body::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        radial-gradient(circle at 10% 30%, rgba(242, 230, 61, 0.1), transparent 20%),
+        radial-gradient(circle at 90% 20%, rgba(242, 198, 61, 0.1), transparent 30%),
+        radial-gradient(circle at 30% 80%, rgba(242, 92, 5, 0.05), transparent 20%),
+        radial-gradient(circle at 70% 90%, rgba(242, 68, 5, 0.08), transparent 25%);
+      z-index: -1;
+    }
+    
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* ヘッダー */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 2px dashed var(--color1);
+      position: relative;
+    }
+    
+    .header::after {
+      content: "📊";
+      font-size: 32px;
+      position: absolute;
+      right: 20px;
+      top: -10px;
+      transform: rotate(10deg);
+    }
+    
+    .title-container {
+      flex: 1;
+    }
+    
+    h1 {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 32px;
+      font-weight: bold;
+      margin: 0 0 10px 0;
+      position: relative;
+      display: inline-block;
+      background: linear-gradient(to right, var(--color1), var(--color5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      padding-bottom: 5px;
+    }
+    
+    h1::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, var(--color1), var(--color5));
+      border-radius: 3px;
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      color: var(--text-subtitle);
+      text-align: right;
+      margin-top: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+    }
+    
+    .date::before {
+      content: "📅";
+      margin-right: 5px;
+    }
+    
+    /* メインコンテンツ */
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .intro-section {
+      grid-column: 1 / -1;
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .intro-section::before {
+      content: "💡";
+      font-size: 60px;
+      position: absolute;
+      right: 20px;
+      top: 10px;
+      opacity: 0.2;
+      transform: rotate(15deg);
+    }
+    
+    .intro-text {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      max-width: 90%;
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 50%, var(--color2) 50%);
+      padding: 0 2px;
+      font-weight: bold;
+    }
+    
+    .industry-card {
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      display: flex;
+      flex-direction: column;
+    }
+    
+    .industry-card::before {
+      content: "";
+      position: absolute;
+      top: -40px;
+      right: -40px;
+      width: 80px;
+      height: 80px;
+      background-color: var(--color3);
+      border-radius: 50%;
+      opacity: 0.1;
+    }
+    
+    .industry-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px dashed var(--color4);
+    }
+    
+    .industry-icon {
+      font-size: 24px;
+      margin-right: 10px;
+    }
+    
+    h2 {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 18px;
+      color: var(--text-section);
+      margin: 0;
+      font-weight: bold;
+    }
+    
+    .company-case {
+      background-color: rgba(255, 255, 255, 0.8);
+      border-radius: 8px;
+      padding: 10px 15px;
+      margin-bottom: 15px;
+      position: relative;
+      border-left: 3px solid var(--color4);
+    }
+    
+    .company-case:last-child {
+      margin-bottom: 0;
+    }
+    
+    .company-name {
+      font-family: 'Kaisei Decol', serif;
+      font-weight: bold;
+      font-size: 16px;
+      color: var(--color1);
+      margin-bottom: 5px;
+      display: inline-block;
+    }
+    
+    .company-name::after {
+      content: '';
+      display: block;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--color4), transparent);
+      margin-top: 2px;
+    }
+    
+    .case-details {
+      font-size: 14px;
+      position: relative;
+      padding-left: 15px;
+    }
+    
+    .case-details::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--color5);
+    }
+    
+    .result {
+      font-weight: bold;
+      color: var(--color5);
+      background: rgba(242, 92, 5, 0.1);
+      padding: 2px 5px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    
+    .connector {
+      position: absolute;
+      z-index: 1;
+    }
+    
+    .arrow {
+      position: absolute;
+      width: 40px;
+      height: 20px;
+      border-right: 2px dashed var(--color4);
+      border-bottom: 2px dashed var(--color4);
+      transform: rotate(-45deg);
+    }
+    
+    /* 手書き風の要素 */
+    .hand-drawn {
+      font-family: 'Yomogi', cursive;
+      position: relative;
+    }
+    
+    .hand-drawn::after {
+      content: '';
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: var(--color3);
+      border-radius: 2px;
+      transform: rotate(-0.5deg);
+    }
+    
+    .note {
+      background-color: rgba(242, 230, 61, 0.15);
+      border-radius: 8px;
+      padding: 10px;
+      font-family: 'Yomogi', cursive;
+      position: relative;
+      margin-top: 10px;
+      transform: rotate(-1deg);
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+    }
+    
+    .note::before {
+      content: "📝";
+      position: absolute;
+      top: -10px;
+      left: 5px;
+      font-size: 18px;
+    }
+    
+    .effect-badge {
+      display: inline-block;
+      background: linear-gradient(45deg, var(--color3), var(--color4));
+      color: white;
+      padding: 3px 8px;
+      border-radius: 15px;
+      font-size: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      position: relative;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+    }
+    
+    /* フッター */
+    .footer {
+      grid-column: 1 / -1;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-subtitle);
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px dashed var(--color1);
+    }
+    
+    .circles-decoration {
+      position: absolute;
+      z-index: -1;
+    }
+    
+    .circle {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      opacity: 0.07;
+      position: absolute;
+    }
+    
+    .summary-section {
+      grid-column: 1 / -1;
+      background-color: var(--bg-card);
+      border-radius: 12px;
+      padding: 20px;
+      position: relative;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      margin-top: 20px;
+    }
+    
+    .summary-header {
+      font-family: 'Kaisei Decol', serif;
+      font-size: 20px;
+      color: var(--color1);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      border-bottom: 2px solid var(--color3);
+      padding-bottom: 5px;
+    }
+    
+    .summary-header::before {
+      content: "🎯";
+      margin-right: 10px;
+    }
+    
+    .benefit-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .benefit-icon {
+      font-size: 18px;
+      margin-right: 10px;
+      color: var(--color5);
+    }
+    
+    .benefit-text {
+      font-size: 15px;
+    }
+    
+    /* レスポンシブデザイン */
+    @media (max-width: 1000px) {
+      .content-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    
+    @media (max-width: 700px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header {
+        flex-direction: column;
+      }
+      
+      h1 {
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- ヘッダー -->
+    <div class="header">
+      <div class="title-container">
+        <h1>業界別AIエージェント活用事例まとめ【米国企業詳細版】</h1>
+        <p class="date">2025年5月</p>
+      </div>
+    </div>
+    
+    <!-- メインコンテンツ -->
+    <div class="content-grid">
+      <!-- イントロダクション -->
+      <div class="intro-section">
+        <div class="intro-text">
+          <span class="highlight">金融から製造、小売、医療、物流、不動産、エンターテインメント</span>まで各業界でAIエージェントによる<span class="highlight">コスト削減・業務効率化</span>が進んでいます。特に米国企業では積極的な導入が進み、<span class="highlight">年間数億ドル規模のコスト削減</span>や<span class="highlight">数万時間の業務時間削減</span>などの具体的な成果が報告されています。各事例の導入背景、利用用途、効果（定量・定性）に注目します。
+        </div>
+      </div>
+      
+      <!-- 金融業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">💰</div>
+          <h2>1. 金融業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">JPモルガン・チェース銀行（米国）</div>
+          <div class="case-details">
+            機械学習システム「COIN」による契約書レビュー自動化
+            <div class="effect-badge">年間36万時間削減</div>
+            <div class="effect-badge">年間3億ドル以上コスト削減</div>
+            <div class="effect-badge">人為的ミス大幅減少</div>
+          </div>
+          <div class="note">12,000件の商業ローン契約を数秒で処理！投資費用は2年以内に回収</div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">LTIMindtree（米国）</div>
+          <div class="case-details">
+            Microsoft Security Copilotによるセキュリティ運用の自動化
+            <div class="effect-badge">従業員効率30%向上</div>
+            <div class="effect-badge">メール処理時間20%削減</div>
+          </div>
+          <div class="hand-drawn">脅威インテリジェンスとインシデント対応の統合コマンドセンター実現</div>
+        </div>
+      </div>
+      
+      <!-- 製造業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🏭</div>
+          <h2>2. 製造業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">トヨタ自動車（米国）</div>
+          <div class="case-details">
+            Google Cloud AIプラットフォームによる工場作業の最適化
+            <div class="effect-badge">年間10,000時間削減</div>
+            <div class="effect-badge">製造効率の大幅向上</div>
+          </div>
+          <div class="note">工場作業員が自らAIモデルを開発・展開できるシステム構築！</div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">Textron Aviation（米国）</div>
+          <div class="case-details">
+            AIアシスタント「TAMI」による航空機整備支援
+            <div class="effect-badge">トラブルシューティング時間96%削減</div>
+            <div class="effect-badge">20分→1~2分に短縮</div>
+          </div>
+          <div class="hand-drawn">整備技術者が60,000ページの文書を即座に検索可能に</div>
+        </div>
+      </div>
+      
+      <!-- 小売業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🛍️</div>
+          <h2>3. 小売業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">H&M（スウェーデン）</div>
+          <div class="case-details">
+            AIによる需要予測と在庫最適化
+            <div class="effect-badge">在庫水準18.6%→12~14%</div>
+            <div class="effect-badge">収益率改善</div>
+          </div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">セフォラ・ベストバイ（米国）</div>
+          <div class="case-details">
+            AIチャットボットによる24時間顧客対応
+            <div class="effect-badge">カスタマーサービス30%コスト削減</div>
+            <div class="effect-badge">応答時間44%短縮</div>
+            <div class="effect-badge">サポート品質35%向上</div>
+          </div>
+          <div class="note">在庫照会、製品案内、予約件数増加に成功！</div>
+        </div>
+      </div>
+      
+      <!-- 医療業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🏥</div>
+          <h2>4. 医療業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">米国大手医療提供者</div>
+          <div class="case-details">
+            AIによる支払いデータの異常検知システム
+            <div class="effect-badge">年間200万ドル以上節約</div>
+            <div class="effect-badge">支払い精度向上</div>
+          </div>
+          <div class="note">膨大なトランザクションデータから不正や重複支払いをリアルタイムで検知</div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">Google Health（米国）</div>
+          <div class="case-details">
+            AI画像診断システム
+            <div class="effect-badge">乳がん診断で61%の精度達成</div>
+            <div class="effect-badge">人間の放射線科医を上回る精度</div>
+          </div>
+          <div class="hand-drawn">医療画像の分析精度向上で早期発見率アップ</div>
+        </div>
+      </div>
+      
+      <!-- 物流業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🚚</div>
+          <h2>5. 物流業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">UPS（米国）</div>
+          <div class="case-details">
+            AIルート最適化システム「ORION」導入
+            <div class="effect-badge">年間1億マイル削減</div>
+            <div class="effect-badge">燃料1,000万ガロン節約</div>
+            <div class="effect-badge">年間3~4億ドル削減</div>
+          </div>
+          <div class="note">1ドライバー当たり1日6~8マイル削減、CO2排出量10万トン削減</div>
+          <div class="hand-drawn">各ドライバーの経路を毎日20万以上のオプションから最適化</div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">Dun & Bradstreet（米国）</div>
+          <div class="case-details">
+            AIエージェントによる情報検索・分析自動化
+            <div class="effect-badge">5億社のビジネスデータをリアルタイム処理</div>
+            <div class="effect-badge">意思決定速度の大幅向上</div>
+          </div>
+          <div class="note">フォーチュン500企業の95%が利用するデータプラットフォーム</div>
+        </div>
+      </div>
+      
+      <!-- 不動産業界 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🏢</div>
+          <h2>6. 不動産業界</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">Century 21（豪州）</div>
+          <div class="case-details">
+            バーチャルアシスタント「Sofia」導入
+            <div class="effect-badge">24時間物件対応</div>
+            <div class="effect-badge">約30%コスト削減</div>
+          </div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">eBrevia（米国）</div>
+          <div class="case-details">
+            AI契約書分析プラットフォーム
+            <div class="effect-badge">法務部門の効率大幅向上</div>
+            <div class="effect-badge">契約レビュー時間削減</div>
+          </div>
+          <div class="note">自然言語処理と機械学習で重要な条項を自動抽出</div>
+        </div>
+      </div>
+      
+      <!-- エンターテインメント施設運営 -->
+      <div class="industry-card">
+        <div class="industry-header">
+          <div class="industry-icon">🎢</div>
+          <h2>7. エンターテインメント施設</h2>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">Six Flags（米国）</div>
+          <div class="case-details">
+            業界初のAIデジタルアシスタント導入
+            <div class="effect-badge">ゲスト対応の自動化</div>
+            <div class="effect-badge">パーク内体験の個別最適化</div>
+          </div>
+          <div class="note">来園者の質問に対応し、1日の計画立案を支援</div>
+        </div>
+        
+        <div class="company-case">
+          <div class="company-name">ディズニーランド（米国）</div>
+          <div class="case-details">
+            来園者データ分析・待ち時間予測システム
+            <div class="effect-badge">スタッフ配置最適化</div>
+            <div class="effect-badge">混雑緩和</div>
+          </div>
+          <div class="hand-drawn">リアルタイムでアトラクション待ち時間を調整し顧客体験向上</div>
+        </div>
+      </div>
+      
+      <!-- まとめセクション -->
+      <div class="summary-section">
+        <div class="summary-header">まとめ：AIエージェント活用の共通効果</div>
+        <div class="benefit-item">
+          <div class="benefit-icon">⚡</div>
+          <div class="benefit-text">各業界共通で<span class="highlight">業務の効率化</span>と<span class="highlight">コスト削減</span>に大きな成果</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🔄</div>
+          <div class="benefit-text">チャットボット、RPA、機械学習など業務ニーズに合わせた導入</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">👥</div>
+          <div class="benefit-text">人手不足解消とサービス品質向上の両立</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">💼</div>
+          <div class="benefit-text">企業規模を問わず、適切な導入で競争力強化に寄与</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">📊</div>
+          <div class="benefit-text">2025年は大企業を中心にAI導入が加速し、ROIが明確化</div>
+        </div>
+        <div class="benefit-item">
+          <div class="benefit-icon">🚀</div>
+          <div class="benefit-text">米国企業の99%がAIの事業への好影響を期待（52%は「非常に好影響」と回答）</div>
+        </div>
+      </div>
+      
+      <!-- フッター -->
+      <div class="footer">
+        出典：Microsoft、Google Cloud、UPS公式レポート、DigitalDefynd、Write Sonic、BSRケーススタディなど (2025年5月時点)
+      </div>
+    </div>
+  </div>
+  
+  <!-- 装飾的な円 -->
+  <div class="circles-decoration">
+    <div class="circle" style="background-color: var(--color2); top: 100px; left: -50px;"></div>
+    <div class="circle" style="background-color: var(--color3); bottom: 200px; right: -20px;"></div>
+    <div class="circle" style="background-color: var(--color4); top: 400px; right: 30%;"></div>
+  </div>
+</body>
+</html>
