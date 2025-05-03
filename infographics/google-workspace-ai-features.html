@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google Workspace × Gemini AI 機能活用ガイド - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Workspace AI機能活用ガイド</title>
+      <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --text-main: #334155;
+      --text-heading: #1e40af;
+      --text-subheading: #475569;
+      --bg-card: rgba(255, 255, 255, 0.8);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      background-color: #f8f9fa;
+      color: var(--text-main);
+      line-height: 1.6;
+      padding: 2rem;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+    }
+    
+    /* ヘッダースタイル */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px dashed var(--fashion-1);
+    }
+    
+    .title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 32px;
+      font-weight: 700;
+      position: relative;
+      background: linear-gradient(45deg, var(--fashion-1), var(--fashion-4));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .title::after {
+      content: "";
+      position: absolute;
+      bottom: -5px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,5 Q10,10 20,5 T40,5 T60,5 T80,5 T100,5' stroke='%23F25C05' fill='none' stroke-width='2'/%3E%3C/svg%3E");
+      background-repeat: repeat-x;
+      background-size: 100px 10px;
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      color: var(--text-subheading);
+    }
+    
+    /* グリッドレイアウト */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    /* カードスタイル */
+    .card {
+      background: var(--bg-card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05), 0 1px 3px rgba(0, 0, 0, 0.1);
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--fashion-2), var(--fashion-4));
+    }
+    
+    .card-title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-heading);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    
+    .card-title svg {
+      width: 24px;
+      height: 24px;
+    }
+    
+    .card-title a {
+      color: var(--text-heading);
+      text-decoration: none;
+    }
+    
+    .card-title a:hover {
+      text-decoration: underline;
+      color: var(--fashion-4);
+    }
+    
+    .tag {
+      display: inline-block;
+      background-color: var(--fashion-3);
+      color: var(--fashion-1);
+      font-size: 12px;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+      margin-right: 0.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .main-feature {
+      background-color: rgba(242, 230, 60, 0.2);
+      padding: 0.75rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+    
+    .main-feature::after {
+      content: "主機能";
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      background-color: var(--fashion-2);
+      color: var(--fashion-1);
+      font-size: 12px;
+      padding: 0 0.5rem;
+      border-radius: 10px;
+    }
+    
+    .use-cases {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    
+    .use-cases::before {
+      content: "使いどころ";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      background-color: var(--fashion-4);
+      color: white;
+      font-size: 12px;
+      padding: 0 0.5rem;
+      border-radius: 10px;
+    }
+    
+    .use-case {
+      position: relative;
+      margin-bottom: 0.5rem;
+      padding-left: 1.5rem;
+    }
+    
+    .use-case::before {
+      content: "✓";
+      position: absolute;
+      left: 0;
+      color: var(--fashion-5);
+      font-weight: bold;
+    }
+    
+    /* 手書き風の要素 */
+    .hand-drawn-box {
+      border: 2px solid var(--fashion-1);
+      border-radius: 10px;
+      padding: 1rem;
+      position: relative;
+      margin-top: 2rem;
+      margin-bottom: 1rem;
+    }
+    
+    .hand-drawn-box::before {
+      content: "";
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      width: calc(100% + 4px);
+      height: calc(100% + 4px);
+      border: 2px solid var(--fashion-1);
+      border-radius: 12px;
+      opacity: 0.3;
+      z-index: -1;
+    }
+    
+    .hand-drawn-title {
+      font-family: 'Yomogi', cursive;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--fashion-1);
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background-color: white;
+      padding: 0 0.5rem;
+    }
+    
+    .hand-drawn-arrow {
+      position: absolute;
+      width: 50px;
+      height: 20px;
+    }
+    
+    /* フローチャート */
+    .flow {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+    }
+    
+    .flow-grid {
+      display: grid;
+      grid-template-columns: repeat(6, 1fr);
+      gap: 0.5rem;
+    }
+    
+    .flow-step {
+      text-align: center;
+      padding: 1rem;
+      position: relative;
+    }
+    
+    .flow-step::after {
+      content: "→";
+      position: absolute;
+      right: -10px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--fashion-4);
+      font-size: 24px;
+      font-weight: bold;
+    }
+    
+    .flow-step:last-child::after {
+      display: none;
+    }
+    
+    .flow-number {
+      font-family: 'Yomogi', cursive;
+      font-size: 18px;
+      font-weight: bold;
+      color: var(--fashion-5);
+      background-color: var(--fashion-2);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 0.5rem;
+    }
+    
+    /* まとめセクション */
+    .summary {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+    }
+    
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+    }
+    
+    .point {
+      background-color: rgba(242, 196, 60, 0.2);
+      padding: 1rem;
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    .point-number {
+      position: absolute;
+      top: -15px;
+      left: 10px;
+      background-color: var(--fashion-3);
+      color: var(--fashion-1);
+      font-size: 16px;
+      font-weight: bold;
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .bullet-list {
+      margin-left: 1rem;
+      margin-top: 0.5rem;
+    }
+    
+    .bullet-item {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .bullet-item::before {
+      content: "•";
+      position: absolute;
+      left: 0;
+      color: var(--fashion-4);
+      font-weight: bold;
+    }
+    
+    /* アクション */
+    .action {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      padding: 1rem;
+      background-color: rgba(89, 60, 71, 0.1);
+      border-radius: 10px;
+      position: relative;
+    }
+    
+    .action::before {
+      content: "次のアクション";
+      position: absolute;
+      top: -15px;
+      left: 20px;
+      background-color: var(--fashion-1);
+      color: white;
+      font-size: 16px;
+      padding: 0.25rem 1rem;
+      border-radius: 20px;
+    }
+    
+    .action-item {
+      position: relative;
+      padding-left: 2rem;
+      margin-top: 1.5rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .action-item::before {
+      content: "⚡";
+      position: absolute;
+      left: 0;
+      color: var(--fashion-5);
+    }
+    
+    /* フッター */
+    .footer {
+      grid-column: 1 / -1;
+      margin-top: 2rem;
+      text-align: center;
+      font-size: 14px;
+      color: var(--text-subheading);
+      padding-top: 1rem;
+      border-top: 1px dashed var(--fashion-1);
+    }
+    
+    .footer a {
+      color: var(--text-subheading);
+      text-decoration: none;
+    }
+    
+    .footer a:hover {
+      color: var(--fashion-4);
+      text-decoration: underline;
+    }
+    
+    /* 手書き風装飾 */
+    .doodle {
+      position: absolute;
+      opacity: 0.2;
+      z-index: -1;
+    }
+    
+    .doodle-1 {
+      top: 50px;
+      right: 50px;
+      transform: rotate(15deg);
+    }
+    
+    .doodle-2 {
+      bottom: 100px;
+      left: 30px;
+      transform: rotate(-10deg);
+    }
+    
+    .highlight {
+      position: relative;
+      display: inline;
+    }
+    
+    .highlight::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: rgba(242, 91, 4, 0.3);
+      z-index: -1;
+    }
+    
+    .connector {
+      position: absolute;
+      border-top: 2px dashed var(--fashion-4);
+    }
+    
+    /* リンクスタイル */
+    a.tool-link {
+      color: inherit;
+      text-decoration: none;
+      position: relative;
+      transition: color 0.2s;
+    }
+    
+    a.tool-link:hover {
+      color: var(--fashion-4);
+    }
+    
+    a.tool-link:after {
+      content: "";
+      position: absolute;
+      width: 100%;
+      height: 2px;
+      bottom: -2px;
+      left: 0;
+      background-color: var(--fashion-4);
+      transform: scaleX(0);
+      transform-origin: bottom right;
+      transition: transform 0.3s;
+    }
+    
+    a.tool-link:hover:after {
+      transform: scaleX(1);
+      transform-origin: bottom left;
+    }
+    
+    a.resource-link {
+      color: var(--fashion-4);
+      text-decoration: none;
+      font-weight: bold;
+      transition: all 0.2s;
+    }
+    
+    a.resource-link:hover {
+      text-decoration: underline;
+    }
+    
+    /* レスポンシブ調整 */
+    @media (max-width: 1024px) {
+      .grid, .summary-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+      
+      .flow-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+    
+    @media (max-width: 768px) {
+      .grid, .summary-grid, .flow-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- 手書き風装飾 -->
+    <svg class="doodle doodle-1" width="100" height="100" viewBox="0 0 100 100">
+      <path d="M20,50 Q30,20 50,30 T80,50" stroke="#F24405" fill="none" stroke-width="2"/>
+      <path d="M30,70 Q40,40 60,50 T90,70" stroke="#F2C53D" fill="none" stroke-width="2"/>
+    </svg>
+    
+    <svg class="doodle doodle-2" width="100" height="100" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="40" stroke="#593C47" fill="none" stroke-width="2" stroke-dasharray="5,5"/>
+      <circle cx="50" cy="50" r="30" stroke="#F2E63D" fill="none" stroke-width="2" stroke-dasharray="2,2"/>
+    </svg>
+    
+    <!-- ヘッダー -->
+    <div class="header">
+      <h1 class="title">Google Workspace × Gemini AI 機能活用ガイド</h1>
+      <div class="date">✏️ 2025年5月作成</div>
+    </div>
+    
+    <div class="grid">
+      <!-- カード1: Gemini Pro 2.5 -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="#593C47" stroke-width="2"/>
+            <path d="M12 16V16.01M12 8V12" stroke="#F25C05" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <a href="https://deepmind.google/technologies/gemini/pro/" target="_blank" class="tool-link">1. Gemini Pro 2.5</a>
+        </h2>
+        <div class="tag">チャット</div>
+        <div class="tag">サイドパネル</div>
+        <div class="main-feature">
+          128k～1M トークンの長文コンテキストと最新推論エンジン。高度なコード生成・データ分析・多言語処理。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">提案書や要件定義書のドラフト（1 万字級 PDF を丸ごと要約→章立てリライト）</div>
+          <div class="use-case">複雑な Python/JS スニペット生成（例：BigQuery↔︎Salesforce データ同期関数）</div>
+        </div>
+        <p style="margin-top: 1rem; font-size: 12px;">
+          <span style="background-color: #f8f9fa; padding: 0.25rem; border-radius: 4px;">
+            📌 Workspace では Gemini Enterprise / Business アドオン または Google One AI Premium で利用可
+          </span>
+        </p>
+      </div>
+      
+      <!-- カード2: Gemini Deep Research -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M10 21H14C18.4183 21 22 17.4183 22 13C22 8.58172 18.4183 5 14 5H10C5.58172 5 2 8.58172 2 13C2 17.4183 5.58172 21 10 21Z" stroke="#593C47" stroke-width="2"/>
+            <path d="M11 13H13M7 13H9M15 13H17" stroke="#F25C05" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <a href="https://gemini.google/advanced/" target="_blank" class="tool-link">2. Gemini Deep Research</a>
+        </h2>
+        <div class="tag">リサーチ</div>
+        <div class="tag">出典付き</div>
+        <div class="main-feature">
+          複数ソースを横断検索→事実ベースの下調べを自動生成し出典付き回答。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">RFP 競合分析：企業名を投げる→直近の資金調達・特許・SEC フィリングをまとめ取得</div>
+          <div class="use-case">技術比較表作成（例：Zapier／n8n／Dify の機能差）</div>
+        </div>
+      </div>
+      
+      <!-- カード3: Notebook LM -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 6H20M4 12H20M4 18H12" stroke="#593C47" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <a href="https://notebooklm.google/" style="text-decoration: none; color: inherit;">3. Notebook LM</a>
+        </h2>
+        <div class="tag">旧Project Tailwind</div>
+        <div class="tag">対話型Q&A</div>
+        <div class="main-feature">
+          自分の PDF／Docs を「教材」にして対話型 Q&A・要約・カード化。Workspace 追加サービスとして管理コンソールから ON/OFF。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">顧客ヒアリング録画＋議事録アップロード → FAQ ボット化</div>
+          <div class="use-case">社内 SOP 手順書を取り込み → OJT 用インタラクティブマニュアル</div>
+        </div>
+      </div>
+      
+      <!-- カード4: Firebase Studio -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 12V3M12 12L3 7M12 12L21 7M12 12V21M5 19L3 7M19 19L21 7" stroke="#593C47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <a href="https://firebase.google.com/docs/studio" style="text-decoration: none; color: inherit;">4. Firebase Studio</a>
+        </h2>
+        <div class="tag">Gemini in Firebase</div>
+        <div class="tag">開発支援</div>
+        <div class="main-feature">
+          Crashlytics ログ解析、セキュリティルール生成、Flutter/React Code Snippet 自動作成。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">モバイルアプリのクラッシュ要因の一次切り分け</div>
+          <div class="use-case">PoC スピード開発：チャットで「Firestore + Cloud Functions で To-Do API」と指示→雛形生成</div>
+        </div>
+      </div>
+      
+      <!-- カード5: Gemini in Gmail -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M22 6C22 4.9 21.1 4 20 4H4C2.9 4 2 4.9 2 6M22 6V18C22 19.1 21.1 20 20 20H4C2.9 20 2 19.1 2 18V6M22 6L12 13L2 6" stroke="#593C47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <a href="https://workspace.google.com/intl/en_in/solutions/ai/" style="text-decoration: none; color: inherit;">5. Gemini in Gmail</a>
+        </h2>
+        <div class="tag">メール</div>
+        <div class="tag">自動要約</div>
+        <div class="main-feature">
+          スレッド要約、返信候補、ドラフト生成、カレンダー・Drive クロス検索。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">多忙 CXO 向け要約メール自動作成</div>
+          <div class="use-case">Salesforce のリード情報を貼り付け→テンプレ提案メール生成</div>
+        </div>
+      </div>
+      
+      <!-- カード6: Gemini in Drive -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 15V16C3 17.6569 4.34315 19 6 19H18C19.6569 19 21 17.6569 21 16V15M3 15V8C3 6.34315 4.34315 5 6 5H8M3 15L8.52642 11.5633C9.88442 10.6559 11.6695 10.7469 12.9223 11.7883L21 18M21 15V8C21 6.34315 19.6569 5 18 5H12M8 5L10 7M12 5L14 7" stroke="#593C47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <a href="https://support.google.com/drive/answer/14217860?hl=en" style="text-decoration: none; color: inherit;">6. Gemini in Drive</a>
+        </h2>
+        <div class="tag">ドキュメント</div>
+        <div class="tag">横断検索</div>
+        <div class="main-feature">
+          1 ファイル～フォルダ横断で要点抽出・Q&A・新規ドキュメント生成。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">案件フォルダから"次のアクション"を抽出</div>
+          <div class="use-case">法務／コンプラ関連 PDF からリスク箇所を洗い出し</div>
+        </div>
+      </div>
+      
+      <!-- カード7: Gemini in Sheets -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 8V18C3 19.1046 3.89543 20 5 20H19C20.1046 20 21 19.1046 21 18V8M3 8V6C3 4.89543 3.89543 4 5 4H19C20.1046 4 21 4.89543 21 6V8M3 8H21M9 12H15M9 16H15" stroke="#593C47" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <a href="https://support.google.com/docs/answer/14218565?hl=en" style="text-decoration: none; color: inherit;">7. Gemini in Sheets</a>
+        </h2>
+        <div class="tag">Spreadsheet</div>
+        <div class="tag">データ分析</div>
+        <div class="main-feature">
+          スマート Fill/Formula、チャート生成、データインサイト提示。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">KPI ダッシュボードの自動列立て & グラフ生成</div>
+          <div class="use-case">"売上→粗利推計" など複合関数を自然語で記述</div>
+        </div>
+      </div>
+      
+      <!-- カード8: Gemini in Apps Script -->
+      <div class="card">
+        <h2 class="card-title">
+          <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 9L12 5L16 9M16 15L12 19L8 15" stroke="#593C47" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+          <a href="https://codelabs.developers.google.com/codelabs/gemini-workspace" style="text-decoration: none; color: inherit;">8. Gemini in Apps Script</a>
+        </h2>
+        <div class="tag">Code Assist</div>
+        <div class="tag">自動化</div>
+        <div class="main-feature">
+          スクリプトエディタでのインライン補完／関数呼び出し生成、Gemini API 連携サンプル。
+        </div>
+        <div class="use-cases">
+          <div class="use-case">Gmail▶︎Sheets▶︎Slack の自動連携フローを自然語 → コード化</div>
+          <div class="use-case">定型リマインダー Bot のコードレビュー & 改修提案</div>
+        </div>
+      </div>
+      
+      <!-- 活用フローセクション -->
+      <div class="flow">
+        <div class="hand-drawn-box">
+          <h2 class="hand-drawn-title">組み合わせ活用アイデア（例）</h2>
+          <a href="https://workspace.google.com/intl/en_in/solutions/ai/" style="position: absolute; top: 5px; right: 15px; font-size: 12px; color: var(--fashion-4); text-decoration: underline;">Gemini for Workspace 詳細</a>
+          <div class="flow-grid">
+            <div class="flow-step">
+              <div class="flow-number">1</div>
+              <strong>顧客ヒアリング録音</strong>
+              <p>→ Notebook LM で議事録 & 詳細 Q&A</p>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">2</div>
+              <strong>要求整理</strong>
+              <p>→ Gemini Deep Research で競合製品の比較調査</p>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">3</div>
+              <strong>提案書ドラフト</strong>
+              <p>→ Gemini Pro 2.5 で Slides / Docs を生成</p>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">4</div>
+              <strong>工数表・見積</strong>
+              <p>→ Sheets + Gemini で関数／グラフ自動化</p>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">5</div>
+              <strong>コード実装</strong>
+              <p>→ Apps Script / Firebase Studio で試作 + Code Assist</p>
+            </div>
+            <div class="flow-step">
+              <div class="flow-number">6</div>
+              <strong>メール送付</strong>
+              <p>→ Gmail でドラフト生成 & トーン調整</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- まとめセクション -->
+      <div class="summary">
+        <h2 class="title" style="font-size: 24px;">まとめ ― 導入のポイント</h2>
+        <div class="summary-grid">
+          <div class="point">
+            <div class="point-number">1</div>
+            <p style="margin-top: 0.5rem;"><span class="highlight">追加コストと権限管理を要確認</span></p>
+            <div class="bullet-list">
+              <div class="bullet-item">小規模なら AI Premium、全社展開なら Gemini Enterprise/Business。</div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-number">2</div>
+            <p style="margin-top: 0.5rem;"><span class="highlight">"業務フローのどこで LLM がボトルネックを短縮できるか" を先に決める</span></p>
+            <div class="bullet-list">
+              <div class="bullet-item">例：調査・要約（情報圧縮）／コーディング（自動化）／コミュニケーション（生成）。</div>
+            </div>
+          </div>
+          <div class="point">
+            <div class="point-number">3</div>
+            <p style="margin-top: 0.5rem;"><span class="highlight">PoC→ガバナンス整備→全社ルール化 の 3 段階で展開</span></p>
+            <div class="bullet-list">
+              <div class="bullet-item">Notebook LM や Apps Script で "小さく試す" → 成功パターンを横展開。</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- アクションセクション -->
+      <div class="action">
+        <div class="action-item">
+          管理者コンソールで Notebook LM と Gemini アドオンを有効化し、
+        </div>
+        <div class="action-item">
+          小規模プロジェクト（例：提案書作成）で効果測定 → ROI を提示。
+        </div>
+      </div>
+      
+      <!-- フッター -->
+      <div class="footer-text">
+        <p>これで Google Workspace × Gemini 群の全体像と使い分けが俯瞰できます。ぜひ御社の AI 活用ロードマップ策定にお役立てください。</p>
+        <p style="margin-top: 0.5rem;">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" xmlns="http://www.w3.org/2000/svg" style="display: inline-block; vertical-align: middle;">
+            <path d="M12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21Z" stroke="#593C47" stroke-width="2"/>
+            <path d="M15.5 9C14.1193 9 13 7.88071 13 6.5C13 5.11929 14.1193 4 15.5 4C16.8807 4 18 5.11929 18 6.5C18 7.88071 16.8807 9 15.5 9Z" fill="#F25C05"/>
+            <path d="M8.5 14C7.11929 14 6 12.8807 6 11.5C6 10.1193 7.11929 9 8.5 9C9.88071 9 11 10.1193 11 11.5C11 12.8807 9.88071 14 8.5 14Z" fill="#F2C53D"/>
+            <path d="M13.5 20C12.1193 20 11 18.8807 11 17.5C11 16.1193 12.1193 15 13.5 15C14.8807 15 16 16.1193 16 17.5C16 18.8807 14.8807 20 13.5 20Z" fill="#F2E63D"/>
+          </svg>
+          <a href="https://support.google.com/a/answer/13623623?hl=en&co=DASHER._Family=Business-Enterprise" style="color: inherit; text-decoration: none;">Google Workspace AI機能活用ガイド</a> | 2025年5月
+        </p>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
