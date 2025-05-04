@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Vibe Marketing の世界 - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vibe Marketing インフォグラフィック</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --color-1: #593C47;
+      --color-2: #F2E63D;
+      --color-3: #F2C53D;
+      --color-4: #F25C05;
+      --color-5: #F24405;
+      --text-dark: #334155;
+      --text-heading: #1e40af;
+      --text-subheading: #475569;
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      background-color: #f8f9fa;
+      color: var(--text-dark);
+      line-height: 1.4;
+      padding: 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      border-bottom: 2px dashed var(--color-1);
+      padding-bottom: 15px;
+    }
+    
+    .title {
+      font-family: 'Yomogi', cursive;
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(to right, var(--color-1), var(--color-4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+      z-index: 1;
+    }
+    
+    .title::after {
+      content: "";
+      position: absolute;
+      bottom: 2px;
+      left: 0;
+      width: 100%;
+      height: 8px;
+      background-color: var(--color-2);
+      z-index: -1;
+      opacity: 0.5;
+      transform: rotate(-1deg);
+    }
+    
+    .date {
+      font-family: 'Zen Kurenaido', sans-serif;
+      color: var(--text-subheading);
+      font-size: 14px;
+    }
+    
+    .content {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+    
+    .column {
+      flex: 1;
+      min-width: 30%;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    
+    .section-title {
+      font-family: 'Yomogi', cursive;
+      font-size: 18px;
+      color: var(--text-heading);
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+    }
+    
+    .section-title::before {
+      content: "";
+      display: inline-block;
+      width: 24px;
+      height: 24px;
+      background-color: var(--color-3);
+      border-radius: 50%;
+      opacity: 0.8;
+      position: absolute;
+      left: -10px;
+      z-index: -1;
+    }
+    
+    .card {
+      background-color: rgba(255, 255, 255, 0.9);
+      border-radius: 12px;
+      padding: 15px;
+      margin-bottom: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: 1px solid #e2e8f0;
+      position: relative;
+      backdrop-filter: blur(5px);
+    }
+    
+    .card-title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 16px;
+      color: var(--color-1);
+      margin-bottom: 10px;
+      font-weight: bold;
+      position: relative;
+    }
+    
+    .card-title::after {
+      content: "";
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background: linear-gradient(to right, var(--color-3), transparent);
+    }
+    
+    .highlight {
+      background-color: var(--color-2);
+      padding: 0 5px;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    
+    .bubble {
+      position: relative;
+      background-color: rgba(255, 255, 255, 0.85);
+      border: 2px solid var(--color-4);
+      border-radius: 20px;
+      padding: 12px 16px;
+      margin: 15px 0;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    .bubble::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 20px;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-top: 2px solid var(--color-4);
+      border-left: 2px solid var(--color-4);
+      transform: rotate(45deg);
+    }
+    
+    .quote {
+      font-family: 'Yomogi', cursive;
+      font-style: italic;
+      color: var(--color-5);
+      padding: 10px;
+      position: relative;
+      margin: 20px 0;
+      line-height: 1.6;
+    }
+    
+    .quote::before, .quote::after {
+      content: """;
+      font-size: 48px;
+      position: absolute;
+      color: var(--color-2);
+      opacity: 0.5;
+    }
+    
+    .quote::before {
+      top: -15px;
+      left: -15px;
+    }
+    
+    .quote::after {
+      bottom: -30px;
+      right: -15px;
+      transform: rotate(180deg);
+    }
+    
+    .arrow {
+      position: relative;
+      margin: 20px 0;
+      height: 40px;
+    }
+    
+    .arrow::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background-color: var(--color-4);
+      transform: translateY(-50%);
+    }
+    
+    .arrow::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      right: 0;
+      width: 12px;
+      height: 12px;
+      border-top: 2px solid var(--color-4);
+      border-right: 2px solid var(--color-4);
+      transform: translateY(-50%) rotate(45deg);
+    }
+    
+    .tag {
+      display: inline-block;
+      background-color: var(--color-3);
+      color: var(--color-1);
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 12px;
+      margin-right: 5px;
+      margin-bottom: 5px;
+      font-family: 'Zen Kurenaido', sans-serif;
+    }
+    
+    .circle-list {
+      list-style: none;
+      padding-left: 5px;
+    }
+    
+    .circle-list li {
+      position: relative;
+      padding-left: 20px;
+      margin-bottom: 10px;
+    }
+    
+    .circle-list li::before {
+      content: "";
+      position: absolute;
+      top: 6px;
+      left: 0;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background-color: var(--color-2);
+    }
+    
+    .step-list {
+      list-style: none;
+      padding-left: 0;
+      counter-reset: step-counter;
+    }
+    
+    .step-list li {
+      position: relative;
+      padding-left: 40px;
+      margin-bottom: 15px;
+      counter-increment: step-counter;
+    }
+    
+    .step-list li::before {
+      content: counter(step-counter);
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 28px;
+      height: 28px;
+      background-color: var(--color-4);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'Yomogi', cursive;
+      font-weight: bold;
+    }
+    
+    .tool-icon {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      background-color: var(--color-1);
+      color: white;
+      border-radius: 8px;
+      margin-right: 10px;
+      font-size: 20px;
+    }
+    
+    .banner {
+      background: linear-gradient(to right, var(--color-3), var(--color-2));
+      color: var(--color-1);
+      padding: 10px 15px;
+      border-radius: 8px;
+      text-align: center;
+      font-weight: bold;
+      margin: 20px 0;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .banner::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50px;
+      height: 50px;
+      background-color: var(--color-4);
+      transform: rotate(45deg) translate(20px, -20px);
+      opacity: 0.5;
+    }
+    
+    .note {
+      background-color: rgba(242, 230, 61, 0.2);
+      border-left: 4px solid var(--color-2);
+      padding: 10px 15px;
+      margin: 15px 0;
+      font-size: 14px;
+    }
+    
+    .connector {
+      position: absolute;
+      border: 2px dashed var(--color-5);
+      opacity: 0.5;
+      z-index: -1;
+    }
+    
+    .footer {
+      margin-top: 40px;
+      border-top: 2px dashed var(--color-1);
+      padding-top: 15px;
+      font-size: 12px;
+      color: var(--text-subheading);
+      text-align: center;
+    }
+    
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+      }
+      
+      .column {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1 class="title">🚀 Vibe Marketing の世界</h1>
+      <div class="date">2025年5月3日</div>
+    </div>
+    
+    <div class="content">
+      <!-- 左カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title">📊 Vibe Marketingとは？</h2>
+          <div class="card">
+            <p>Vibe Marketing は、<span class="highlight">AIエージェント</span>と<span class="highlight">ワークフロー</span>を組み合わせて、マーケティングキャンペーンを構築する新しいパラダイムです。</p>
+            <div class="bubble">
+              Vibe Codingツール（Bolt, Replet, Lovableなど）と、Gum Loop, Manis, N8N, Tascadeなどのツールを組み合わせて活用します。
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title">💫 台頭の3つの要因</h2>
+          <ul class="circle-list">
+            <li>AIがマーケティングタスクを十分にこなせるようになった</li>
+            <li>Vibe Codingツールが非開発者でも自動化を可能に（コード不要！）</li>
+            <li>カスタムツール構築コストがほぼ崩壊した</li>
+          </ul>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title">🔄 マーケティングの変革</h2>
+          <div class="card">
+            <div class="card-title">旧来のマーケティング</div>
+            <p>大規模なチーム（SEO担当者、コピーライター、デザイナー、アナリストなど）がサイロで作業し、キャンペーンのローンチに<span class="highlight">週単位の時間</span>が必要でした。</p>
+          </div>
+          
+          <div class="arrow"></div>
+          
+          <div class="card">
+            <div class="card-title">Vibe Marketingの新世界</div>
+            <p>大規模な資金調達や巨大なチームは不要。<span class="highlight">センスのある一人のスマートなマーケター</span>が、AIエージェントとワークフローを組み合わせて、<span class="highlight">リアルタイム</span>で多数のマーケティングアングルをテスト、<span class="highlight">数日以内</span>にローンチ可能に。</p>
+          </div>
+          
+          <div class="quote">
+            "marketing will resemble highfrequency stock trading in the near future - Agents working 24/7 monitoring surfacing opportunities personalized micro interactions"
+          </div>
+        </div>
+      </div>
+      
+      <!-- 中央カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title">🧰 Vibe Marketingツールキット</h2>
+          <div class="card">
+            <ul class="circle-list">
+              <li><strong>Vibe Codingツール:</strong> Replet, Bolt, Lovable</li>
+              <li><strong>ワークフロー自動化:</strong> N8N, Gum Loop, Lindy.ai</li>
+              <li><strong>AIデザイン・戦略:</strong> Manis</li>
+              <li><strong>ライティング:</strong> Claude</li>
+              <li><strong>AIモデルアクセス:</strong> Open Router</li>
+              <li><strong>画像・動画生成:</strong> Sora, ChatGPT image gen, Midjourney</li>
+            </ul>
+            <div class="note">
+              <strong>🔍 ポイント:</strong> 特定のタスクには特定のAIモデルが適しています。目的に合ったモデルを選択しましょう！
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title">⚙️ ワークフロー例</h2>
+          <div class="card">
+            <div class="card-title">🤖 ワンクリックCRM</div>
+            <ol class="step-list">
+              <li>Gum Loopブラウザ拡張機能でウェブサイト情報をスクレイピング</li>
+              <li>AIで分析、データを抽出（ソーシャルリンクなど）</li>
+              <li>アウトリーチメッセージを自動作成</li>
+              <li>AirTableに保存</li>
+              <li>週次サマリーをチームに送信</li>
+            </ol>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">📹 高品質動画生成</div>
+            <ol class="step-list">
+              <li>ChatGPTでスクリプト作成</li>
+              <li>Leonardo AI/Kling AIで画像・動画生成</li>
+              <li>Eleven Labsで音声生成</li>
+            </ol>
+            <div class="tag">ソーシャルメディアでの優位性確保</div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">📊 コンテンツアイデア創出（Reddit活用）</div>
+            <ol class="step-list">
+              <li>N8Nを用いてRedditで関連会話を検索</li>
+              <li>ニッチなテーマ、ペインポイントを抽出</li>
+              <li>心理的に強力なフックを生成</li>
+              <li>アウトライン、ブリーフを生成</li>
+              <li>Googleシートに保存</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 右カラム -->
+      <div class="column">
+        <div class="section">
+          <h2 class="section-title">🔮 マーケティングの未来（12-18ヶ月後）</h2>
+          <div class="card">
+            <p>現在はAIツールを個別に使用していますが、将来は<span class="highlight">共有コンテキスト</span>を持つ相互接続されたAIシステムが連携するようになります。</p>
+            
+            <div class="banner">
+              マーケターは個別の実行者から<br>システムのオーケストレーターへと進化
+            </div>
+            
+            <ul class="circle-list">
+              <li>少人数のチームで、従来より大規模なタスクを達成</li>
+              <li>新チャネル追加に採用不要、エージェント一つで可能に</li>
+              <li>出力の一貫性が向上、フィードバックサイクル減少</li>
+              <li>目標指向型システム：「月間5万人のオーガニック訪問者が必要だ」</li>
+              <li>市場ギャップ分析や機会創出がリアルタイムで実行</li>
+            </ul>
+            
+            <div class="quote">
+              "marketers will evolve from individual executors to orchestrator of these systems. Small marketing teams of five will accomplish what previously required much larger teams"
+            </div>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title">🌟 優れたVibe Marketerになるための資質</h2>
+          <div class="card">
+            <div class="card-title">システム思考 🧠</div>
+            <p>キャンペーンではなく、システムやフローチャートとして物事を考える</p>
+            <div class="quote">
+              "i think that if you can think in systems not campaigns creating these like systems these flowcharts type things you'll outperform"
+            </div>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">relentlessなテスト 🧪</div>
+            <p>常にテストを行い、多数のバリエーションを試す</p>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">価値の先行提供 🎁</div>
+            <p>創造するもの全てにおいて、最初に価値を提供する</p>
+          </div>
+          
+          <div class="card">
+            <div class="card-title">機械に退屈なタスクを任せる 🤖</div>
+            <p>定型的な作業はAIエージェントに委ねる</p>
+          </div>
+        </div>
+        
+        <div class="section">
+          <h2 class="section-title">🚀 実践への推奨</h2>
+          <div class="bubble">
+            Vibe Marketingを学ぶ最善の方法は、実際にツールを使って試すこと！
+          </div>
+          <ul class="circle-list">
+            <li>毎日時間を確保し、ワークフローを作成</li>
+            <li>自動化を試み続ける</li>
+            <li>チームに繰り返しタスクを尋ねて自動化を検討</li>
+            <li>多くのプラットフォームには無料トライアルあり</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <div class="footer-text">
+      出典: How I use AI agents to make money (Vibe Marketing Tutorial) | 2025年5月3日作成
+    </div>
+  </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
