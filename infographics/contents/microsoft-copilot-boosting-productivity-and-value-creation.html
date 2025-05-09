@@ -1,0 +1,771 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Copilot有料版に関する包括的調査</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Zen Kurenaido', sans-serif;
+            line-height: 1.4;
+            color: #334155;
+            background-color: #f8f9fa;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, var(--fashion-1) 0%, var(--fashion-5) 100%);
+            padding: 25px;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 3px dashed var(--fashion-3);
+        }
+        
+        .title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(45deg, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+            position: relative;
+            z-index: 1;
+        }
+        
+        .title::after {
+            content: "✏️";
+            position: absolute;
+            right: -35px;
+            top: -5px;
+            font-size: 24px;
+        }
+        
+        .date {
+            font-family: 'Yomogi', cursive;
+            font-size: 16px;
+            color: var(--fashion-2);
+        }
+        
+        .content {
+            padding: 30px;
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .column {
+            width: 33.33%;
+            padding: 0 15px;
+        }
+        
+        .section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            color: #1e40af;
+            margin-bottom: 15px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid var(--fashion-3);
+            position: relative;
+            display: inline-block;
+        }
+        
+        .section-title::before {
+            position: absolute;
+            left: -25px;
+            font-size: 20px;
+        }
+        
+        .section-content {
+            font-size: 14px;
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 15px;
+            border-radius: 12px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            border: 1px solid #f0f0f0;
+            overflow: hidden;
+        }
+        
+        .section-content::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(242, 230, 61, 0.05) 0%, rgba(242, 68, 4, 0.05) 100%);
+            z-index: -1;
+            border-radius: 12px;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+            font-weight: bold;
+            padding: 0 2px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .bubble {
+            background-color: white;
+            border: 2px solid var(--fashion-4);
+            border-radius: 20px;
+            padding: 10px 15px;
+            position: relative;
+            margin: 15px 0;
+            max-width: 90%;
+        }
+        
+        .bubble::before {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: var(--fashion-4) transparent;
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -7px;
+            left: 22px;
+            border-width: 8px 8px 0;
+            border-style: solid;
+            border-color: white transparent;
+        }
+        
+        .card {
+            background-color: white;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            border-left: 4px solid var(--fashion-3);
+        }
+        
+        .card-title {
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--fashion-5);
+            margin-bottom: 8px;
+        }
+        
+        .icon-list {
+            list-style: none;
+            padding-left: 5px;
+        }
+        
+        .icon-list li {
+            position: relative;
+            padding-left: 25px;
+            margin-bottom: 8px;
+        }
+        
+        .icon-list li::before {
+            position: absolute;
+            left: 0;
+            top: 0;
+        }
+        
+        .arrow {
+            position: absolute;
+            width: 40px;
+            height: 20px;
+        }
+        
+        .arrow-right {
+            right: -40px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        .arrow-right::after {
+            content: "→";
+            position: absolute;
+            font-size: 30px;
+            color: var(--fashion-4);
+            left: 10px;
+            top: -15px;
+        }
+        
+        .arrow-down {
+            bottom: -30px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        
+        .arrow-down::after {
+            content: "↓";
+            position: absolute;
+            font-size: 30px;
+            color: var(--fashion-4);
+            left: 10px;
+            top: 0;
+        }
+        
+        .hand-drawn-box {
+            position: relative;
+            padding: 15px;
+            margin: 20px 0;
+        }
+        
+        .hand-drawn-box::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border: 2px solid var(--fashion-3);
+            border-radius: 15px;
+            z-index: -1;
+        }
+        
+        .hand-drawn-box::after {
+            content: "";
+            position: absolute;
+            top: 3px;
+            left: 3px;
+            right: 3px;
+            bottom: 3px;
+            background-color: rgba(242, 230, 61, 0.1);
+            border-radius: 12px;
+            z-index: -2;
+        }
+        
+        .icon-box {
+            display: flex;
+            justify-content: space-around;
+            margin: 20px 0;
+        }
+        
+        .icon-item {
+            text-align: center;
+            width: 80px;
+        }
+        
+        .icon-circle {
+            width: 60px;
+            height: 60px;
+            background-color: white;
+            border: 2px dashed var(--fashion-4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 8px;
+            font-size: 24px;
+        }
+        
+        .icon-text {
+            font-size: 12px;
+        }
+        
+        .connector {
+            border-top: 2px dashed var(--fashion-4);
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .connector::after {
+            content: "✂️";
+            position: absolute;
+            right: 0;
+            top: -12px;
+            transform: rotate(90deg);
+        }
+        
+        .footer {
+            padding: 20px;
+            text-align: center;
+            font-size: 12px;
+            color: #666;
+            border-top: 2px dashed var(--fashion-1);
+            background-color: rgba(89, 60, 71, 0.05);
+        }
+        
+        /* 手書き風の装飾 */
+        .hand-drawn-circle {
+            display: inline-block;
+            width: 25px;
+            height: 25px;
+            border: 2px solid var(--fashion-5);
+            border-radius: 50%;
+            text-align: center;
+            line-height: 22px;
+            margin-right: 8px;
+            font-weight: bold;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            margin: 20px 0;
+        }
+        
+        .simple-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        
+        .simple-table th {
+            background-color: var(--fashion-1);
+            color: white;
+            padding: 8px;
+            text-align: left;
+            border: 1px solid #ddd;
+        }
+        
+        .simple-table td {
+            padding: 8px;
+            border: 1px solid #ddd;
+        }
+        
+        .simple-table tr:nth-child(even) {
+            background-color: rgba(242, 196, 61, 0.1);
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 768px) {
+            .column {
+                width: 100%;
+                padding: 0;
+                margin-bottom: 30px;
+            }
+            .header {
+                flex-direction: column;
+                text-align: center;
+            }
+            .date {
+                margin-top: 10px;
+            }
+            .title::after {
+                right: -15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1 class="title">Microsoft Copilot有料版に関する包括的調査</h1>
+            <div class="date">2025年5月8日</div>
+        </div>
+        
+        <div class="content">
+            <!-- 左カラム -->
+            <div class="column">
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">📝</span>
+                        Copilot単体でできること
+                    </h2>
+                    <div class="section-content">
+                        <p>Microsoft 365 Copilotは、大規模言語モデル（LLM）を用いたAIアシスタントで、<span class="highlight">リアルタイムに情報やコンテンツを生成</span>します。</p>
+                        
+                        <div class="bubble">
+                            自然言語で指示するだけでさまざまな業務を自動化！
+                        </div>
+                        
+                        <ul class="icon-list">
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📚</span>
+                                <b>文章の要約・要点抽出</b>：長文ドキュメントやメールスレッドを読み取り、重要点を短時間で要約
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">✍️</span>
+                                <b>自動文章生成・執筆支援</b>：レポート、提案書、メール本文などの<span class="highlight">ドラフト（初稿）を作成</span>
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📊</span>
+                                <b>データ分析・インサイト抽出</b>：テーブルデータやスプレッドシートを解析し、<span class="highlight">数値の傾向分析やグラフ作成</span>
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">🔍</span>
+                                <b>質疑応答・調査</b>：社内ドキュメントやインターネット情報を参照し、<span class="highlight">的確な回答や関連情報</span>を提供
+                            </li>
+                        </ul>
+                        
+                        <div class="hand-drawn-box">
+                            <p style="text-align: center; font-weight: bold;">Copilotの魅力</p>
+                            <p style="text-align: center;">
+                                <span class="highlight">自然言語による多様なタスク支援</span>が可能！<br>
+                                事務作業の自動化からクリエイティブな文章作成、<br>
+                                データ分析まで幅広くカバー
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">⚙️</span>
+                        技術的背景・実装方式
+                    </h2>
+                    <div class="section-content">
+                        <div class="card">
+                            <div class="card-title">基盤となる大規模言語モデル</div>
+                            <p>OpenAI社の<span class="highlight">GPT-4モデル</span>など最新のLLMが採用。Azure上でホストし、企業専用に隔離・提供されています。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">Microsoft Graphとの連携</div>
+                            <p><span class="highlight">企業データの活用</span>により、ユーザー固有の有益な回答を返せるのが強み。組織内のメール、予定表、ファイル、チャットなどあらゆるM365データを参照できます。</p>
+                            <p>各ユーザーの<span class="highlight">仕事の文脈</span>がAIに共有されるため、一般的なチャットAIより実用的な出力が可能。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">セキュリティとコンプライアンス</div>
+                            <p>企業向けの高度なセキュリティ基準を満たし、<span class="highlight">データが外部に漏洩しない</span>よう厳重管理。</p>
+                            <p>Copilotが参照・生成に用いたデータは、基盤モデル（LLM）の再学習に一切利用されません。</p>
+                        </div>
+                        
+                        <div class="icon-box">
+                            <div class="icon-item">
+                                <div class="icon-circle">🤖</div>
+                                <div class="icon-text">AIモデル</div>
+                            </div>
+                            <div class="icon-item">
+                                <div class="icon-circle">☁️</div>
+                                <div class="icon-text">クラウド基盤</div>
+                            </div>
+                            <div class="icon-item">
+                                <div class="icon-circle">🔒</div>
+                                <div class="icon-text">セキュリティ</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中央カラム -->
+            <div class="column">
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">🔄</span>
+                        各Microsoft製品との連携機能
+                    </h2>
+                    <div class="section-content">
+                        <div class="card">
+                            <div class="card-title">
+                                <span style="font-size: 20px;">📄</span> Copilot in Word
+                            </div>
+                            <p><span class="highlight">第一稿のドラフト生成</span>が代表例。テーマや箇条書きからの文章作成、要約やリライト（文体改善提案）が可能。</p>
+                            <p>Word内のCopilotチャットで文書について質問や編集指示ができます。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">
+                                <span style="font-size: 20px;">📊</span> Copilot in Excel
+                            </div>
+                            <p><span class="highlight">データ分析の助手</span>として機能。表データからグラフ作成、適切な分析手法で傾向をレポート。</p>
+                            <p>数式やピボットテーブルの生成支援も行います。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">
+                                <span style="font-size: 20px;">📱</span> Copilot in PowerPoint
+                            </div>
+                            <p><span class="highlight">プレゼン資料の自動作成・編集</span>が可能。過去の関連ドキュメントから内容を抽出し、テンプレートに沿ったスライドを生成。</p>
+                            <p>レイアウトやトーンの統一などデッキ全体のリファインも。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">
+                                <span style="font-size: 20px;">✉️</span> Copilot in Outlook
+                            </div>
+                            <p><span class="highlight">要約・下書き作成</span>が主要機能。長いメールスレッドの重要点整理や、過去の関連メールを参照した適切な返信文の生成が可能。</p>
+                            <p>トーンや表現についてのコーチング的アドバイスも提供。</p>
+                        </div>
+                        
+                        <div class="card">
+                            <div class="card-title">
+                                <span style="font-size: 20px;">👥</span> Copilot in Teams
+                            </div>
+                            <p><span class="highlight">会議やチャットでのリアルタイム支援</span>が注目。会議中に発言のライブ文字起こしから要点を抽出し、アクションアイテム（ToDo）を提案。</p>
+                            <p>過去の会議やチャット履歴から情報を抽出し、質問に答えることも可能。</p>
+                        </div>
+                        
+                        <div class="bubble" style="background-color: rgba(242, 230, 61, 0.2); border-color: var(--fashion-3);">
+                            各製品と深く統合され、<span class="highlight">ユーザーの作業文脈に寄り添ったAI支援</span>を提供！
+                        </div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">📈</span>
+                        Copilot活用の効果
+                    </h2>
+                    <div class="section-content">
+                        <p style="text-align: center; font-weight: bold; margin-bottom: 15px;">導入企業の主な成果</p>
+                        
+                        <div class="icon-box" style="margin-bottom: 30px;">
+                            <div class="icon-item">
+                                <div class="icon-circle">⏱️</div>
+                                <div class="icon-text">業務効率UP</div>
+                            </div>
+                            <div class="icon-item">
+                                <div class="icon-circle">✅</div>
+                                <div class="icon-text">品質向上</div>
+                            </div>
+                            <div class="icon-item">
+                                <div class="icon-circle">💡</div>
+                                <div class="icon-text">付加価値創出</div>
+                            </div>
+                        </div>
+                        
+                        <ul class="icon-list">
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">🚀</span>
+                                <span class="highlight">生産性10～20%向上</span>（投資運用会社BCIの84%の社員）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">⏰</span>
+                                マーケ資料作成に<span class="highlight">月50時間</span>、ニュース要約に<span class="highlight">月70時間</span>の削減（食品メーカー例）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📝</span>
+                                <span class="highlight">営業提案書：4時間→15分</span>に短縮（Lumen社）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📊</span>
+                                資料作成：<span class="highlight">2日→2時間</span>に短縮（イギリスの公益企業）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">👍</span>
+                                <span class="highlight">約80%が「業務の正確さが向上した」</span>と回答（第一三共）
+                            </li>
+                        </ul>
+                        
+                        <div class="hand-drawn-box" style="background-color: rgba(242, 92, 5, 0.1);">
+                            <p style="text-align: center; font-weight: bold;">効果のまとめ</p>
+                            <p>
+                                <span class="highlight">「効率化」と「高度化」の双方で定量的メリット</span>を実現！<br>
+                                ルーチンワーク削減で社員が<span class="highlight">より創造的・戦略的な業務に集中</span>でき、組織全体の生産性向上につながります。
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div class="column">
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">🏢</span>
+                        中小企業における活用事例
+                    </h2>
+                    <div class="section-content">
+                        <p style="margin-bottom: 15px;">業種別・部門別に見るCopilot活用シナリオ</p>
+                        
+                        <div class="table-container">
+                            <table class="simple-table">
+                                <tr>
+                                    <th>業種</th>
+                                    <th>主な活用例</th>
+                                </tr>
+                                <tr>
+                                    <td><b>不動産業</b></td>
+                                    <td>
+                                        <span class="tag">営業</span> 物件提案資料の自動作成<br>
+                                        <span class="tag">管理</span> 会議メモ自動作成<br>
+                                        <span class="tag">対応</span> 問い合わせメールの自動返信
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>アミューズメント施設</b></td>
+                                    <td>
+                                        <span class="tag">マーケ</span> 集客キャンペーン企画<br>
+                                        <span class="tag">運営</span> シフト・業務計画調整<br>
+                                        <span class="tag">報告</span> 来場者データのダッシュボード化
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>食品卸売業</b></td>
+                                    <td>
+                                        <span class="tag">販売</span> 商品カタログ・提案書作成<br>
+                                        <span class="tag">物流</span> 在庫・物流管理最適化<br>
+                                        <span class="tag">財務</span> 売上・仕入の月次レポート
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td><b>食品製造業</b></td>
+                                    <td>
+                                        <span class="tag">開発</span> 商品企画書の作成<br>
+                                        <span class="tag">品質</span> 品質管理データの分析<br>
+                                        <span class="tag">コスト</span> 製造コスト分析と最適化
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        
+                        <div class="bubble">
+                            <b>共通するメリット</b>：<span class="highlight">定型業務の時間短縮</span>により、人間はより付加価値の高い業務に注力できる！
+                        </div>
+                        
+                        <div class="hand-drawn-box">
+                            <p><b>小規模組織での効果</b></p>
+                            <p>
+                                中小企業では一人が複数業務を兼任するケースが多く、<span class="highlight">「デジタル人材の増員」的効果</span>が大きい
+                            </p>
+                        </div>
+                        
+                        <div class="connector"></div>
+                        
+                        <div class="card" style="border-left: 4px solid var(--fashion-5);">
+                            <div class="card-title">実際の業務改善例</div>
+                            <ul class="icon-list">
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">📝</span>
+                                    <b>不動産業</b>：契約書ドラフト生成と自動チェック
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">👥</span>
+                                    <b>施設運営</b>：顧客レビュー分析と改善点抽出
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">📦</span>
+                                    <b>食品卸売</b>：需要予測による在庫管理最適化
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">🏭</span>
+                                    <b>製造業</b>：製造レポートの自動生成とコスト分析
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section">
+                    <h2 class="section-title" style="padding-left: 25px;">
+                        <span style="position: absolute; left: 0;">🔍</span>
+                        主なユースケース
+                    </h2>
+                    <div class="section-content">
+                        <div class="bubble" style="background-color: rgba(242, 196, 61, 0.2); border-color: var(--fashion-3);">
+                            日常的な業務プロセスを変革するCopilotの力！
+                        </div>
+                        
+                        <div class="hand-drawn-box">
+                            <p style="text-align: center; font-weight: bold;">部門別の活用ポイント</p>
+                            <div class="icon-box" style="margin-top: 15px;">
+                                <div class="icon-item">
+                                    <div class="icon-circle">📱</div>
+                                    <div class="icon-text">営業支援</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="icon-circle">📊</div>
+                                    <div class="icon-text">データ分析</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="icon-circle">📝</div>
+                                    <div class="icon-text">文書作成</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <ul class="icon-list">
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📄</span>
+                                <span class="highlight">企画書・提案書の自動生成</span>（営業部門）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📊</span>
+                                <span class="highlight">複雑なデータ分析と可視化</span>（マーケティング部門）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">✉️</span>
+                                <span class="highlight">メール対応の効率化</span>（カスタマーサポート）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">📝</span>
+                                <span class="highlight">会議議事録の自動作成</span>（全部門共通）
+                            </li>
+                            <li style="padding-left: 30px;">
+                                <span style="position: absolute; left: 0;">🔍</span>
+                                <span class="highlight">社内情報の検索・活用</span>（ナレッジマネジメント）
+                            </li>
+                        </ul>
+                        
+                        <div class="card" style="border-left: 4px solid var(--fashion-2); margin-top: 20px;">
+                            <div class="card-title">具体的な製品別活用例</div>
+                            <ul class="icon-list">
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">📄</span>
+                                    <b>Word:</b> 企画書や報告書の第一稿を数分で作成
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">📊</span>
+                                    <b>Excel:</b> 売上データから洞察を抽出し説明文を生成
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">🖼️</span>
+                                    <b>PowerPoint:</b> プレゼン資料を自動構成、デザイン統一
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">✉️</span>
+                                    <b>Outlook:</b> メールの自動返信文作成、スレッド要約
+                                </li>
+                                <li style="padding-left: 30px;">
+                                    <span style="position: absolute; left: 0;">👥</span>
+                                    <b>Teams:</b> 会議録作成、アクションアイテム抽出
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            Microsoft Copilot有料版に関する包括的調査 | グラフィックレコーディング | 作成：2025年5月8日
+        </div>
+    </div>
+</body>
+</html>
