@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIコーディングエージェントが仕事を変える - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            margin-top: 40px;
+            color: #fff;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+            color: #fff;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .footer-social a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+            padding: 5px 10px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.15);
+            font-weight: bold;
+            letter-spacing: 0.5px;
+        }
+
+        .footer-social a:hover {
+            background-color: rgba(255,255,255,0.25);
+            transform: translateY(-2px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+
+        .footer-text {
+            color: #222;
+            font-size: 14px;
+            text-shadow: 1px 1px 2px rgba(255,255,255,0.5);
+            margin-top: 10px;
+            opacity: 0.95;
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIコーディングエージェントが仕事を変える</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --color-1: #593C47;
+            --color-2: #F2E63D;
+            --color-3: #F2C53D;
+            --color-4: #F25C05;
+            --color-5: #F24405;
+            --text-main: #334155;
+            --text-heading: #1e40af;
+            --text-subtitle: #475569;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', 'Zen Kurenaido', 'Yomogi', sans-serif;
+            background-color: #f9f9f9;
+            background-image: radial-gradient(#f5f5f5 2px, transparent 2px);
+            background-size: 30px 30px;
+            color: var(--text-main);
+            line-height: 1.4;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            border-bottom: 3px solid var(--color-3);
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--color-3), var(--color-4), var(--color-5));
+        }
+        
+        .title {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: 700;
+            margin: 0;
+            background: linear-gradient(45deg, var(--color-1), var(--color-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+            position: relative;
+        }
+        
+        .title::after {
+            content: "✏️";
+            position: absolute;
+            right: -30px;
+            top: 0;
+            font-size: 24px;
+        }
+        
+        .metadata {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 14px;
+            color: var(--text-subtitle);
+            text-align: right;
+        }
+        
+        .content-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+            padding: 20px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: linear-gradient(90deg, var(--color-2), var(--color-3));
+        }
+        
+        .section-title {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--color-1);
+            margin-top: 0;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed var(--color-3);
+            display: flex;
+            align-items: center;
+        }
+        
+        .section-title-icon {
+            margin-right: 8px;
+            font-size: 20px;
+        }
+        
+        .content-text {
+            font-size: 14px;
+            color: var(--text-main);
+        }
+        
+        .highlight {
+            font-weight: 700;
+            background: linear-gradient(transparent 60%, var(--color-2) 60%);
+            padding: 0 2px;
+        }
+        
+        .quote {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-style: italic;
+            color: var(--color-1);
+            background-color: rgba(242, 230, 61, 0.2);
+            border-left: 4px solid var(--color-3);
+            padding: 10px 15px;
+            margin: 15px 0;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+        
+        .quote::before {
+            content: """;
+            font-size: 30px;
+            position: absolute;
+            left: 5px;
+            top: -5px;
+            color: var(--color-4);
+            opacity: 0.4;
+        }
+        
+        .icon-list {
+            list-style: none;
+            padding-left: 0;
+        }
+        
+        .icon-list li {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            position: relative;
+        }
+        
+        .icon-list li::before {
+            content: "🔹";
+            margin-right: 8px;
+            color: var(--color-4);
+        }
+        
+        .handdrawn-box {
+            border: 3px solid var(--color-1);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            position: relative;
+            transform: rotate(-0.5deg);
+        }
+        
+        .handdrawn-box::before {
+            content: "";
+            position: absolute;
+            top: -3px;
+            left: -3px;
+            right: -3px;
+            bottom: -3px;
+            border: 2px dashed var(--color-3);
+            border-radius: 18px;
+            z-index: -1;
+        }
+        
+        .arrow-connector {
+            position: absolute;
+            font-size: 24px;
+            color: var(--color-4);
+            transform: rotate(-30deg);
+        }
+        
+        .speech-bubble {
+            position: relative;
+            background: rgba(242, 196, 61, 0.2);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 20px 0;
+            filter: drop-shadow(2px 2px 2px rgba(0,0,0,0.1));
+        }
+        
+        .speech-bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -15px;
+            left: 30px;
+            border-width: 15px 15px 0;
+            border-style: solid;
+            border-color: rgba(242, 196, 61, 0.2) transparent;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtitle);
+            padding-top: 20px;
+            border-top: 1px dashed var(--color-3);
+        }
+        
+        .tag {
+            display: inline-block;
+            background: var(--color-3);
+            color: var(--color-1);
+            padding: 3px 8px;
+            border-radius: 20px;
+            font-size: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .conclusion-box {
+            grid-column: 1 / -1;
+            background: linear-gradient(135deg, rgba(89, 60, 71, 0.05), rgba(242, 230, 61, 0.1));
+            border-radius: 15px;
+            padding: 20px;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .conclusion-box::before {
+            content: "📝 結論";
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            background: white;
+            padding: 0 10px;
+            font-weight: 700;
+            color: var(--color-1);
+        }
+        
+        /* レスポンシブデザイン */
+        @media (max-width: 1000px) {
+            .content-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 700px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+            }
+            
+            .metadata {
+                text-align: left;
+                margin-top: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <h1 class="title">AIコーディングエージェントが仕事を変える</h1>
+            <div class="metadata">
+                <div>📅 2025年5月11日</div>
+                <div>🔍 出典: Y Combinator (@ycombinator)</div>
+            </div>
+        </header>
+        
+        <div class="content-grid">
+            <!-- カード1: 主なテーマ -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">📊</span>主なテーマ</h2>
+                <div class="content-text">
+                    <p>AIコーディングエージェントが<span class="highlight">ソフトウェア開発を自動化</span>し、生産性を劇的に向上させる一方で、現在のソフトウェアエンジニアの仕事が大幅に変化するか、あるいは<span class="highlight">消滅する可能性</span>が高い。</p>
+                    <div class="handdrawn-box">
+                        <p>単なる技術革新ではなく、過去のプログラミング言語やツールによる<span class="highlight">抽象化の進化の延長線上</span>にある。</p>
+                    </div>
+                    <p>AIは他の知識労働にも同様の影響を及ぼし、多くの分野で競争優位性のためにAIツールへの順応が不可欠になるだろう。</p>
+                </div>
+            </div>
+            
+            <!-- カード2: 生産性の向上 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">🚀</span>生産性の劇的な向上</h2>
+                <div class="content-text">
+                    <div class="quote">
+                        私はプロのソフトウェア開発者でしたが、この新しいツールは、私が10年前に現役だった頃よりも10倍強力で生産的になりました。
+                    </div>
+                    <ul class="icon-list">
+                        <li>AIコーディングエージェント（Claude Codeなど）を使用して<span class="highlight">ブログを90分で再構築</span></li>
+                        <li>35,000行のコードからなる<span class="highlight">複雑なインタラクティブ音声エージェント</span>を含むウェブサイト（recipes.ai）をコードを一切書かずに構築</li>
+                        <li>Y Combinatorの創業者たちの<span class="highlight">約3分の1〜半数</span>が、主にこのスタイルでコードを書いていると回答</li>
+                    </ul>
+                    <div class="speech-bubble">
+                        「コンバインハーベスター」が農業にもたらした革命に例えられる 🚜
+                    </div>
+                </div>
+            </div>
+            
+            <!-- カード3: ソフトウェアエンジニアの仕事の変化 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">💼</span>仕事の変化または消滅</h2>
+                <div class="content-text">
+                    <div class="quote">
+                        今日のソフトウェアエンジニアリングの仕事は、5年後か10年後には存在しないと思います。
+                    </div>
+                    <p>AIツールを「手なずける」方法を知っている<span class="highlight">「スマートな人々」</span>への需要は生まれるだろうが、それは現在の仕事とは<span class="highlight">「劇的に異なる」</span>ものになるだろう。</p>
+                    <div class="handdrawn-box">
+                        <p>過去のプログラマーの仕事の変化:</p>
+                        <p>機械語 → 高級言語 → フレームワーク → <span class="highlight">AIエージェント</span></p>
+                    </div>
+                    <p>人間はより高レベルのエージェントとして機能するようになる 🧠✨</p>
+                </div>
+            </div>
+            
+            <!-- カード4: 懐疑論とその反論 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">🤔</span>懐疑論とその反論</h2>
+                <div class="content-text">
+                    <p>「AIはプロフェッショナルなコードベースには十分ではない」という批判に対し:</p>
+                    <div class="quote">
+                        これらのツールが十分に良くなることは決してないという主張は、私はただの負け戦だと思います。
+                    </div>
+                    <p><span class="highlight">ジェボンズのパラドックス</span>（コストが下がると需要が増加し、全体の使用量が増える現象）を引き合いに出し:</p>
+                    <ul class="icon-list">
+                        <li>ソフトウェアの需要が<span class="highlight">10倍、100倍</span>に増加する可能性</li>
+                        <li>その増加した需要を満たすのは「人間ではない」</li>
+                        <li>「生産性が個人あたりどころか、<span class="highlight">個人がゼロ</span>になるのだから、ゼロで割ることになります」</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <!-- カード5: 他の知識労働への影響 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">🏢</span>他の知識労働への影響</h2>
+                <div class="content-text">
+                    <p>AIの影響を受ける職業:</p>
+                    <div class="handdrawn-box">
+                        <p>弁護士 👨‍⚖️</p>
+                        <p>医師 👩‍⚕️</p>
+                        <p>会計士 👨‍💼</p>
+                        <p>コンサルタント 📊</p>
+                    </div>
+                    <div class="quote">
+                        あらゆる業界の経営陣が、AIが我々のビジネスに何をもたらすのかを尋ねています。
+                    </div>
+                    <p>AIを受け入れないことは<span class="highlight">「競争上の不利になる」</span>と述べ、将来的にはこれらの分野でもAIツールの利用がデフォルトになると予測している。</p>
+                </div>
+            </div>
+            
+            <!-- カード6: 起業家にとっての機会 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">💡</span>起業家にとっての機会</h2>
+                <div class="content-text">
+                    <div class="quote">
+                        もしあなたが何かを始めることを考えている潜在的な創業者なら、アイデアを始めるのに今日よりも良い歴史上の時点はなかったと思います。
+                    </div>
+                    <ul class="icon-list">
+                        <li><span class="highlight">より少ない資本</span>でより早く収益化（プロフィット）できる</li>
+                        <li>AIによって「こじ開けられた<span class="highlight">非常に多くのアイデア</span>」</li>
+                        <li>過去にはソフトウェアの大きな買い手ではなかった多くの業界が変革される</li>
+                    </ul>
+                    <div class="speech-bubble">
+                        法律 ⚖️ 教育 🎓 医療 🏥
+                    </div>
+                    <p>チームが小さくても<span class="highlight">高品質なプロダクト</span>を構築できるようになり、プロダクトデザインの質が向上する</p>
+                </div>
+            </div>
+            
+            <!-- カード7: 懸念事項と社会的な課題 -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">⚠️</span>懸念事項と社会的な課題</h2>
+                <div class="content-text">
+                    <p>最も大きな懸念は、この急激な変化による<span class="highlight">「移行期間」</span>:</p>
+                    <ul class="icon-list">
+                        <li>「数億人の人々が職を失う」可能性</li>
+                        <li>社会的な「影響と混乱が非常に深刻になる」可能性</li>
+                    </ul>
+                    <div class="handdrawn-box">
+                        <p>AIの影響を受けにくい職業:</p>
+                        <p>外科医 🩺 レンガ職人 🧱</p>
+                        <p>配管工 🔧 電気技師 ⚡</p>
+                    </div>
+                    <p>「ゲートキーパー」として機能する団体（医師会など）が、AIが人間よりも優れている場合でも、<span class="highlight">人間の仕事を保護する</span>ために障壁を設ける可能性</p>
+                </div>
+            </div>
+            
+            <!-- カード8: 将来への適応と必要なスキル -->
+            <div class="card">
+                <h2 class="section-title"><span class="section-title-icon">🔮</span>将来への適応と必要なスキル</h2>
+                <div class="content-text">
+                    <p>個人へのアドバイス:</p>
+                    <div class="handdrawn-box">
+                        <p>1. 最新のAIツールに<span class="highlight">「ついていくこと」</span></p>
+                        <p>→ 「数年間続く優位性」が得られる</p>
+                        <p>2. <span class="highlight">「解決すべき人間の問題を特定すること」</span></p>
+                        <p>→ 人々を理解し、彼らの問題を把握する能力</p>
+                    </div>
+                    <div class="speech-bubble">
+                        AIツールを「手なずける」スキルと「人間理解」のスキルがカギになる 🔑
+                    </div>
+                    <div class="tag">速いキャッチアップ</div>
+                    <div class="tag">問題発見能力</div>
+                    <div class="tag">人間中心設計</div>
+                </div>
+            </div>
+            
+            <!-- 結論ボックス -->
+            <div class="conclusion-box">
+                <div class="content-text">
+                    <p>AIコーディングエージェントはソフトウェアエンジニアリングおよび他の知識労働に<span class="highlight">破壊的な影響</span>を与える可能性が高い。これは、生産性の劇的な向上と既存の職務の変更または消滅につながるだろう。</p>
+                    <p>しかし、これは技術進化の自然な流れであり、<span class="highlight">起業家にとっては未曽有の機会</span>を生み出すと同時に、社会的な課題も伴う。個人は、最新のAIツールへの適応と、人間の問題を理解する能力を磨くことで、この変化に適応する必要があるだろう。</p>
+                </div>
+            </div>
+        </div>
+        
+        <footer class="footer">
+            <p>Source: <a href="https://youtu.be/TECDj4JUx7o?si=YxSlzWnLznijYPwA" target="_blank">https://youtu.be/TECDj4JUx7o?si=YxSlzWnLznijYPwA</a> By Y Combinator (@ycombinator)</p>
+            <p>グラフィックレコーディング制作: 2025年5月11日</p>
+        </footer>
+    </div>
+</body>
+</html>
+    </div>
+
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-logo">AI Infographics</div>
+            <div class="footer-social">
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
