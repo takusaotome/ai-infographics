@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AIユースケースの特定とスケーリング</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --light-bg: #fff9f2;
+            --text-dark: #334155;
+            --text-title: #1e293b;
+            --text-subtitle: #475569;
+            --section-title: #1e40af;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: var(--light-bg);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            line-height: 1.4;
+            overflow-x: hidden;
+        }
+        
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-4));
+            border-radius: 3px;
+        }
+        
+        .header-left {
+            flex: 2;
+        }
+        
+        .header-right {
+            flex: 1;
+            text-align: right;
+            font-family: 'Zen Kurenaido', sans-serif;
+            color: var(--text-subtitle);
+        }
+        
+        h1 {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            margin: 0 0 10px 0;
+            background: linear-gradient(90deg, var(--fashion-1), var(--fashion-4));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: bold;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+            position: relative;
+            display: inline-block;
+        }
+        
+        h1::after {
+            content: "✏️";
+            position: absolute;
+            top: -10px;
+            right: -25px;
+            transform: rotate(15deg);
+            font-size: 24px;
+        }
+        
+        h2 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: var(--text-subtitle);
+            margin: 0;
+            font-weight: normal;
+        }
+        
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 20px;
+        }
+        
+        .section {
+            background-color: white;
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .section-title {
+            font-family: 'Yomogi', cursive;
+            font-size: 18px;
+            color: var(--section-title);
+            margin: 0 0 15px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px dashed var(--fashion-3);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .section-content {
+            font-size: 14px;
+        }
+        
+        .key-point {
+            position: relative;
+            margin-bottom: 12px;
+            padding-left: 18px;
+        }
+        
+        .key-point::before {
+            content: "◆";
+            position: absolute;
+            left: 0;
+            color: var(--fashion-4);
+        }
+        
+        .stat-box {
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-box::before {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 60px;
+            height: 60px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+        }
+        
+        .stat-number {
+            font-family: 'Kaisei Decol', serif;
+            font-size: 28px;
+            font-weight: bold;
+            margin: 0;
+        }
+        
+        .stat-text {
+            font-size: 14px;
+            margin: 5px 0 0 0;
+        }
+        
+        .highlight {
+            background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+            padding: 0 2px;
+            font-weight: bold;
+        }
+        
+        .hand-drawn-box {
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .hand-drawn-box-with-label {
+            border: 2px solid var(--fashion-1);
+            border-radius: 15px;
+            padding: 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .hand-drawn-box-with-label::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 100px;
+            height: 15px;
+            background-color: white;
+        }
+        
+        .box-label {
+            position: absolute;
+            top: -8px;
+            left: 25px;
+            color: var(--fashion-1);
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            padding: 0 5px;
+        }
+        
+        .step-box {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            background-color: white;
+            border-radius: 8px;
+            padding: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        
+        .step-number {
+            background-color: var(--fashion-1);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .use-case-icon {
+            font-size: 24px;
+            margin-right: 10px;
+            color: var(--fashion-4);
+        }
+        
+        .quote {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-style: italic;
+            background-color: #f8f9fa;
+            border-left: 3px solid var(--fashion-3);
+            padding: 10px 15px;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .quote::before {
+            content: """;
+            position: absolute;
+            top: -10px;
+            left: 5px;
+            font-size: 32px;
+            color: var(--fashion-3);
+            opacity: 0.5;
+        }
+        
+        .quote-author {
+            display: block;
+            text-align: right;
+            font-size: 12px;
+            margin-top: 5px;
+            color: var(--text-subtitle);
+        }
+        
+        .arrow {
+            position: absolute;
+            width: 30px;
+            height: 15px;
+            background-color: var(--fashion-3);
+            clip-path: polygon(0 0, 100% 0, 50% 100%);
+        }
+        
+        .connector {
+            position: absolute;
+            background-color: var(--fashion-3);
+            z-index: -1;
+        }
+        
+        .horizontal-connector {
+            height: 2px;
+        }
+        
+        .vertical-connector {
+            width: 2px;
+        }
+        
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .use-case-item {
+            background-color: white;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        
+        .use-case-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .use-case-title {
+            font-family: 'Yomogi', cursive;
+            font-size: 16px;
+            color: var(--fashion-1);
+            margin: 10px 0;
+        }
+        
+        .priority-quadrant {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 10px;
+            height: 300px;
+            margin-top: 20px;
+        }
+        
+        .quadrant {
+            border: 1px dashed var(--fashion-1);
+            padding: 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+        
+        .quadrant-label {
+            position: absolute;
+            top: 5px;
+            left: 5px;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            color: var(--fashion-1);
+        }
+        
+        .axis-label {
+            position: absolute;
+            font-size: 12px;
+            color: var(--text-subtitle);
+        }
+        
+        .y-axis-high {
+            top: 10px;
+            left: -25px;
+            transform: rotate(-90deg);
+        }
+        
+        .y-axis-low {
+            bottom: 10px;
+            left: -25px;
+            transform: rotate(-90deg);
+        }
+        
+        .x-axis-low {
+            bottom: -15px;
+            left: 30px;
+        }
+        
+        .x-axis-high {
+            bottom: -15px;
+            right: 30px;
+        }
+        
+        .workflow-steps {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+            position: relative;
+        }
+        
+        .workflow-step {
+            text-align: center;
+            width: 18%;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .workflow-icon {
+            background-color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            font-size: 24px;
+            color: var(--fashion-4);
+        }
+        
+        .workflow-connector {
+            position: absolute;
+            top: 25px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--fashion-3), var(--fashion-4));
+            z-index: 0;
+        }
+        
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            font-size: 12px;
+            color: var(--text-subtitle);
+            padding-top: 20px;
+            border-top: 1px dashed var(--fashion-3);
+        }
+        
+        @media (max-width: 900px) {
+            .grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .use-case-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .workflow-steps {
+                flex-direction: column;
+                gap: 20px;
+            }
+            
+            .workflow-step {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                text-align: left;
+            }
+            
+            .workflow-icon {
+                margin: 0 15px 0 0;
+            }
+            
+            .workflow-connector {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-left">
+                <h1>AIユースケースの特定とスケーリング</h1>
+                <h2>アーリーアダプターがAI活用にどう取り組んでいるか</h2>
+            </div>
+            <div class="header-right">
+                <p>2025年5月11日<br>出典: OpenAI</p>
+            </div>
+        </div>
+        
+        <div class="grid">
+            <!-- 左カラム -->
+            <div>
+                <div class="section">
+                    <div class="section-title">
+                        <span>📊</span>AIの急速な成長と影響
+                    </div>
+                    <div class="section-content">
+                        <div class="stat-box">
+                            <p class="stat-number">39%</p>
+                            <p class="stat-text">わずか2年でのAI利用率（インターネットは同期間で20%）</p>
+                        </div>
+                        
+                        <div class="stat-box">
+                            <p class="stat-number">1.5倍</p>
+                            <p class="stat-text">AI先進企業の収益成長率（競合比）</p>
+                        </div>
+                        
+                        <div class="stat-box">
+                            <p class="stat-number">1%</p>
+                            <p class="stat-text">AI投資が成熟段階に達したと感じている企業（McKinsey調査）</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" style="margin-top: 25px;">
+                    <div class="section-title">
+                        <span>🔍</span>AI活用機会の特定
+                    </div>
+                    <div class="section-content">
+                        <p>AIを<span class="highlight">スーパーアシスタント</span>として考えましょう。疲れを知らず、常に集中し、いつでも利用可能で、あらゆる業務をサポートします。</p>
+                        
+                        <div style="margin-top: 20px; margin-bottom: 20px;">
+                            <h3 style="font-family: 'Yomogi', cursive; font-size: 16px; color: var(--fashion-1); margin-bottom: 15px;">AIが価値を発揮する3つの領域</h3>
+                        </div>
+                        
+                        <div class="hand-drawn-box">
+                            <div class="key-point">
+                                <strong>繰り返し作業の自動化</strong><br>
+                                単調な手作業から戦略的な業務へシフト
+                            </div>
+                            <div class="key-point">
+                                <strong>スキルのボトルネック解消</strong><br>
+                                専門知識の壁を超え、業務の流れを加速
+                            </div>
+                            <div class="key-point">
+                                <strong>曖昧さへの対応</strong><br>
+                                アイデア創出や次のステップの提案でブロックを解消
+                            </div>
+                        </div>
+                        
+                        <div class="quote">
+                            いつも面倒だと感じる作業をするたび、「これを二度としなくて済むにはどうすれば？」と自問しています。
+                            <span class="quote-author">- Claire Vo, Launch Darklyの最高製品責任者</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 中央カラム -->
+            <div>
+                <div class="section">
+                    <div class="section-title">
+                        <span>🧩</span>6つの基本ユースケース
+                    </div>
+                    <div class="section-content">
+                        <p>600以上のユースケースを分析した結果、ほとんどが6つの基本パターンに分類できることがわかりました。これらは<span class="highlight">すべての部門や職種</span>に適用できます。</p>
+                        
+                        <div class="use-case-grid">
+                            <div class="use-case-item">
+                                <span class="use-case-icon">📝</span>
+                                <div class="use-case-title">コンテンツ作成</div>
+                            </div>
+                            <div class="use-case-item">
+                                <span class="use-case-icon">🔎</span>
+                                <div class="use-case-title">リサーチ</div>
+                            </div>
+                            <div class="use-case-item">
+                                <span class="use-case-icon">&lt;/&gt;</span>
+                                <div class="use-case-title">コーディング</div>
+                            </div>
+                            <div class="use-case-item">
+                                <span class="use-case-icon">📊</span>
+                                <div class="use-case-title">データ分析</div>
+                            </div>
+                            <div class="use-case-item">
+                                <span class="use-case-icon">💡</span>
+                                <div class="use-case-title">発想・戦略</div>
+                            </div>
+                            <div class="use-case-item">
+                                <span class="use-case-icon">🔄</span>
+                                <div class="use-case-title">自動化</div>
+                            </div>
+                        </div>
+                        
+                        <div class="quote" style="margin-top: 20px;">
+                            私たちは各分野のトップユーザーがAIをどのように活用しているかを観察し、これらの基本パターンを特定しました。
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" style="margin-top: 25px;">
+                    <div class="section-title">
+                        <span>🎯</span>ユースケースの優先順位付け
+                    </div>
+                    <div class="section-content">
+                        <p>ユースケースが急速に増えていくと、<span class="highlight">優先順位付け</span>が課題になります。インパクト／労力フレームワークを使って優先順位を決めましょう。</p>
+                        
+                        <div class="priority-quadrant">
+                            <div class="quadrant" style="background-color: rgba(242, 197, 61, 0.2);">
+                                <span class="quadrant-label">高ROI</span>
+                                <small>・素早く強いインパクト<br>・まずここから始める</small>
+                            </div>
+                            <div class="quadrant" style="background-color: rgba(242, 230, 61, 0.2);">
+                                <span class="quadrant-label">セルフサービス</span>
+                                <small>・個人が自分で始められる<br>・後にチーム全体で活用</small>
+                            </div>
+                            <div class="quadrant" style="background-color: rgba(242, 91, 5, 0.2);">
+                                <span class="quadrant-label">高価値/高労力</span>
+                                <small>・変革的な価値<br>・計画と資源が必要</small>
+                            </div>
+                            <div class="quadrant" style="background-color: rgba(89, 60, 71, 0.1);">
+                                <span class="quadrant-label">後回し</span>
+                                <small>・新技術で後に再評価</small>
+                            </div>
+                            
+                            <span class="axis-label y-axis-high">価値高</span>
+                            <span class="axis-label y-axis-low">価値低</span>
+                            <span class="axis-label x-axis-low">労力少</span>
+                            <span class="axis-label x-axis-high">労力多</span>
+                        </div>
+                        
+                        <div class="stat-box" style="margin-top: 20px;">
+                            <p class="stat-number">62%</p>
+                            <p class="stat-text">AIの価値はコアビジネス機能にある</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 右カラム -->
+            <div>
+                <div class="section">
+                    <div class="section-title">
+                        <span>🚀</span>実践ステップ
+                    </div>
+                    <div class="section-content">
+                        <p>AIの活用を始める3つのステップを紹介します。</p>
+                        
+                        <div class="step-box">
+                            <div class="step-number">1</div>
+                            <div>
+                                <strong>AIが価値を生む領域を理解する</strong><br>
+                                AIで即座に改善できるビジネス領域を特定
+                            </div>
+                        </div>
+                        
+                        <div class="step-box">
+                            <div class="step-number">2</div>
+                            <div>
+                                <strong>基本ユースケースを教える</strong><br>
+                                チームが基本パターンを理解し、応用できるようサポート
+                            </div>
+                        </div>
+                        
+                        <div class="step-box">
+                            <div class="step-number">3</div>
+                            <div>
+                                <strong>優先順位をつけてスケールさせる</strong><br>
+                                インパクト／労力フレームワークで高効果・低労力の施策を優先
+                            </div>
+                        </div>
+                        
+                        <div class="hand-drawn-box-with-label" style="margin-top: 25px;">
+                            <span class="box-label">成功のカギ</span>
+                            <div class="key-point">
+                                <strong>リーダーシップの支援</strong><br>
+                                トップダウンのサポートが成功の鍵
+                            </div>
+                            <div class="key-point">
+                                <strong>従業員の権限強化</strong><br>
+                                複雑なユースケースより、社員自身による発見を促進
+                            </div>
+                            <div class="key-point">
+                                <strong>学習の促進</strong><br>
+                                ハッカソンやワークショップで採用を加速
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section" style="margin-top: 25px;">
+                    <div class="section-title">
+                        <span>🔄</span>ワークフロー全体でのAI活用
+                    </div>
+                    <div class="section-content">
+                        <p>個別タスクではなく、<span class="highlight">ワークフロー全体</span>にAIを組み込む発想が重要です。マーケティングワークフローの例：</p>
+                        
+                        <div class="workflow-steps">
+                            <div class="workflow-connector"></div>
+                            
+                            <div class="workflow-step">
+                                <div class="workflow-icon">📊</div>
+                                <small>市場調査と<br>トレンド分析</small>
+                            </div>
+                            
+                            <div class="workflow-step">
+                                <div class="workflow-icon">📈</div>
+                                <small>データ分析で<br>市場規模推定</small>
+                            </div>
+                            
+                            <div class="workflow-step">
+                                <div class="workflow-icon">💡</div>
+                                <small>キャンペーン<br>戦略立案</small>
+                            </div>
+                            
+                            <div class="workflow-step">
+                                <div class="workflow-icon">📝</div>
+                                <small>メッセージと<br>コピー作成</small>
+                            </div>
+                            
+                            <div class="workflow-step">
+                                <div class="workflow-icon">🔄</div>
+                                <small>コンテンツの<br>最適化</small>
+                            </div>
+                        </div>
+                        
+                        <div class="quote" style="margin-top: 25px;">
+                            私たちは、すべてのビジネスプロセス—法務、研究、製造、営業—を見直し、AIでどう再設計できるか考えています。
+                            <span class="quote-author">- Stéphane Bancel, モデルナCEO</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            出典: <a href="https://cdn.openai.com/business-guides-and-resources/identifying-and-scaling-ai-use-cases.pdf" target="_blank" style="color: var(--fashion-4); text-decoration: underline; font-weight: bold;">OpenAI「Identifying and scaling AI use cases」</a> | グラフィックレコーディング作成: 2025年5月11日
+        </div>
+    </div>
+</body>
+</html>
