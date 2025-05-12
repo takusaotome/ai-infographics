@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>マーケティング部門のAI活用ロードマップ</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --light-bg: rgba(255, 255, 255, 0.8);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', 'Zen Kurenaido', sans-serif;
+      background-color: #f9f9f9;
+      color: #334155;
+      line-height: 1.4;
+      background-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M11 18c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm48 25c3.866 0 7-3.134 7-7s-3.134-7-7-7-7 3.134-7 7 3.134 7 7 7zm-43-7c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm63 31c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM34 90c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zm56-76c1.657 0 3-1.343 3-3s-1.343-3-3-3-3 1.343-3 3 1.343 3 3 3zM12 86c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm28-65c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm23-11c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-6 60c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm29 22c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zM32 63c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm57-13c2.76 0 5-2.24 5-5s-2.24-5-5-5-5 2.24-5 5 2.24 5 5 5zm-9-21c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM60 91c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM35 41c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2zM12 60c1.105 0 2-.895 2-2s-.895-2-2-2-2 .895-2 2 .895 2 2 2z' fill='%23593c47' fill-opacity='0.05' fill-rule='evenodd'/%3E%3C/svg%3E");
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 30px;
+      padding-bottom: 15px;
+      border-bottom: 3px solid var(--fashion-3);
+      position: relative;
+    }
+    
+    header::after {
+      content: "";
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--fashion-4);
+      border-radius: 3px;
+    }
+    
+    h1 {
+      font-size: 32px;
+      font-weight: bold;
+      font-family: 'Yomogi', cursive;
+      background: linear-gradient(45deg, var(--fashion-1), var(--fashion-5));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+      position: relative;
+      display: inline-block;
+    }
+    
+    h1::after {
+      content: "✏️";
+      position: absolute;
+      right: -30px;
+      top: -5px;
+      font-size: 24px;
+    }
+    
+    .date-source {
+      font-size: 14px;
+      color: #475569;
+      text-align: right;
+    }
+    
+    .date-source p {
+      margin: 5px 0;
+    }
+    
+    .hand-drawn {
+      border: 3px solid var(--fashion-1);
+      border-radius: 12px;
+      padding: 15px;
+      background-color: var(--light-bg);
+      box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+      position: relative;
+      margin-bottom: 20px;
+    }
+    
+    .hand-drawn::before {
+      content: "";
+      position: absolute;
+      top: -8px;
+      left: 20px;
+      width: 80px;
+      height: 15px;
+      background-color: var(--fashion-2);
+      z-index: -1;
+      transform: rotate(-2deg);
+    }
+    
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 20px;
+    }
+    
+    .section {
+      margin-bottom: 30px;
+    }
+    
+    h2 {
+      font-size: 18px;
+      color: #1e40af;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 2px dashed var(--fashion-3);
+      font-family: 'Zen Kurenaido', sans-serif;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    h3 {
+      font-size: 16px;
+      color: var(--fashion-5);
+      margin: 15px 0 10px;
+      font-family: 'Yomogi', cursive;
+    }
+    
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 15px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+      border: 2px solid #eee;
+    }
+    
+    .card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 5px;
+      background: linear-gradient(90deg, var(--fashion-2), var(--fashion-4));
+    }
+    
+    .highlight {
+      background: linear-gradient(transparent 70%, var(--fashion-2) 100%);
+      padding: 0 2px;
+    }
+    
+    .keyword {
+      color: var(--fashion-5);
+      font-weight: bold;
+      position: relative;
+      display: inline-block;
+    }
+    
+    .keyword::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: var(--fashion-3);
+      border-radius: 3px;
+    }
+    
+    .arrow {
+      font-size: 24px;
+      color: var(--fashion-4);
+      margin: 0 10px;
+      position: relative;
+    }
+    
+    .arrow.down {
+      transform: rotate(90deg);
+      display: block;
+      text-align: center;
+      margin: 10px auto;
+    }
+    
+    .arrow::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 0;
+      width: 100%;
+      height: 2px;
+      background-color: var(--fashion-4);
+      transform: translateY(-50%);
+      z-index: -1;
+    }
+    
+    .icon {
+      font-size: 18px;
+      margin-right: 5px;
+    }
+    
+    .bubble {
+      border: 2px solid var(--fashion-1);
+      border-radius: 20px;
+      padding: 10px 15px;
+      position: relative;
+      background-color: white;
+      margin: 15px 0;
+    }
+    
+    .bubble::after {
+      content: "";
+      position: absolute;
+      bottom: -12px;
+      left: 20px;
+      width: 20px;
+      height: 20px;
+      background-color: white;
+      border-right: 2px solid var(--fashion-1);
+      border-bottom: 2px solid var(--fashion-1);
+      transform: rotate(45deg);
+    }
+    
+    .bubble-header {
+      background-color: var(--fashion-3);
+      color: var(--fashion-1);
+      font-weight: bold;
+      padding: 5px 10px;
+      border-radius: 10px 10px 0 0;
+      margin: -10px -15px 10px;
+    }
+    
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 15px 0;
+    }
+    
+    .table th, .table td {
+      border: 1px dashed #ccc;
+      padding: 8px;
+      text-align: left;
+    }
+    
+    .table th {
+      background-color: rgba(242, 198, 61, 0.3);
+      font-weight: bold;
+    }
+    
+    .table tr:nth-child(even) {
+      background-color: rgba(242, 230, 61, 0.1);
+    }
+    
+    .step {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .step-number {
+      width: 30px;
+      height: 30px;
+      background-color: var(--fashion-4);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-right: 10px;
+      font-family: 'Yomogi', cursive;
+    }
+    
+    .banner {
+      background: linear-gradient(90deg, var(--fashion-2), var(--fashion-3));
+      padding: 12px;
+      border-radius: 8px;
+      color: var(--fashion-1);
+      font-weight: bold;
+      text-align: center;
+      margin: 20px 0;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+      transform: rotate(-1deg);
+    }
+    
+    .takeaway {
+      background-color: rgba(89, 60, 71, 0.1);
+      border-left: 5px solid var(--fashion-1);
+      padding: 15px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+    
+    .takeaway-title {
+      color: var(--fashion-1);
+      font-weight: bold;
+      font-size: 16px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .priority-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 15px;
+      margin: 15px 0;
+    }
+    
+    .priority-box {
+      border: 2px solid var(--fashion-3);
+      border-radius: 8px;
+      padding: 10px;
+      background-color: white;
+    }
+    
+    .priority-box h4 {
+      color: var(--fashion-5);
+      font-size: 15px;
+      margin-bottom: 8px;
+      text-align: center;
+      border-bottom: 1px dashed var(--fashion-3);
+      padding-bottom: 5px;
+    }
+    
+    .priority-box ul {
+      padding-left: 20px;
+    }
+    
+    .priority-box li {
+      margin-bottom: 5px;
+      position: relative;
+    }
+    
+    .priority-box li::before {
+      content: "•";
+      color: var(--fashion-4);
+      font-weight: bold;
+      position: absolute;
+      left: -15px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      font-size: 12px;
+      color: #475569;
+      border-top: 1px dashed var(--fashion-3);
+      margin-top: 30px;
+    }
+    
+    .handwritten {
+      font-family: 'Yomogi', cursive;
+    }
+    
+    .case-study {
+      background-color: rgba(242, 198, 61, 0.2);
+      border-radius: 12px;
+      padding: 15px;
+      margin: 15px 0;
+      border: 1px dashed var(--fashion-4);
+    }
+    
+    .case-study h4 {
+      color: var(--fashion-5);
+      font-size: 15px;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    
+    .process-flow {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin: 15px 0;
+      gap: 5px;
+    }
+    
+    .process-step {
+      background-color: white;
+      border: 2px solid var(--fashion-3);
+      border-radius: 5px;
+      padding: 8px;
+      font-size: 12px;
+      position: relative;
+      width: calc(20% - 5px);
+      text-align: center;
+    }
+    
+    .process-step::after {
+      content: "→";
+      position: absolute;
+      right: -12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--fashion-4);
+      font-weight: bold;
+      z-index: 1;
+    }
+    
+    .process-step:last-child::after {
+      display: none;
+    }
+    
+    @media (max-width: 768px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .priority-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .process-step {
+        width: 100%;
+        margin-bottom: 15px;
+      }
+      
+      .process-step::after {
+        content: "↓";
+        right: 50%;
+        bottom: -15px;
+        top: auto;
+        transform: translateX(50%);
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>マーケティング部門のAI活用ロードマップ</h1>
+      <div class="date-source">
+        <p>📝 出典: OpenAI『Identifying and scaling AI use cases』</p>
+        <p>📅 2025年5月12日</p>
+      </div>
+    </header>
+    
+    <div class="hand-drawn">
+      <h2>🔍 背景と前提</h2>
+      <div class="grid">
+        <div class="card">
+          <h3>📊 資料</h3>
+          <p>OpenAI『<span class="highlight">Identifying and scaling AI use cases</span>』</p>
+        </div>
+        <div class="card">
+          <h3>🎯 目的</h3>
+          <p><span class="keyword">マーケティング部門</span>に限定し、AI活用例を体系的に抽出</p>
+        </div>
+        <div class="card">
+          <h3>📝 アプローチ</h3>
+          <ol>
+            <li>資料全34ページを精読し、マーケティング関連記述と事例を抽出</li>
+            <li>OpenAIが提示する"<span class="highlight">6つのユースケース・プリミティブ</span>"にマッピング</li>
+            <li>効果（時間短縮／成果向上）と導入難易度で整理</li>
+          </ol>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>🔄 主要ユースケース・マッピング（マーケティング向け）</h2>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+            <tr>
+              <th>プリミティブ</th>
+              <th>代表タスク例</th>
+              <th>期待効果</th>
+              <th>ページ</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="keyword">Content Creation</span> 📝</td>
+              <td>
+                <ul>
+                  <li>キャンペーン戦略・見出し・メール文面の自動生成</li>
+                  <li>既存記事の多言語翻訳・チャネル別リパーパス</li>
+                </ul>
+              </td>
+              <td>制作工数削減、ABテスト回転数向上</td>
+              <td>13頁</td>
+            </tr>
+            <tr>
+              <td><span class="keyword">Research</span> 🔍</td>
+              <td>
+                <ul>
+                  <li>新規市場・競合・ターゲット調査</li>
+                  <li>Webからの参考記事収集・要約</li>
+                </ul>
+              </td>
+              <td>リサーチ速度↑、プラン仮説の質向上</td>
+              <td>14頁</td>
+            </tr>
+            <tr>
+              <td><span class="keyword">Data Analysis</span> 📊</td>
+              <td>
+                <ul>
+                  <li>ウェビナー参加者データの可視化</li>
+                  <li>ダッシュボード画像から傾向サマリ</li>
+                </ul>
+              </td>
+              <td>ノンエンジニアでも即インサイト取得</td>
+              <td>18頁</td>
+            </tr>
+            <tr>
+              <td><span class="keyword">Ideation / Strategy</span> 💡</td>
+              <td>
+                <ul>
+                  <li>音声モードでのキャンペーン・ブレスト</li>
+                  <li>Go-to-Marketプラン自動構成・フィードバック</li>
+                </ul>
+              </td>
+              <td>アイデア出しの"壁打ち"高速化</td>
+              <td>20頁</td>
+            </tr>
+            <tr>
+              <td><span class="keyword">Automation</span> 🤖</td>
+              <td>
+                <ul>
+                  <li>ウェビナー報告レポート自動作成＋グラフ生成</li>
+                  <li>MTG議事録からSlack用要約を定時投稿</li>
+                </ul>
+              </td>
+              <td>定型レポートの手作業ゼロ化</td>
+              <td>22頁</td>
+            </tr>
+            <tr>
+              <td><span class="keyword">Coding</span> 💻<br>(非エンジニア活用)</td>
+              <td>
+                <ul>
+                  <li>SQL/Pythonで簡易ダッシュボードやスクリプト作成</li>
+                </ul>
+              </td>
+              <td>内製自動化の裾野拡大</td>
+              <td>16-18頁</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>📈 具体的事例</h2>
+      <div class="grid">
+        <div class="case-study">
+          <h4>✨ <span class="handwritten">Promega</span> の成功事例</h4>
+          <div class="bubble">
+            <div class="bubble-header">導入内容</div>
+            <p>ChatGPT Enterpriseで<span class="highlight">初稿メールキャンペーン</span>を自動生成し、メッセージを市場ごとに翻訳・チャネル最適化</p>
+          </div>
+          <div class="bubble">
+            <div class="bubble-header">成果</div>
+            <p>半年で<span class="keyword">135時間削減</span>、戦略立案に時間再配分</p>
+          </div>
+        </div>
+        
+        <div class="case-study">
+          <h4>🔄 <span class="handwritten">マルチステップ・ワークフロー例</span></h4>
+          <div class="process-flow">
+            <div class="process-step">①Deep<br>Research</div>
+            <div class="process-step">②データ<br>分析</div>
+            <div class="process-step">③ブレスト</div>
+            <div class="process-step">④コピー<br>作成</div>
+            <div class="process-step">⑤ローカ<br>ライズ</div>
+          </div>
+          <div class="bubble">
+            <div class="bubble-header">成果</div>
+            <p>自動化"リサーチ～配信"を<span class="keyword">1ツールで完結</span>しタイムライン短縮</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="section">
+      <h2>🎯 優先度付けの手引き（Impact / Effort）</h2>
+      <div class="priority-grid">
+        <div class="priority-box">
+          <h4>📌 Quick Wins<br>（高インパクト・低工数）</h4>
+          <ul>
+            <li>メール・LPコピーのドラフト生成</li>
+            <li>ウェビナー報告の自動要約</li>
+          </ul>
+        </div>
+        <div class="priority-box">
+          <h4>💰 High ROI Focus<br>（部門横断の波及効果）</h4>
+          <ul>
+            <li>マルチチャネル向けコンテンツ変換パイプライン</li>
+            <li>定期競合レポートBOT（深層リサーチ＋自動通知）</li>
+          </ul>
+        </div>
+        <div class="priority-box">
+          <h4>🚀 Transformational<br>（高インパクト・高工数）</h4>
+          <ul>
+            <li>カスタマイズGPTによる<span class="highlight">パーソナライズド広告クリエイティブ</span>自動生成・配信</li>
+            <li>エンドツーエンドの<span class="highlight">需要予測→キャンペーン自動調整</span>エージェント</li>
+          </ul>
+        </div>
+      </div>
+      <p class="handwritten" style="text-align: right; font-style: italic; color: #475569;">(資料のImpact/Effort Frameworkを転用) 25-27頁</p>
+    </div>
+    
+    <div class="section">
+      <h2>🛠 実装ステップ提案</h2>
+      <div class="grid">
+        <div class="card">
+          <div class="step">
+            <div class="step-number">1</div>
+            <div>
+              <h3>ユースケース・アイデア収集</h3>
+              <p>上表をテンプレに部門ワークショップを開催し、追加案をブレインストーミング</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="step">
+            <div class="step-number">2</div>
+            <div>
+              <h3>ROI vs Effort でスコアリング</h3>
+              <p>影響度（CPA改善・制作工数削減）と導入コスト（データ整備・権限付与）の2軸</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="step">
+            <div class="step-number">3</div>
+            <div>
+              <h3>PoC→段階的拡張</h3>
+              <p>Quick Winを2-3件同時にPoC、成果指標を可視化し経営へレポート</p>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="step">
+            <div class="step-number">4</div>
+            <div>
+              <h3>運用／ガバナンス</h3>
+              <p>スタイルガイド・機密データ取扱いポリシーをCustom GPTに組み込み、品質と安全性を両立</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="banner">🗣️ キー takeaway</div>
+    
+    <div class="takeaway">
+      <div class="takeaway-title">✅ マーケティングAI活用 ポイント</div>
+      <ul>
+        <li><span class="keyword">6プリミティブ</span>に沿って考えると、マーケ担当者でもAI導入ポイントを漏れなく発見できる</li>
+        <li><span class="keyword">Quick Win → High ROI</span>の順で拡張し、全社への波及効果と投資回収を最大化</li>
+        <li>成功事例（Promega）のように"ドラフト生成＋多言語最適化"は即効性が高い</li>
+        <li>将来的には<span class="highlight">マルチステップ自動化</span>で"リサーチ～制作～配信"をエージェントに委任する構想を描く</li>
+      </ul>
+    </div>
+    
+    <footer>
+      <p>このインフォグラフィックは、OpenAI『Identifying and scaling AI use cases』を基にマーケティング部門向けに作成されました。</p>
+      <p>作成日: 2025年5月12日</p>
+    </footer>
+  </div>
+</body>
+</html>
