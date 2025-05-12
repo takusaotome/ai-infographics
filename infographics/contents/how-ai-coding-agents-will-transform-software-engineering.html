@@ -180,7 +180,7 @@
         .icon-list li {
             display: flex;
             align-items: flex-start;
-            margin-bottom: 12px;
+            margin-bottom: 18px;
             position: relative;
         }
         
@@ -188,6 +188,16 @@
             content: "🔹";
             margin-right: 8px;
             color: var(--color-4);
+            flex-shrink: 0;
+        }
+        
+        .highlight-box {
+            background: var(--color-2);
+            padding: 2px 8px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 2px 0;
+            font-weight: bold;
         }
         
         .handdrawn-box {
@@ -331,9 +341,26 @@
                         私はプロのソフトウェア開発者でしたが、この新しいツールは、私が10年前に現役だった頃よりも10倍強力で生産的になりました。
                     </div>
                     <ul class="icon-list">
-                        <li>AIコーディングエージェント（Claude Codeなど）を使用して<span class="highlight">ブログを90分で再構築</span></li>
-                        <li>35,000行のコードからなる<span class="highlight">複雑なインタラクティブ音声エージェント</span>を含むウェブサイト（recipes.ai）をコードを一切書かずに構築</li>
-                        <li>Y Combinatorの創業者たちの<span class="highlight">約3分の1〜半数</span>が、主にこのスタイルでコードを書いていると回答</li>
+                        <li>
+                            <div style="display: flex; flex-direction: column; width: 100%;">
+                                <div>AIコーディングエージェント（Claude Codeなど）を使用して</div>
+                                <div class="highlight-box">ブログを90分で再構築</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div style="display: flex; flex-direction: column; width: 100%;">
+                                <div>35,000行のコードからなる</div>
+                                <div class="highlight-box">複雑なインタラクティブ音声エージェント</div>
+                                <div>を含むウェブサイト（recipes.ai）をコードを一切書かずに構築</div>
+                            </div>
+                        </li>
+                        <li>
+                            <div style="display: flex; flex-direction: column; width: 100%;">
+                                <div>Y Combinatorの創業者たちの</div>
+                                <div class="highlight-box">約3分の1〜半数</div>
+                                <div>が、主にこのスタイルでコードを書いていると回答</div>
+                            </div>
+                        </li>
                     </ul>
                     <div class="speech-bubble">
                         「コンバインハーベスター」が農業にもたらした革命に例えられる 🚜

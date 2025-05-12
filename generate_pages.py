@@ -23,7 +23,7 @@ def generate_page(content_file):
     
     # フッターテキストを.footer-textでラップ
     # <div class="footer">...</div> の中身を <div class="footer-text">...</div> に置換
-    content = re.sub(r'<div class="footer">(.*?)</div>', r'<div class="footer-text">\1</div>', content, flags=re.DOTALL)
+    # content = re.sub(r'<div class="footer">(.*?)</div>', r'<div class="footer-text">\1</div>', content, flags=re.DOTALL)
 
     # テンプレートのプレースホルダーを置換
     page = template.replace('{%TITLE%}', title)
