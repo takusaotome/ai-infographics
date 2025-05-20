@@ -1,0 +1,698 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Microsoft Build 2025 ハイライト - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .template-main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .template-footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            margin-top: 40px;
+        }
+
+        .template-footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .template-footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .template-footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .template-footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .template-footer-social a:hover {
+            color: var(--fashion-2);
+            transform: translateY(-2px);
+        }
+
+        .template-hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .template-main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .template-footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="template-main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Microsoft Build 2025 グラフィックレコーディング</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+    
+    :root {
+      --fashion-1: #593C47;
+      --fashion-2: #F2E63D;
+      --fashion-3: #F2C53D;
+      --fashion-4: #F25C05;
+      --fashion-5: #F24405;
+      --text-dark: #334155;
+      --text-title: #1e40af;
+      --text-subtitle: #475569;
+      --bg-card: rgba(255, 255, 255, 0.8);
+    }
+    
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body {
+      font-family: 'Kaisei Decol', serif;
+      line-height: 1.4;
+      color: var(--text-dark);
+      background-color: #f8fafc;
+      background-image: 
+        radial-gradient(circle at 10% 20%, rgba(242, 198, 61, 0.05) 0%, transparent 20%),
+        radial-gradient(circle at 80% 60%, rgba(242, 92, 5, 0.05) 0%, transparent 30%);
+    }
+    
+    .container {
+      width: 100%;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px dashed var(--fashion-3);
+    }
+    
+    .title {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 32px;
+      font-weight: bold;
+      background: linear-gradient(to right, var(--fashion-1), var(--fashion-4));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      position: relative;
+    }
+    
+    .title::after {
+      content: '';
+      position: absolute;
+      bottom: -8px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background: linear-gradient(to right, var(--fashion-2), var(--fashion-5));
+      border-radius: 3px;
+    }
+    
+    .date {
+      font-family: 'Yomogi', cursive;
+      font-size: 16px;
+      color: var(--text-subtitle);
+    }
+    
+    .main-content {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    
+    .card {
+      background: white;
+      border-radius: 12px;
+      padding: 16px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      position: relative;
+      transition: transform 0.3s ease;
+      border: 1px solid rgba(89, 60, 71, 0.1);
+    }
+    
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: -2px;
+      right: -2px;
+      bottom: -2px;
+      background: linear-gradient(45deg, var(--fashion-2), var(--fashion-4));
+      z-index: -1;
+      border-radius: 14px;
+      opacity: 0.4;
+    }
+    
+    .card-heading {
+      font-family: 'Zen Kurenaido', sans-serif;
+      font-size: 18px;
+      color: var(--text-title);
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 2px solid var(--fashion-3);
+      padding-bottom: 5px;
+      position: relative;
+    }
+    
+    .icon {
+      font-size: 20px;
+    }
+    
+    .card-content {
+      font-size: 14px;
+    }
+    
+    .highlight {
+      font-weight: bold;
+      color: var(--fashion-5);
+      background: linear-gradient(transparent 60%, var(--fashion-2) 60%);
+      padding: 0 2px;
+    }
+    
+    .bubble {
+      background: white;
+      border: 2px solid var(--fashion-1);
+      border-radius: 20px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      position: relative;
+    }
+    
+    .bubble::after {
+      content: '';
+      position: absolute;
+      bottom: -10px;
+      left: 30px;
+      width: 15px;
+      height: 15px;
+      background: white;
+      border-right: 2px solid var(--fashion-1);
+      border-bottom: 2px solid var(--fashion-1);
+      transform: rotate(45deg);
+    }
+    
+    .hand-drawn-arrow {
+      position: relative;
+      margin: 15px 0;
+      height: 30px;
+    }
+    
+    .hand-drawn-arrow svg {
+      width: 100%;
+      height: 100%;
+    }
+    
+    .hand-drawn-border {
+      border: 3px solid;
+      border-image: url("data:image/svg+xml,%3Csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M0,0 C5,20 25,20 30,0 C35,20 55,20 60,0 C65,20 85,20 90,0 C95,20 115,20 120,0' fill='none' stroke='%23F2C53D' stroke-width='2'/%3E%3C/svg%3E") 1;
+      border-image-slice: 1;
+      padding: 10px;
+    }
+    
+    .marker {
+      background: linear-gradient(transparent 60%, var(--fashion-2) 40%);
+      padding: 0 2px;
+    }
+    
+    .connection-line {
+      position: relative;
+      height: 2px;
+      background: var(--fashion-3);
+      margin: 20px 0;
+    }
+    
+    .connection-line::before, .connection-line::after {
+      content: '';
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--fashion-4);
+    }
+    
+    .connection-line::before {
+      left: 0;
+    }
+    
+    .connection-line::after {
+      right: 0;
+    }
+    
+    .emoji-icon {
+      display: inline-block;
+      font-size: 18px;
+      margin-right: 5px;
+      transform: rotate(-10deg);
+    }
+    
+    .note {
+      font-family: 'Yomogi', cursive;
+      font-size: 14px;
+      padding: 10px;
+      background: rgba(242, 230, 61, 0.1);
+      border-left: 4px solid var(--fashion-3);
+      margin: 10px 0;
+      border-radius: 0 5px 5px 0;
+    }
+    
+    .ribbon {
+      position: absolute;
+      top: -10px;
+      right: 10px;
+      width: 40px;
+      height: 60px;
+      background: var(--fashion-2);
+      clip-path: polygon(0 0, 100% 0, 100% 80%, 50% 100%, 0 80%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-bottom: 10px;
+      color: var(--fashion-1);
+      font-weight: bold;
+      font-size: 20px;
+    }
+    
+    .special-box {
+      border: 2px dashed var(--fashion-4);
+      border-radius: 10px;
+      padding: 15px;
+      margin: 15px 0;
+      background: white;
+    }
+    
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-subtitle);
+      padding-top: 20px;
+      border-top: 1px solid var(--fashion-3);
+    }
+    
+    @media (max-width: 768px) {
+      .main-content {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1 class="title">Microsoft Build 2025 ハイライト</h1>
+      <p class="date">2025年5月19日〜22日</p>
+    </header>
+    
+    <div class="main-content">
+      <!-- Column 1 -->
+      <div>
+        <div class="card">
+          <div class="ribbon">1</div>
+          <h2 class="card-heading">
+            <span class="emoji-icon">🤖</span>
+            エージェントの進化
+          </h2>
+          <div class="card-content">
+            <p>GitHub Copilotが<span class="highlight">ペアプログラマーからピアプログラマー</span>へと進化しました。単なるコード補完ではなく、自律的に以下のタスクを実行します：</p>
+            
+            <div class="bubble">
+              🔧 バグ修正<br>
+              ✨ 新機能の実装<br>
+              🔄 コードメンテナンス
+            </div>
+            
+            <div class="hand-drawn-arrow">
+              <svg viewBox="0 0 100 30" xmlns="http://www.w3.org/2000/svg">
+                <path d="M10,15 C30,5 70,25 90,15 L85,20 M90,15 L85,10" fill="none" stroke="#F25C05" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            
+            <p class="note">Copilot Tuningにより、企業固有の<span class="marker">トーンや言語を学習</span>し、組織全体の専門知識を活用できるようになりました。</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">🏭</span>
+            Foundry - エージェント工場
+          </h2>
+          <div class="card-content">
+            <p>Azure AI Foundryはアプリとエージェントを構築するための完全なプラットフォームです。以下の特徴があります：</p>
+            
+            <ul style="list-style-type: none; padding-left: 5px;">
+              <li>📱 <span class="highlight">より多くのモデルをサポート</span>：Grok, Hugging Face, Meta, Mistralなど</li>
+              <li>🔍 Azure AI Searchでのエージェント検索</li>
+              <li>🔄 Foundry Agent Service</li>
+              <li>🤝 Copilot Studioとの統合</li>
+            </ul>
+            
+            <div class="special-box">
+              <p><span class="emoji-icon">🏈</span> NFLはすでにFoundryとデータスタックを使用して最近のCombineを実行！</p>
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">🔬</span>
+            Microsoft Discovery
+          </h2>
+          <div class="card-content">
+            <p>科学の速度を上げるために、テクノロジースタック全体を活用します。Discoveryはエージェントを使って：</p>
+            
+            <div class="hand-drawn-border">
+              <p>💡 アイデアを生成</p>
+              <p>🧪 結果をシミュレート</p>
+              <p>📚 学習する</p>
+            </div>
+            
+            <p class="note">例：「永久化学物質」に依存しない冷却剤の有望な候補を発見</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Column 2 -->
+      <div>
+        <div class="card">
+          <div class="ribbon">2</div>
+          <h2 class="card-heading">
+            <span class="emoji-icon">🌐</span>
+            NLWeb - エージェントウェブの基盤
+          </h2>
+          <div class="card-content">
+            <p>NLWebは<span class="highlight">自然言語でウェブサイトと対話できる</span>新しいオープンプロジェクトです。エージェントウェブ向けのHTMLのようなものと考えてください。</p>
+            
+            <div class="connection-line"></div>
+            
+            <p>これにより、ウェブサイトはユーザーに対して会話型インターフェースを簡単に提供できます。すべてのNLWebエンドポイントはModel Context Protocol (MCP)サーバーでもあります。</p>
+            
+            <div class="bubble">
+              ウェブサイトは、希望すれば、コンテンツをAIエージェントに簡単に発見・アクセスできるようにできます。
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">📱</span>
+            Microsoft 365 Copilotの革新
+          </h2>
+          <div class="card-content">
+            <p>Microsoft 365 Copilot Wave 2春リリースが展開中です。主な機能：</p>
+            
+            <ul style="list-style-type: none; padding-left: 5px;">
+              <li>🔄 <span class="highlight">人間とエージェントのコラボレーション</span>向けに設計された新しいアプリ</li>
+              <li>✨ OpenAI GPT-4o画像生成を活用した新しいCreate体験</li>
+              <li>📓 Copilot Notebooksでコンテンツとデータを即座に洞察とアクションに変換</li>
+              <li>🔍 6月から展開されるCopilot SearchとCopilot Memory</li>
+            </ul>
+            
+            <div class="note">
+              <span class="emoji-icon">🧠</span> 初の推論型エージェントであるResearcherとAnalystは今月中に世界中の顧客に展開される予定です。
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">🔧</span>
+            Power Appsでのエージェント体験
+          </h2>
+          <div class="card-content">
+            <p>Microsoft Power Appsは、開発者とユーザーの両方がエージェントとのより深いコラボレーションを可能にする新機能を導入しています：</p>
+            
+            <div class="special-box">
+              <p><span class="marker">Solution Workspace in Power Apps</span>：統一された開発キャンバスへの重要なステップ</p>
+              <p><span class="marker">アプリのエージェントフィード</span>：ユーザーがアプリ内のエージェントを表示、管理、監視するための新しいハブ</p>
+              <p><span class="marker">Power Platformへのコードファーストアプリ</span>：開発者が自分の好きなツールを使用してアプリを開発・デプロイ</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Column 3 -->
+      <div>
+        <div class="card">
+          <div class="ribbon">3</div>
+          <h2 class="card-heading">
+            <span class="emoji-icon">🖥️</span>
+            Windows AI Foundry
+          </h2>
+          <div class="card-content">
+            <p>Windows AI Foundryは、<span class="highlight">ローカルAI開発の統合プラットフォーム</span>で、以下の機能を提供します：</p>
+            
+            <div class="bubble">
+              <p>🧩 Windows ML - Windowsの基盤となるAI推論ランタイム</p>
+              <p>📚 豊富な既製OSS（オープンソース）モデルカタログ</p>
+              <p>⚙️ 開発用コマンドラインインターフェース</p>
+              <p>🛠️ Windows開発用のすぐに使えるAPIとモデル</p>
+            </div>
+            
+            <div class="note">
+              これにより、開発者はCopilot+ PCのローカルハードウェアを活用して、プライバシーを重視したAIアプリを構築できます。
+            </div>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">🔒</span>
+            AIセキュリティとコンプライアンス
+          </h2>
+          <div class="card-content">
+            <p>Microsoftは、AIアプリケーションのセキュリティとコンプライアンスを強化するための新機能を発表しました：</p>
+            
+            <ul style="list-style-type: none; padding-left: 5px;">
+              <li>🛡️ <span class="highlight">Microsoft Purview SDK</span> - AIアプリに企業レベルのデータセキュリティとコンプライアンスコントロールを組み込むためのツール</li>
+              <li>👁️ <span class="highlight">Microsoft Purview DSPM for AI</span> - AIワークロード内の対話におけるデータセキュリティリスクを発見・保護・管理</li>
+              <li>🔐 <span class="highlight">Microsoft Entra Agent ID</span> - AIエージェントに一意の識別子を割り当て、アクセス管理を強化</li>
+            </ul>
+            
+            <div class="connection-line"></div>
+            
+            <p>これらの機能により、企業は安全にAIイノベーションを採用できます。</p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <h2 class="card-heading">
+            <span class="emoji-icon">📊</span>
+            データとAIの統合
+          </h2>
+          <div class="card-content">
+            <p>Microsoftはデータ分析とAIプラットフォーム間の統合を強化しています：</p>
+            
+            <div class="special-box">
+              <p><span class="marker">チャットによるデータ探索</span>：Power BIとCopilot Studioで複雑なデータセットに対して質問するだけで分析可能</p>
+              <p><span class="marker">Microsoft Fabricデータエージェント</span>：AIを活用したアシスタントがOneLakeからのデータについて会話形式で対話</p>
+              <p><span class="marker">デジタルツインビルダー</span>：実世界の環境のデジタル表現を構築・管理するための新機能</p>
+            </div>
+            
+            <div class="note">
+              <span class="emoji-icon">💡</span> これらの機能により、すべてのユーザーがAIを活用したデータ洞察にアクセスしやすくなります。
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <footer>
+      <p>出典: Microsoft Build 2025 Book of News - May 19-22, 2025</p>
+    </footer>
+  </div>
+</body>
+</html>
+    </div>
+
+    <footer class="template-footer">
+        <div class="template-footer-content">
+            <div class="template-footer-logo">AI Infographics</div>
+            <div class="template-footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
