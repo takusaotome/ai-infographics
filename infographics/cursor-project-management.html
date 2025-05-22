@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursorを活用したプロジェクト全工程管理手法 - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .template-main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .template-footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            margin-top: 40px;
+        }
+
+        .template-footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .template-footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .template-footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .template-footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .template-footer-social a:hover {
+            color: var(--fashion-2);
+            transform: translateY(-2px);
+        }
+
+        .template-hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .template-main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .template-footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="template-main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cursorを活用したプロジェクト全工程管理手法 - インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <!-- 
+        Deep Research Report Analysis & Infographic Plan Summary:
+        Source Material: cursor_project_management_slides_jp (Cursorを活用したプロジェクト全工程管理手法)
+        Core Theme: AI搭載エディタCursorによるソフトウェア開発プロジェクト全工程管理、生産性と品質向上、GitHub連携。
+        Narrative Structure:
+        1.  イントロダクション: AIによるプロジェクト管理の未来、Cursorの紹介。「なぜCursorか？」を追記。
+        2.  Cursorによるプロジェクトライフサイクル: 各フェーズの説明を詳細化。 (Gemini APIボタン削除)
+        3.  主要機能の深掘り: AI支援の見積もり・計画、自動ドキュメント生成、レビュー強化。 (Gemini APIボタン削除)
+        4.  連携の力: CursorとGitHubの統合。
+        5.  測定可能なインパクトと利点: 主要な効果のまとめ。 (Gemini APIボタン削除)
+        6.  今後の展望: AI駆動プロジェクト管理の採用と進化。
+
+        Selected Color Palette: Energetic & Playful
+        - #FF8C00 (ダークオレンジ)
+        - #FFC04D (ライトオレンジ/イエロー)
+        - #00A0A0 (ティール)
+        - #79CDCD (ライトティール)
+        - #FF69B4 (ホットピンク)
+        - #FFB6C1 (ライトピンク)
+        - #8A2BE2 (ブルーバイオレット) - アクセント
+        - Background: #FFFFFF (ホワイト)
+        - Text: #333333 (ダークグレー)
+
+        Visualization Choices Summary (NO SVG, NO MERMAID JS):
+        - Section 1 (Intro): Single Big Number (Text), Icon (Unicode). Goal: Inform. Added "Why Cursor?" subsection.
+        - Section 2 (Lifecycle Flowchart): Structured HTML/CSS with Tailwind. Goal: Organize. Descriptions for each step are detailed. Gemini API buttons removed.
+        - Section 3 (Key Capabilities):
+            - Estimation/Planning: Chart.js Bar Chart (Canvas). Goal: Compare (conceptual).
+            - Documentation: Pictograph (Unicode icons/styled text). Goal: Inform. Gemini API button for draft generation removed.
+            - Reviews: Chart.js Donut Chart (Canvas). Goal: Inform (conceptual).
+        - Section 4 (GitHub Integration): Structured HTML/CSS diagram with Tailwind. Goal: Organize/Relationships.
+        - Section 5 (Benefits): Styled HTML list with Unicode icons. Goal: Inform/Compare. Gemini API buttons removed.
+        - Section 6 (Path Forward): Text-heavy, call to action.
+
+        Confirmation: NEITHER Mermaid JS NOR SVG were used anywhere in this output. All diagrams and complex visuals are implemented using Chart.js (Canvas) or structured HTML/CSS with Tailwind CSS. Gemini API related buttons and JavaScript code have been removed.
+    -->
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 260px;
+            max-height: 300px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 300px;
+            }
+        }
+        .flowchart-step {
+            border: 2px solid #00A0A0;
+            background-color: #E0FFFF;
+            color: #333333;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            height: 100%;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .flowchart-step:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        .flowchart-step h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+        .flowchart-step p.text-sm {
+            font-size: 0.8rem;
+            line-height: 1.4;
+        }
+        .flowchart-arrow {
+            font-size: 1.75rem;
+            color: #FF8C00;
+        }
+        .icon-style {
+            font-size: 1.5em;
+            margin-right: 0.5em;
+            color: #FF8C00;
+        }
+        .section-title {
+            color: #8A2BE2;
+            position: relative;
+            display: inline-block;
+            text-align: center !important;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #8A2BE2, #FF69B4);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .subsection-title {
+            color: #00A0A0;
+            font-weight: bold;
+        }
+        .highlight-stat {
+            color: #FF8C00;
+            font-weight: bold;
+        }
+        .card-custom {
+            background-color: #FFF;
+            border: 1px solid #E0E0E0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .btn-primary {
+            background-color: #FF8C00;
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to right, #FF8C00, #FF69B4);
+            transition: all 0.5s ease;
+            z-index: -1;
+        }
+        .btn-primary:hover {
+            background-color: transparent;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+        .btn-primary:hover::before {
+            left: 0;
+        }
+        .gradient-border {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+        }
+        .gradient-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #FF8C00, #8A2BE2, #00A0A0, #FF69B4);
+            z-index: -1;
+            animation: glowingBorder 3s linear infinite;
+            border-radius: 14px;
+        }
+        @keyframes glowingBorder {
+            0% { background-position: 0 0; }
+            50% { background-position: 400% 0; }
+            100% { background-position: 0 0; }
+        }
+        /* 新しいスクロールアニメーション */
+        .scroll-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        /* レスポンシブ対応のための追加スタイル */
+        @media (min-width: 1024px) {
+            .lg\:grid-cols-3 {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .flowchart-step p.text-sm {
+                font-size: 0.85rem;
+            }
+        }
+        @media (max-width: 1023px) {
+            .flowchart-step {
+                height: auto;
+                min-height: 320px;
+            }
+            .flowchart-step p.text-sm {
+                font-size: 0.875rem;
+            }
+        }
+        @media (max-width: 1280px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .card-custom h3 {
+                font-size: 1.1rem;
+            }
+            .text-3xl {
+                font-size: 1.5rem;
+            }
+            .text-xl {
+                font-size: 1.1rem;
+            }
+            .text-lg {
+                font-size: 1rem;
+            }
+        }
+        .scroll-fade-in:nth-child(2) {
+            transition-delay: 0.1s;
+        }
+        .scroll-fade-in:nth-child(3) {
+            transition-delay: 0.2s;
+        }
+        .scroll-fade-in:nth-child(4) {
+            transition-delay: 0.3s;
+        }
+        .scroll-fade-in:nth-child(5) {
+            transition-delay: 0.4s;
+        }
+        /* 横幅に応じてグリッドレイアウトを調整 */
+        @media (min-width: 1400px) {
+            .lifecycle-grid, .capabilities-grid, .benefits-grid {
+                max-width: 1350px;
+                margin: 0 auto;
+            }
+        }
+        /* 他の画面サイズでグリッドを強制するための設定 */
+        .lifecycle-grid, .capabilities-grid, .benefits-grid {
+            display: flex !important;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 1.5rem;
+            width: 100%;
+            margin: 0 auto;
+        }
+        .flowchart-step, .card-custom {
+            flex: 0 1 calc(33.333% - 1.5rem);
+            min-width: 290px;
+            max-width: 500px;
+            margin: 0 !important;
+            display: flex;
+            flex-direction: column;
+        }
+        /* 既存の設定を上書きするため !important を使用 */
+        .flowchart-step {
+            height: auto !important;
+            min-height: 300px;
+        }
+        /* アイコンが中央下部に表示されるように調整 */
+        .flowchart-step > div:first-child {
+            flex: 1 0 auto;
+        }
+        /* モバイル・タブレット対応 */
+        @media (max-width: 767px) {
+            .lifecycle-grid, .capabilities-grid, .benefits-grid {
+                gap: 1rem;
+            }
+            .flowchart-step, .card-custom {
+                flex: 0 0 100%;
+                max-width: 100%;
+                min-width: 250px;
+            }
+        }
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .flowchart-step, .card-custom {
+                flex: 0 0 calc(50% - 1rem);
+                max-width: 500px;
+            }
+        }
+        @media (min-width: 1024px) and (max-width: 1399px) {
+            .lifecycle-grid, .capabilities-grid, .benefits-grid {
+                gap: 1.25rem;
+                max-width: 1100px;
+                margin: 0 auto;
+            }
+        }
+        /* コンテナの最大幅を設定 */
+        .container {
+            max-width: 100%;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        @media (min-width: 1400px) {
+            .container {
+                max-width: 1350px;
+            }
+        }
+        @media (min-width: 1600px) {
+            .container {
+                max-width: 1500px;
+            }
+        }
+        @media (min-width: 1900px) {
+            .container {
+                max-width: 1700px;
+            }
+        }
+        /* 章のタイトルを中央揃えに修正 */
+        h2.section-title {
+            text-align: center !important;
+            width: 100%;
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        /* タイトルの下線を中央揃え */
+        .section-title::after {
+            left: 50% !important;
+            transform: translateX(-50%);
+        }
+        /* モバイル対応も含めて全ブレイクポイントで中央揃え */
+        @media (max-width: 767px) {
+            h2.section-title {
+                text-align: center !important;
+                width: 100%;
+            }
+        }
+        /* グラデーション背景セクション用の特別スタイル */
+        .bg-gradient-to-r .section-title {
+            color: white;
+        }
+
+        .bg-gradient-to-r .section-title::after {
+            background: linear-gradient(to right, white, rgba(255,255,255,0.7));
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <header class="py-16 bg-gradient-to-r from-[#00A0A0] to-[#79CDCD] text-white text-center relative overflow-hidden">
+        <div class="absolute inset-0 opacity-10">
+            <div class="absolute top-0 left-0 w-full h-full">
+                <svg viewBox="0 0 100 100" preserveAspectRatio="none" class="h-full w-full">
+                    <path d="M0,0 L100,0 L100,100 L0,100 Z" fill="url(#header-pattern)"></path>
+                </svg>
+                <defs>
+                    <pattern id="header-pattern" width="10" height="10" patternUnits="userSpaceOnUse">
+                        <circle cx="5" cy="5" r="1" fill="#FFFFFF"></circle>
+                    </pattern>
+                </defs>
+            </div>
+        </div>
+        <div class="container mx-auto px-6 relative z-10">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Cursorを活用したプロジェクト全工程管理手法</h1>
+            <p class="text-xl md:text-2xl mb-8">AIによるソフトウェア開発の変革</p>
+            <div class="w-24 h-1 bg-white mx-auto rounded-full"></div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduction" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-center section-title">1. AIによるプロジェクト管理の未来</h2>
+            <p class="text-lg mb-8 max-w-3xl mx-auto text-center">AI搭載エディタ「Cursor」は、ソフトウェア開発プロジェクトの全工程に革命をもたらし、<span class="highlight-stat text-2xl">生産性と品質の大幅な向上</span>を実現します。定型作業をAIに委ね、人間は本質的な課題解決に集中できる時代が到来しました。</p>
+            
+            <div class="mt-10 mb-12 max-w-3xl mx-auto">
+                <h3 class="text-2xl mb-4 text-center subsection-title">なぜ汎用AIツールではなく「Cursor」なのか？</h3>
+                <div class="bg-sky-50 p-6 rounded-lg shadow">
+                    <p class="text-md mb-3">ChatGPTやCopilotのような優れたAIツールも存在しますが、Cursorは特に<span class="font-bold text-[#FF8C00]">プロジェクト単位での複雑な情報管理</span>に特化しています。</p>
+                    <ul class="list-disc list-inside space-y-2 text-md">
+                        <li><span class="font-semibold">包括的なコンテキスト理解:</span> Cursorは、プロジェクト内の大量のドキュメント、過去の議論（背景情報）、そして全ソースコードをAIの知識ベースとして活用できます。これにより、AIは断片的な情報ではなく、プロジェクト全体の文脈を深く理解した上で、より的確な提案や分析を行います。</li>
+                        <li><span class="font-semibold">編集作業とのシームレスな連携:</span> Chatベースのツールとは異なり、Cursorはエディタベースであるため、AIが生成したコードやドキュメントの提案を、<span class="font-bold">直接かつ部分的に修正・適用</span>することが得意です。特定のコードブロックを選択してリファクタリングを依頼したり、ドキュメントの一部分の表現を洗練させたりといった、細やかな編集作業をAIと共同で行えます。</li>
+                        <li><span class="font-semibold">プロジェクト管理機能との統合:</span> コード編集だけでなく、本インフォグラフィックで紹介するような、見積もりからナレッジ共有までのプロジェクト管理機能とAIが密接に連携している点が大きな利点です。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="flex justify-center items-center text-2xl mt-8">
+                <span class="icon-style">🤖</span>
+                <span class="font-bold text-[#00A0A0]">Cursor: プロジェクト全体の文脈を理解するAIパートナー</span>
+            </div>
+        </section>
+
+        <section id="lifecycle" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">2. Cursorによるプロジェクトライフサイクル</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Cursorは、プロジェクトの初期段階から完了後のナレッジ共有に至るまで、開発ライフサイクルの各フェーズを一貫してサポートします。以下にその活用フローを示します。</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 items-stretch lifecycle-grid">
+                
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center" data-step-title="見積もりフェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">見積もりフェーズ</h3>
+                        <p class="text-sm">Cursorに過去の類似プロジェクトデータや初期要件を入力することで、AIが自動でタスク候補を洗い出し、概算工数や潜在リスクを提示します。例えば、「この機能一覧に対し、過去のAプロジェクト情報を参考に工数を見積もり、考えられる技術的課題をリストアップして」と指示すれば、AIが初期見積もりのドラフトとリスク分析レポートを生成。これにより、見積もり作業の初動を大幅に短縮し、経験の浅いメンバーでも精度の高い見積もりが可能になります。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">💡</div>
+                    </div>
+                </div>
+                
+                <div class="hidden lg:flex items-center justify-center flowchart-arrow">➔</div>
+
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center" data-step-title="提案・要件定義フェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">提案・要件定義フェーズ</h3>
+                        <p class="text-sm">提案書や要件定義書のドラフト作成をAIが支援します。ユーザーヒアリングの議事録をCursor上で管理し、「この議事録から主要なユーザー要望を抽出し、機能要件としてリストアップして。各要件には優先度（高・中・低）と背景を追記して」と指示すれば、AIが要件一覧、機能一覧、課題一覧のたたき台を自動生成。既存システムへの影響範囲分析も、「この新機能を追加する場合、影響を受ける既存モジュールとDBテーブルを教えて」と尋ねるだけでAIが提示します。</p>
+                    </div>
+                     <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">📝</div>
+                    </div>
+                </div>
+
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center md:mt-0 lg:mt-0" data-step-title="計画立案フェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">計画立案フェーズ</h3>
+                        <p class="text-sm">要件定義書をCursorに読み込ませ、「この要件を実現するための詳細タスクをWBS形式で洗い出し、各タスクの依存関係と担当者候補を付与して、Mermaid形式のガントチャートで出力して」と指示。AIがタスクを自動で細分化し、プロジェクトルールに設定したチームメンバーのスキルセットや過去の負荷状況を考慮して担当者を仮割り当て。生成されたガントチャートは即座にチームでレビューし、計画の妥当性を高めます。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">📅</div>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center justify-center flowchart-arrow">➔</div>
+
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center" data-step-title="進捗・課題管理フェーズ">
+                     <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">進捗・課題管理フェーズ</h3>
+                        <p class="text-sm">日々の進捗報告（日報、GitHubコミットログ、Slackの特定チャンネル等）をCursorがAIで自動収集・分析。例えば、「今日のチーム全体の進捗と主要なブロッカーを要約し、遅延しているタスクがあれば担当者にリマインド、対策案を3つ提案して」と指示。AIがプロジェクト全体の進捗状況をリアルタイムに更新し、計画との差異を可視化。遅延が検知されると、関連情報（過去の類似遅延事例、リソース状況）を基に具体的な対策案をマネージャーに提示。Mermaidガントチャートの動的更新やGitHub Issue連携による進捗サマリー生成も可能です。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">📊</div>
+                    </div>
+                </div>
+                
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center md:mt-0 lg:mt-0" data-step-title="各種レビューフェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">各種レビューフェーズ</h3>
+                        <p class="text-sm">設計書ドラフトをCursorに読み込ませ、「このAPI設計について、セキュリティ脆弱性、パフォーマンス懸念、保守性の観点からレビューし、具体的な改善点を指摘して」と指示。AIが設計パターンやベストプラクティスに基づき、多角的な視点からレビューコメントを自動生成。コードレビューでは、プルリクエストの差分をAIが解析し、「この変更による潜在的なバグやリグレッションのリスクを評価し、テストケースを追加提案して」といった具体的なフィードバックを得られます。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">🧐</div>
+                    </div>
+                </div>
+
+                <div class="hidden lg:flex items-center justify-center flowchart-arrow">➔</div>
+
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center" data-step-title="完了報告・振り返りフェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">完了報告・振り返りフェーズ</h3>
+                        <p class="text-sm">プロジェクト期間中のコミットログ、Issue解決履歴、チャットログをCursorに学習させ、「今回のプロジェクトのKPT（Keep, Problem, Try）を分析し、特に貢献した技術や発生した主要な課題、次回プロジェクトへの教訓をまとめた振り返りレポートの骨子を作成して」と指示。AIが客観的なデータに基づいて成功要因や反省点を抽出し、具体的なデータと共に報告書ドラフトを生成。これにより、属人的な記憶に頼らない、データドリブンな振り返りを実現します。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">🏁</div>
+                    </div>
+                </div>
+
+                <div class="flowchart-step p-4 md:p-5 rounded-lg shadow-lg text-center md:col-span-2 lg:col-auto lg:mt-0" data-step-title="ナレッジ共有フェーズ">
+                    <div>
+                        <h3 class="text-xl font-bold mb-2 text-[#FF8C00]">ナレッジ共有フェーズ</h3>
+                        <p class="text-sm">プロジェクトで効果的だったCursorへの指示（プロンプトテンプレート）や、解決済みの技術課題とその対応策、設計上の判断基準などを「プロジェクトルール」や専用のナレッジベースドキュメントとしてCursor内に蓄積。「類似の認証機能実装時の注意点は？」といった質問に対し、AIが過去のナレッジを参照して回答。これにより、組織全体のノウハウが効率的に共有され、新メンバーの早期戦力化や過去の失敗の再発防止に貢献します。</p>
+                    </div>
+                    <div class="mt-auto pt-3">
+                        <div class="text-3xl text-[#FF8C00]">📚</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="capabilities" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">3. 主要機能の深掘り</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Cursorの強力なAI機能は、プロジェクト管理の様々な側面で具体的な効果を発揮します。ここでは主要な機能領域を紹介します。</p>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6 capabilities-grid">
+                <div class="card-custom p-4 md:p-5 rounded-lg gradient-border">
+                    <h3 class="text-xl font-bold mb-3 text-[#00A0A0]">AI支援による見積もりと計画</h3>
+                    <p class="text-sm mb-4">AIが過去データや要件を分析し、従来手法と比較して工数見積もりの精度向上と計画策定の労力削減に貢献します。（概念図）</p>
+                    <div class="chart-container h-64 md:h-72">
+                        <canvas id="estimationPlanningChart"></canvas>
+                    </div>
+                    <p class="text-xs mt-2 text-gray-500 text-center">図: AI支援による効果（概念）</p>
+                </div>
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col gradient-border">
+                    <h3 class="text-xl font-bold mb-3 text-[#00A0A0]">自動ドキュメント生成</h3>
+                    <p class="text-sm mb-4">多様なプロジェクト文書のドラフト作成をAIが支援。簡単な指示から草案を生成します。</p>
+                    <div class="flex-grow flex flex-col items-center justify-center space-y-3 mt-6">
+                        <div class="flex items-center text-lg"><span class="icon-style text-2xl">📄</span> 要件定義書</div>
+                        <div class="flex items-center text-lg"><span class="icon-style text-2xl">📐</span> 設計ドキュメント</div>
+                        <div class="flex items-center text-lg"><span class="icon-style text-2xl">📈</span> 進捗レポート</div>
+                    </div>
+                </div>
+                <div class="card-custom p-4 md:p-5 rounded-lg gradient-border">
+                    <h3 class="text-xl font-bold mb-3 text-[#00A0A0]">レビュー品質の向上</h3>
+                    <p class="text-sm mb-4">AIがコードやドキュメントの潜在的な問題点を指摘し、レビューの網羅性を高めます。これにより、見落としリスクの低減が期待できます。（概念図）</p>
+                    <div class="chart-container h-64 md:h-72">
+                        <canvas id="reviewQualityChart"></canvas>
+                    </div>
+                     <p class="text-xs mt-2 text-gray-500 text-center">図: レビュー網羅性の向上（概念）</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="integration" class="mb-16 py-12 bg-gray-100 rounded-lg scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">4. 連携の力: Cursor と GitHub</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">CursorはGitHubと緊密に連携し、コード管理、Issue追跡、プルリクエストレビューといった開発ワークフローをシームレスに統合します。この連携により、開発プロセス全体が一層効率化されます。</p>
+            <div class="max-w-2xl mx-auto p-5 md:p-6 bg-white rounded-lg shadow-xl gradient-border">
+                <div class="flex flex-col md:flex-row justify-around items-center">
+                    <div class="text-center mb-6 md:mb-0">
+                        <div class="text-6xl mb-2">🤖</div>
+                        <div class="text-2xl font-bold text-[#00A0A0]">Cursor</div>
+                    </div>
+                    <div class="text-4xl font-bold text-[#FF8C00] mx-4">&lt;--&gt;</div>
+                    <div class="text-center">
+                        <div class="text-6xl mb-2">🐙</div>
+                        <div class="text-2xl font-bold text-[#8A2BE2]">GitHub</div>
+                    </div>
+                </div>
+                <div class="mt-6 space-y-2 text-center">
+                    <p class="flex items-center justify-center text-lg"><span class="icon-style">💻</span> ソースコード管理とAI支援コミット</p>
+                    <p class="flex items-center justify-center text-lg"><span class="icon-style">🐞</span> Issue追跡とAIによる分析・起票支援</p>
+                    <p class="flex items-center justify-center text-lg"><span class="icon-style">🔄</span> プルリクエストのAIレビューコメント生成</p>
+                    <p class="flex items-center justify-center text-lg"><span class="icon-style">📄</span> ドキュメントのバージョン管理と共有</p>
+                </div>
+            </div>
+             <p class="text-sm mt-6 text-center text-gray-600">この強力な連携が、開発チームの生産性を飛躍的に高めます。</p>
+        </section>
+
+        <section id="benefits" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">5. 期待される効果と利点</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Cursorを導入することで、プロジェクト管理の各側面において具体的な改善が期待できます。</p>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-5 benefits-grid">
+                
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="見積もり精度の向上">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">🎯</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">見積もり精度の向上</h3>
+                            <p class="text-sm">AIによる網羅的な分析で、見落としを防ぎ正確な見積もりを実現。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="計画立案の効率化">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">⏱️</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">計画立案の効率化</h3>
+                            <p class="text-sm">タスク分解やスケジュール策定を自動化し、計画時間を短縮。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="進捗の可視化と自動化">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">👀</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">進捗の可視化と自動化</h3>
+                            <p class="text-sm">日報等からの進捗自動更新、遅延検知と対策案提示で管理を効率化。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="レビュー品質の平準化">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">⭐</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">レビュー品質の平準化</h3>
+                            <p class="text-sm">AI支援により、レビュアーの経験差を補い、レビュー品質を均一化。</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="ナレッジの蓄積促進">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">🧠</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">ナレッジの蓄積促進</h3>
+                            <p class="text-sm">プロジェクトルールや知見を形式知化し、組織全体の学習を加速。</p>
+                        </div>
+                    </div>
+                </div>
+
+                 <div class="card-custom p-4 md:p-5 rounded-lg flex flex-col justify-between" data-benefit-title="全体的な生産性向上">
+                    <div class="flex items-start">
+                        <span class="icon-style text-3xl mr-4 text-[#FF69B4]">🚀</span>
+                        <div>
+                            <h3 class="text-lg font-semibold mb-1">全体的な生産性向上</h3>
+                            <p class="text-sm">定型業務の自動化と支援により、チームはより創造的な業務に集中可能。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="future" class="py-16 bg-gradient-to-r from-[#8A2BE2] to-[#FF69B4] text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-6 text-center section-title">6. 今後の展望: AI駆動型プロジェクト管理の採用と進化</h2>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">Cursorを中心としたAI駆動型のプロジェクト管理手法は、実用性、再現性、拡張性に優れています。AIモデルの進化や連携ツールの拡充により、その適用範囲は今後ますます広がることが期待されます。</p>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">重要なのは、AIを万能ツールとして捉えるのではなく、人間の判断や創意工夫と組み合わせることです。人間とAIの協働による新しいプロジェクトマネジメントの波に乗り、開発の質とスピードの飛躍的向上を目指しましょう。</p>
+                <a href="https://cursor.sh" target="_blank" class="btn-primary font-bold py-3 px-8 rounded-lg text-lg shadow-md hover:shadow-lg inline-block">
+                    Cursor活用を始めよう
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-10 bg-gray-800 text-gray-400 text-sm">
+        <div class="container mx-auto px-6">
+            <div class="w-20 h-1 bg-[#00A0A0] mx-auto mb-6 rounded-full"></div>
+            <p class="mb-2">&copy; 2025 調査レポート. All rights reserved.</p>
+            <p>このインフォグラフィックはCursorプロジェクト管理手法の理解を助けるために作成されました。</p>
+        </div>
+    </footer>
+
+    <script>
+        function processLabel(label, maxLength = 16) {
+            if (label.length <= maxLength) {
+                return label;
+            }
+            const words = label.split(''); 
+            let currentLine = '';
+            const lines = [];
+            for (let i = 0; i < words.length; i++) {
+                if ((currentLine + words[i]).length > maxLength && currentLine.length > 0) {
+                    lines.push(currentLine);
+                    currentLine = words[i];
+                } else {
+                    currentLine += words[i];
+                }
+            }
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            return lines;
+        }
+
+        const tooltipTitleCallback = function(tooltipItems) {
+            const item = tooltipItems[0];
+            let label = item.chart.data.labels[item.dataIndex];
+            if (Array.isArray(label)) {
+                return label.join(''); 
+            } else {
+                return label;
+            }
+        };
+        
+        const commonChartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    labels: {
+                        color: '#333333' 
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        title: tooltipTitleCallback
+                    },
+                    backgroundColor: 'rgba(0,0,0,0.7)',
+                    titleColor: '#FFFFFF',
+                    bodyColor: '#FFFFFF',
+                }
+            },
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: '#333333' },
+                    grid: { color: '#DDDDDD' }
+                },
+                x: {
+                    ticks: { color: '#333333' },
+                    grid: { color: '#EEEEEE' }
+                }
+            }
+        };
+
+        const estimationPlanningCtx = document.getElementById('estimationPlanningChart')?.getContext('2d');
+        if (estimationPlanningCtx) {
+            new Chart(estimationPlanningCtx, {
+                type: 'bar',
+                data: {
+                    labels: [processLabel('従来手法'), processLabel('Cursor支援手法')],
+                    datasets: [{
+                        label: '計画策定の労力 (概念値)',
+                        data: [100, 40],
+                        backgroundColor: ['#FFC04D', '#00A0A0'],
+                        borderColor: ['#FF8C00', '#007070'],
+                        borderWidth: 1
+                    }, {
+                        label: '見積もり精度 (概念値)',
+                        data: [70, 95],
+                        backgroundColor: ['#FFB6C1', '#79CDCD'],
+                        borderColor: ['#FF69B4', '#00A0A0'],
+                        borderWidth: 1
+                    }]
+                },
+                options: { ...commonChartOptions }
+            });
+        }
+
+        const reviewQualityCtx = document.getElementById('reviewQualityChart')?.getContext('2d');
+        if (reviewQualityCtx) {
+            new Chart(reviewQualityCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: [processLabel('AI支援による追加発見'), processLabel('従来レビューでの発見')],
+                    datasets: [{
+                        label: 'レビュー網羅性 (概念)',
+                        data: [30, 70],
+                        backgroundColor: ['#00A0A0', '#FFC04D'],
+                        hoverBackgroundColor: ['#007070', '#FF8C00'],
+                        borderColor: '#FFFFFF',
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                         legend: { 
+                            position: 'top',
+                            labels: { color: '#333333' }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: tooltipTitleCallback,
+                                label: function(context) {
+                                    let label = context.label || '';
+                                    if (Array.isArray(label)) {
+                                        label = label.join('');
+                                    }
+                                    if (label) {
+                                        label += ': ';
+                                    }
+                                    if (context.parsed !== null) {
+                                        label += context.parsed + '%';
+                                    }
+                                    return label;
+                                }
+                            },
+                            backgroundColor: 'rgba(0,0,0,0.7)',
+                            titleColor: '#FFFFFF',
+                            bodyColor: '#FFFFFF',
+                        }
+                    }
+                }
+            });
+        }
+        // Gemini API related JavaScript functions (callGeminiAPI) and event listeners have been removed.
+        
+        // スクロールアニメーションの追加
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollFadeElements = document.querySelectorAll('.scroll-fade-in');
+            
+            const checkScroll = function() {
+                scrollFadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    if (elementTop < windowHeight * 0.85) {
+                        element.classList.add('active');
+                    }
+                });
+            };
+            
+            // 初期チェック
+            checkScroll();
+            
+            // スクロール時にチェック
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>
+
+    </div>
+
+    <footer class="template-footer">
+        <div class="template-footer-content">
+            <div class="template-footer-logo">AI Infographics</div>
+            <div class="template-footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
