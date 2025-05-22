@@ -1,0 +1,802 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google I/O 2025 AI関連発表まとめ - AIインフォグラフィックス集</title>
+    <link rel="icon" type="image/png" href="../images/ai-logo.png">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-dark: #334155;
+            --text-title: #1e40af;
+            --bg-light: #fff;
+            --shadow: rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            background-color: #f8f9fa;
+            color: var(--text-dark);
+            line-height: 1.4;
+            padding: 0;
+            margin: 0;
+        }
+
+        .fixed-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            padding: 10px 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .fixed-header:hover {
+            background: linear-gradient(135deg, var(--fashion-5), var(--fashion-1));
+        }
+
+        .fixed-header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: flex-start;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .header-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .fixed-header h1 {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 24px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            background: linear-gradient(to right, white, var(--fashion-2));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin: 0;
+            pointer-events: none;
+        }
+
+        .template-main-content {
+            margin-top: 60px;
+            padding: 20px;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .template-footer {
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            margin-top: 40px;
+        }
+
+        .template-footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .template-footer-logo {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .template-footer-social {
+            display: flex;
+            gap: 15px;
+        }
+
+        .template-footer-social a {
+            color: white;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+
+        .template-footer-social a:hover {
+            color: var(--fashion-2);
+            transform: translateY(-2px);
+        }
+
+        .template-hidden {
+            display: none !important;
+            visibility: hidden;
+            opacity: 0;
+        }
+
+        .language-switch {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1001;
+            display: none;
+        }
+        
+        .language-switch button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--fashion-1), var(--fashion-5));
+            color: white;
+            cursor: pointer;
+            font-family: 'Yomogi', cursive;
+            font-size: 14px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .language-switch button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        @media (max-width: 768px) {
+            .fixed-header h1 {
+                font-size: 20px;
+            }
+            
+            .template-main-content {
+                margin-top: 50px;
+                padding: 10px;
+            }
+
+            .language-switch {
+                top: 10px;
+                right: 10px;
+            }
+
+            .template-footer-content {
+                flex-direction: column;
+                gap: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="language-switch">
+        <button onclick="toggleLanguage()">English</button>
+    </div>
+
+    <div class="fixed-header" onclick="window.location.href='../index.html'">
+        <div class="fixed-header-content">
+            <img src="../images/ai-logo.png" alt="AI Infographics Logo" class="header-logo">
+            <h1 class="ja">AIインフォグラフィックス集</h1>
+            <h1 class="en hidden">AI Infographics Collection</h1>
+        </div>
+    </div>
+
+    <div class="template-main-content">
+        <!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google I/O 2025 AI関連発表まとめ</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Yomogi&family=Zen+Kurenaido&family=Kaisei+Decol:wght@400;700&display=swap');
+        
+        :root {
+            --fashion-1: #593C47;
+            --fashion-2: #F2E63D;
+            --fashion-3: #F2C53D;
+            --fashion-4: #F25C05;
+            --fashion-5: #F24405;
+            --text-main: #334155;
+            --text-title: #1e40af;
+            --bg-main: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Kaisei Decol', serif;
+            color: var(--text-main);
+            background-color: #f8f9fa;
+            line-height: 1.4;
+            padding: 20px;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: var(--bg-main);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            padding: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        /* ヘッダースタイル */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 2px dashed var(--fashion-3);
+            position: relative;
+        }
+        
+        .header::after {
+            content: "";
+            position: absolute;
+            bottom: -8px;
+            left: 20px;
+            width: 90%;
+            height: 2px;
+            background-color: var(--fashion-4);
+            border-radius: 2px;
+        }
+        
+        .title {
+            font-family: 'Yomogi', cursive;
+            font-size: 32px;
+            font-weight: bold;
+            background: linear-gradient(to right, var(--fashion-1), var(--fashion-5));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 5px;
+            position: relative;
+            display: inline-block;
+        }
+        
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: -5px;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(to right, var(--fashion-2), var(--fashion-4));
+            border-radius: 3px;
+        }
+        
+        .date {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            color: #475569;
+        }
+        
+        /* メインコンテンツスタイル */
+        .content {
+            display: flex;
+            flex-wrap: wrap;
+        }
+        
+        .column {
+            width: 33.333%;
+            padding: 0 15px;
+        }
+        
+        /* セクションスタイル */
+        .section {
+            margin-bottom: 30px;
+            position: relative;
+        }
+        
+        .section-title {
+            font-family: 'Yomogi', cursive;
+            font-size: 18px;
+            color: var(--fashion-1);
+            margin-bottom: 15px;
+            padding-left: 30px;
+            position: relative;
+        }
+        
+        .section-title::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 24px;
+            height: 24px;
+            background-size: contain;
+            background-repeat: no-repeat;
+        }
+        
+        .section-gemini .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F25C05'%3E%3Cpath d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-5h10v2H7zm0-4h10v2H7z'/%3E%3C/svg%3E");
+        }
+        
+        .section-search .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F2C53D'%3E%3Cpath d='M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z'/%3E%3C/svg%3E");
+        }
+        
+        .section-workspace .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23593C47'%3E%3Cpath d='M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14zM7 10h2v7H7zm4-3h2v10h-2zm4 6h2v4h-2z'/%3E%3C/svg%3E");
+        }
+        
+        .section-android .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F24405'%3E%3Cpath d='M17.6 9.48l1.84-3.18c.16-.31.04-.69-.26-.85-.29-.15-.65-.06-.83.22l-1.88 3.24c-2.86-1.21-6.08-1.21-8.94 0L5.65 5.67c-.19-.29-.58-.38-.87-.2-.28.18-.37.54-.22.83L6.4 9.48C3.3 11.25 1.28 14.44 1 18h22c-.28-3.56-2.3-6.75-5.4-8.52zM7 15.25c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25zm10 0c-.69 0-1.25-.56-1.25-1.25s.56-1.25 1.25-1.25 1.25.56 1.25 1.25-.56 1.25-1.25 1.25z'/%3E%3C/svg%3E");
+        }
+        
+        .section-cloud .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23F2E63D'%3E%3Cpath d='M19.35 10.04C18.67 6.59 15.64 4 12 4 9.11 4 6.6 5.64 5.35 8.04 2.34 8.36 0 10.91 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM19 18H6c-2.21 0-4-1.79-4-4 0-2.05 1.53-3.76 3.56-3.97l1.07-.11.5-.95C8.08 7.14 9.94 6 12 6c2.62 0 4.88 1.86 5.39 4.43l.3 1.5 1.53.11c1.56.1 2.78 1.41 2.78 2.96 0 1.65-1.35 3-3 3z'/%3E%3C/svg%3E");
+        }
+        
+        .section-impact .section-title::before {
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23593C47'%3E%3Cpath d='M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z'/%3E%3C/svg%3E");
+        }
+        
+        /* カードスタイル */
+        .card {
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border: 1px solid rgba(89, 60, 71, 0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--fashion-3), var(--fashion-4));
+            border-radius: 4px 0 0 4px;
+        }
+        
+        .card-title {
+            font-family: 'Zen Kurenaido', sans-serif;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--fashion-5);
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px dashed var(--fashion-2);
+            display: flex;
+            align-items: center;
+        }
+        
+        .card-title::before {
+            content: "📌";
+            margin-right: 5px;
+        }
+        
+        .card-content {
+            font-size: 14px;
+        }
+        
+        /* 強調表示 */
+        .highlight {
+            font-weight: bold;
+            background: linear-gradient(transparent 70%, var(--fashion-2) 70%);
+            padding: 0 2px;
+        }
+        
+        .important {
+            color: var(--fashion-5);
+            font-weight: bold;
+        }
+        
+        /* 吹き出し */
+        .bubble {
+            position: relative;
+            background: rgba(242, 230, 61, 0.2);
+            border-radius: 10px;
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: 'Yomogi', cursive;
+        }
+        
+        .bubble::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 20px;
+            border-width: 10px 10px 0;
+            border-style: solid;
+            border-color: rgba(242, 230, 61, 0.2) transparent;
+        }
+        
+        /* 矢印 */
+        .arrow {
+            text-align: center;
+            margin: 15px 0;
+            position: relative;
+        }
+        
+        .arrow::before {
+            content: "↓";
+            font-size: 24px;
+            color: var(--fashion-4);
+        }
+        
+        /* アイコン付きリスト */
+        .icon-list {
+            list-style: none;
+            margin-left: 5px;
+        }
+        
+        .icon-list li {
+            margin-bottom: 8px;
+            padding-left: 25px;
+            position: relative;
+        }
+        
+        .icon-list li::before {
+            content: "✏️";
+            position: absolute;
+            left: 0;
+            top: 2px;
+        }
+        
+        /* 横並びアイコン */
+        .icon-row {
+            display: flex;
+            justify-content: space-around;
+            margin: 10px 0;
+        }
+        
+        .icon-item {
+            text-align: center;
+            width: 60px;
+        }
+        
+        .icon-item .emoji {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+        
+        .icon-item .label {
+            font-size: 12px;
+        }
+        
+        /* 手書き風の枠線 */
+        .hand-border {
+            border: 2px solid var(--fashion-1);
+            border-radius: 10px;
+            padding: 10px;
+            position: relative;
+        }
+        
+        .hand-border::before {
+            content: "";
+            position: absolute;
+            top: -8px;
+            left: 20px;
+            width: 50px;
+            height: 15px;
+            background-color: var(--bg-main);
+        }
+        
+        /* コネクタ */
+        .connector {
+            position: relative;
+            margin: 20px 0;
+        }
+        
+        .connector::after {
+            content: "";
+            position: absolute;
+            top: 50%;
+            left: -30px;
+            width: 25px;
+            height: 2px;
+            background-color: var(--fashion-3);
+            transform: translateY(-50%);
+        }
+        
+        /* フッター */
+        .footer {
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 2px dashed var(--fashion-3);
+            text-align: center;
+            font-size: 12px;
+            color: #475569;
+        }
+        
+        /* レスポンシブ対応 */
+        @media (max-width: 900px) {
+            .column {
+                width: 50%;
+            }
+        }
+        
+        @media (max-width: 600px) {
+            .column {
+                width: 100%;
+            }
+            
+            .title {
+                font-size: 24px;
+            }
+        }
+        
+        /* 装飾的要素 */
+        .deco-circle {
+            position: absolute;
+            border-radius: 50%;
+            z-index: -1;
+            opacity: 0.1;
+        }
+        
+        .deco-1 {
+            width: 150px;
+            height: 150px;
+            background-color: var(--fashion-2);
+            top: -30px;
+            right: -30px;
+        }
+        
+        .deco-2 {
+            width: 100px;
+            height: 100px;
+            background-color: var(--fashion-4);
+            bottom: 100px;
+            left: -20px;
+        }
+        
+        .deco-3 {
+            width: 80px;
+            height: 80px;
+            background-color: var(--fashion-3);
+            top: 200px;
+            right: 50px;
+        }
+        
+        /* グラスモーフィズム要素 */
+        .glass {
+            background: rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 装飾的要素 -->
+        <div class="deco-circle deco-1"></div>
+        <div class="deco-circle deco-2"></div>
+        <div class="deco-circle deco-3"></div>
+        
+        <!-- ヘッダー -->
+        <div class="header">
+            <div>
+                <h1 class="title">Google I/O 2025 AI関連発表まとめ</h1>
+                <p class="date">2025年5月〜 米国サンフランシスコで開催</p>
+            </div>
+            <div class="date">レポート作成: 2025年5月21日</div>
+        </div>
+        
+        <!-- メインコンテンツ -->
+        <div class="content">
+            <!-- 第1カラム -->
+            <div class="column">
+                <div class="section section-gemini">
+                    <h2 class="section-title">次世代AIモデル Gemini 2.5</h2>
+                    
+                    <div class="card">
+                        <h3 class="card-title">技術進化とマルチモーダル化</h3>
+                        <div class="card-content">
+                            <p><span class="highlight">Gemini 2.5 Pro</span>はGoogle史上最も高度なモデルで、従来モデルを凌駕する推論能力とマルチモーダル機能を備えています。</p>
+                            <div class="icon-row">
+                                <div class="icon-item">
+                                    <div class="emoji">🔊</div>
+                                    <div class="label">音声入力</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="emoji">👁️</div>
+                                    <div class="label">視覚理解</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="emoji">📝</div>
+                                    <div class="label">テキスト</div>
+                                </div>
+                            </div>
+                            <p>新機能:</p>
+                            <ul class="icon-list">
+                                <li><span class="important">感情対話</span>: ユーザーの声の感情を検知して適切に反応</li>
+                                <li><span class="important">プロアクティブオーディオ</span>: 周囲の雑談を無視して必要時のみ応答</li>
+                                <li><span class="important">内省機能</span>: 複雑なタスク解決のため対話中に「思考」</li>
+                                <li><span class="important">複数話者TTS</span>: 複数話者の音声を同時生成（世界初）</li>
+                            </ul>
+                        </div>
+                    </div>
+                    
+                    <div class="bubble">
+                        💡 <span class="important">Computer Use機能</span>で自動操作！AIがウェブやアプリを操作してタスクを遂行
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Deep Thinkモード</h3>
+                        <div class="card-content">
+                            <p>極めて高度な推論を要する場面向けの新機能。モデルが回答前に<span class="highlight">複数の仮説を並行検討</span>する先進的な推論モードです。</p>
+                            <div class="arrow"></div>
+                            <p>数学やプログラミングなど複雑な問題で威力を発揮。<span class="important">Vertex AI</span>上で信頼できるテスターに限定提供されます。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">安全性と透明性の強化</h3>
+                        <div class="card-content">
+                            <p>間接的なプロンプトインジェクション攻撃に対する耐性が飛躍的に向上。企業利用に耐える堅牢性を実現しました。</p>
+                            <div class="hand-border">
+                                <p><span class="important">思考サマリー (Thought Summaries)</span>機能が追加され、AIが何を検討しどのように結論に至ったかを可視化できます。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="section section-gemini">
+                    <h2 class="section-title">Geminiの商用利用と応用</h2>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Gemini 2.5 Flash</h3>
+                        <div class="card-content">
+                            <p>軽量で応答の速いモデルで、I/O当日より<span class="highlight">Geminiアプリ</span>やGoogleの各種サービスでデフォルトモデルとして採用。</p>
+                            <p>前世代モデル比で<span class="important">20～30%効率化</span>しつつ、長文コンテキストやコード、マルチモーダル性能も向上。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Gemini 2.5 Pro</h3>
+                        <div class="card-content">
+                            <p>より大規模なモデルで、高度な推論力が要求される用途向け。<span class="highlight">Google Cloudの「Vertex AI」</span>上でエンタープライズ向けに提供開始。</p>
+                            <div class="bubble">
+                                💼 導入事例：商用車フリート解析のGeotab社は<span class="important">25%高速な応答</span>と<span class="important">85%のコスト削減</span>を実現！
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第2カラム -->
+            <div class="column">
+                <div class="section section-search">
+                    <h2 class="section-title">検索のAIモード</h2>
+                    
+                    <div class="card">
+                        <h3 class="card-title">AI概要 (AI Overviews)</h3>
+                        <div class="card-content">
+                            <p>検索結果上部に質問に対する<span class="highlight">包括的なAI生成の回答</span>が表示されます。関連ウェブ情報へのリンク付きで提供。</p>
+                            <p>Gemini 2.5モデルを検索AIに直接統合することで、より高度な推論能力でユーザーの難しい質問にも答えられるようになります。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card glass">
+                        <h3 class="card-title">プロジェクト「Astra」: ライブ機能</h3>
+                        <div class="card-content">
+                            <p>検索UIに新設された「ライブ」ボタンをタップしカメラを向けて質問すると、AIがカメラ映像を<span class="important">リアルタイムに解析して回答</span>してくれます。</p>
+                            <div class="hand-border">
+                                <p>例：工作中に部品にカメラをかざして「これについて教えて」と尋ねると、その物体を見て理解した上で解説</p>
+                            </div>
+                            <p>これは<span class="highlight">視覚と対話を組み合わせたマルチモーダル検索</span>の先駆けで、月間15億人が利用するGoogleレンズの延長として提供されます。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">エージェント機能（プロジェクト「Mariner」）</h3>
+                        <div class="card-content">
+                            <p>ユーザーの指示に基づき、AIが<span class="important">自動で複数サイトを検索・分析</span>し、フォーム入力などの操作も代行してくれます。</p>
+                            <div class="icon-row">
+                                <div class="icon-item">
+                                    <div class="emoji">🎫</div>
+                                    <div class="label">イベントチケット</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="emoji">🍽️</div>
+                                    <div class="label">レストラン予約</div>
+                                </div>
+                                <div class="icon-item">
+                                    <div class="emoji">🧹</div>
+                                    <div class="label">サービス予約</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">AIショッピングパートナー</h3>
+                        <div class="card-content">
+                            <p>膨大な商品データベース（<span class="highlight">Shopping Graph</span>）とGeminiモデルを組み合わせて、ユーザーの購買検討を包括支援します。</p>
+                            <p>特に注目なのが<span class="important">バーチャル試着</span>機能。ユーザーが全身写真を1枚アップロードするだけで、何十億ものアパレル商品を自分の体に着せたイメージを確認できます！</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bubble">
+                        🌏 生成AI概要（SGE）は<span class="important">200以上の国・地域</span>に提供拡大！日本語含む新言語対応も進行中
+                    </div>
+                </div>
+                
+                <div class="section section-workspace">
+                    <h2 class="section-title">Google Workspace</h2>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Gmail: パーソナライズド スマート返信</h3>
+                        <div class="card-content">
+                            <p>文脈を理解しユーザーの文体に合わせて返信文を提案します。過去のメールやドライブ内資料を参照しながら、<span class="highlight">長いメールスレッドの内容を要約</span>したり具体的な詳細を織り込んだ返信文を自動生成。</p>
+                            <p>年内に一般提供予定です。</p>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3 class="card-title">Gmail: 受信トレイお片付け</h3>
+                        <div class="card-content">
+                            <p>大量の未読メールを一括整理する機能。例えば「去年のThe Groomed Pawからの未読メールを全部削除して」といった指示を与えると、Geminiが該当メールを自動検索してワンクリックで削除・アーカイブ。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 第3カラム -->
+            <div class="column">
+                <div class="section section-workspace">
+                    <div class="card">
+                        <h3 class="card-title">Google Meet: 音声翻訳</h3>
+                        <div class="card-content">
+                            <p>ビデオ会議中に話者の音声を<span class="important">リアルタイムで相手の希望言語に翻訳</span>し、しかも<span class="important">声のトーンや話し方を保ったまま</span>相手に届けることができます。</p>
+                            <div class="hand-border">
+                                <p>例：英語話者の孫とスペイン語話者の祖父母がMeetで会話する場合、お互い自分の言語で話しながら相手には翻訳音声が流れる</p>
+                            </div>
+                            <p>まずは英
+    </div>
+
+    <footer class="template-footer">
+        <div class="template-footer-content">
+            <div class="template-footer-logo">AI Infographics</div>
+            <div class="template-footer-social">
+                <a href="https://x.com/monty_investor" target="_blank">@monty_investor</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        function toggleLanguage() {
+            const jaElements = document.querySelectorAll('.ja');
+            const enElements = document.querySelectorAll('.en');
+            const button = document.querySelector('.language-switch button');
+            
+            jaElements.forEach(el => el.classList.toggle('hidden'));
+            enElements.forEach(el => el.classList.toggle('hidden'));
+            
+            button.textContent = button.textContent === 'English' ? '日本語' : 'English';
+        }
+    </script>
+</body>
+</html> 
