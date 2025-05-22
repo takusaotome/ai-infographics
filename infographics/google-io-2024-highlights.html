@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Google I/O 2024ハイライト - インフォグラフィック</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #FFFFFF;
+            color: #333333;
+            line-height: 1.6;
+        }
+        .section-title {
+            color: #4285F4;
+            position: relative;
+            display: inline-block;
+            text-align: center !important;
+            margin-left: auto;
+            margin-right: auto;
+            width: 100%;
+        }
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 3px;
+            background: linear-gradient(to right, #4285F4, #EA4335, #FBBC05, #34A853);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+        .subsection-title {
+            color: #34A853;
+            font-weight: bold;
+        }
+        .highlight-stat {
+            color: #EA4335;
+            font-weight: bold;
+        }
+        .card-custom {
+            background-color: #FFF;
+            border: 1px solid #E0E0E0;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+        }
+        .card-custom:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        }
+        .scroll-fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        .scroll-fade-in.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        .google-gradient {
+            background: linear-gradient(135deg, #4285F4, #EA4335, #FBBC05, #34A853);
+        }
+        .feature-icon {
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        @media (max-width: 768px) {
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .card-custom h3 {
+                font-size: 1.1rem;
+            }
+        }
+    </style>
+</head>
+<body class="bg-white">
+
+    <header class="py-16 google-gradient text-white text-center">
+        <div class="container mx-auto px-6">
+            <h1 class="text-4xl md:text-5xl font-bold mb-6">Google I/O 2024 ハイライト</h1>
+            <p class="text-xl md:text-2xl mb-8">AI革新とプロダクトアップデートの総集編</p>
+            <div class="w-24 h-1 bg-white mx-auto rounded-full"></div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="introduction" class="mb-16">
+            <h2 class="text-3xl font-bold mb-6 text-center section-title">1. Google I/O 2024の全体概要</h2>
+            <p class="text-lg mb-8 max-w-3xl mx-auto text-center">2024年5月に開催されたGoogle I/Oでは、<span class="highlight-stat">Gemini 1.5 Proのアップデート</span>を中心に、AI技術の進化と多様なプロダクトへの統合が発表されました。</p>
+            
+            <div class="mt-10 mb-12 max-w-3xl mx-auto">
+                <h3 class="text-2xl mb-4 text-center subsection-title">主要発表のサマリー</h3>
+                <div class="bg-blue-50 p-6 rounded-lg shadow">
+                    <ul class="list-disc list-inside space-y-2 text-md">
+                        <li><span class="font-semibold">Gemini 1.5 Pro:</span> コンテキストウィンドウ拡大（200万トークン）と高度なマルチモーダル機能</li>
+                        <li><span class="font-semibold">Project Astra:</span> 人間のように世界を理解・行動するAIエージェント</li>
+                        <li><span class="font-semibold">Android 15:</span> 新AIフィーチャーとプライバシー強化</li>
+                        <li><span class="font-semibold">新型Pixel:</span> Pixel 8aの発表とPixel Fold 2の予告</li>
+                        <li><span class="font-semibold">Google Workspace:</span> AIフィーチャーの大幅拡充とHelp Me Writeの進化</li>
+                        <li><span class="font-semibold">開発者ツール:</span> Google AIスタジオの強化と新APIの提供</li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="gemini-updates" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">2. Gemini AIの進化</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Googleの最新AI「Gemini」に関する重要な進展と機能強化が発表されました。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-blue-500">🧠</div>
+                    <h3 class="text-xl font-bold mb-2 text-blue-700">Gemini 1.5 Pro</h3>
+                    <p>コンテキストウィンドウが100万トークンから200万トークンに拡大し、より長い会話やドキュメント全体を処理可能に。数千ページの技術文書や何時間もの動画を一度に分析できるようになりました。</p>
+                </div>
+                
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-red-500">🌐</div>
+                    <h3 class="text-xl font-bold mb-2 text-red-700">マルチモーダル強化</h3>
+                    <p>テキスト、画像、音声、動画を横断的に理解・分析する能力が大幅に向上。例えば、研究論文と関連グラフを同時に理解し、数学的問題への対応も強化されました。</p>
+                </div>
+                
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-yellow-500">🛠️</div>
+                    <h3 class="text-xl font-bold mb-2 text-yellow-700">Gemini API拡充</h3>
+                    <p>開発者向けのGemini APIが強化され、より柔軟なプロンプト設計や、カスタムフィーチャーの実装が容易に。Function Callingの機能拡張も発表されました。</p>
+                </div>
+                
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-green-500">🤖</div>
+                    <h3 class="text-xl font-bold mb-2 text-green-700">Project Astra</h3>
+                    <p>実世界を理解し対話するAIエージェント。視覚情報を理解し、人間の意図を察知して適切に応答する能力を持ち、将来的にはロボットやデバイスと連携する方向性が示されました。</p>
+                </div>
+                
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-blue-500">👁️</div>
+                    <h3 class="text-xl font-bold mb-2 text-blue-700">Imagen 3</h3>
+                    <p>Googleの画像生成AIが進化し、より高品質で正確な画像生成が可能に。解像度向上やテキスト表現の改善など、細部にわたる精度が向上しました。</p>
+                </div>
+                
+                <div class="card-custom p-5 rounded-lg">
+                    <div class="feature-icon text-purple-500">🔍</div>
+                    <h3 class="text-xl font-bold mb-2 text-purple-700">AIオーバービュー</h3>
+                    <p>Google検索にAIオーバービュー機能を追加。複雑な質問に対して情報を統合・要約し、より深い洞察を提供します。引用元へのリンクも強化されました。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="android" class="mb-16 py-12 bg-gray-50 rounded-lg scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">3. Android 15とモバイル革新</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Android 15ベータと新Pixelデバイスが発表され、モバイル体験の進化が示されました。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="card-custom p-6">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">Android 15の主要機能</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">AIサマリー:</span> 通知やメッセージを自動要約し、重要ポイントを抽出
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">プライバシーダッシュボード:</span> アプリのデータアクセスを詳細に可視化
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">バッテリー最適化:</span> ユーザーの利用パターンに基づく適応型省電力機能
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">マルチデバイス連携:</span> 他のAndroidデバイスとのスムーズな統合
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">開発者ツール拡充:</span> 新APIとフレームワークサポート
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="card-custom p-6">
+                    <h3 class="text-xl font-bold mb-4 text-blue-700">Pixelの新展開</h3>
+                    <ul class="space-y-3">
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">Pixel 8a:</span> 高性能ながら手頃な価格のミッドレンジモデル、Tensor G3チップ搭載
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">Pixel AIカメラ強化:</span> Magic Editorの拡張と新写真編集機能
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">Pixel Fold 2予告:</span> 次世代折りたたみスマートフォンのティザー
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">Geminiモバイル統合:</span> デバイス上でのAI機能強化
+                            </div>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-green-500 mr-2 font-bold">✓</span>
+                            <div>
+                                <span class="font-semibold">7年間のOS/セキュリティアップデート:</span> 長期サポート体制の確立
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="workspace" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">4. Google Workspaceの進化</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">Google WorkspaceにGemini AIが深く統合され、生産性向上のための新機能が多数追加されました。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="card-custom p-5">
+                    <div class="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📝</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-center">Docs & Gmail</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-semibold">Help Me Write Pro:</span> より高度な文章作成支援と様々なトーン設定</li>
+                        <li><span class="font-semibold">自動サマライズ:</span> 長文ドキュメントや多数のメールを要約</li>
+                        <li><span class="font-semibold">コラボレーション強化:</span> AIがドキュメント編集の提案を行う機能</li>
+                    </ul>
+                </div>
+                
+                <div class="card-custom p-5">
+                    <div class="bg-green-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">📊</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-center">Sheets & Slides</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-semibold">データ分析アシスタント:</span> 自然言語でデータ分析が可能に</li>
+                        <li><span class="font-semibold">自動ビジュアライゼーション:</span> データから最適なグラフを提案</li>
+                        <li><span class="font-semibold">プレゼン生成:</span> 内容に基づいたスライド自動作成機能</li>
+                    </ul>
+                </div>
+                
+                <div class="card-custom p-5">
+                    <div class="bg-red-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
+                        <span class="text-2xl">🎯</span>
+                    </div>
+                    <h3 class="text-lg font-bold mb-3 text-center">Meet & Calendar</h3>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-semibold">リアルタイム翻訳拡充:</span> より多くの言語に対応</li>
+                        <li><span class="font-semibold">会議要約機能:</span> ミーティング内容の自動議事録作成</li>
+                        <li><span class="font-semibold">インテリジェントスケジューリング:</span> AIによる最適な会議時間提案</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-12 max-w-3xl mx-auto text-center">
+                <div class="inline-block bg-blue-50 p-5 rounded-lg shadow-md">
+                    <h4 class="text-lg font-bold mb-3 text-blue-700">Gemini for Google Workspace</h4>
+                    <p class="text-base">ビジネス向けGemini Workspaceプランが発表され、エンタープライズグレードのAI機能と、セキュリティ・コンプライアンス対応が強化されました。大企業から中小企業まで、あらゆる規模の組織で活用可能です。</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="developers" class="mb-16 scroll-fade-in">
+            <h2 class="text-3xl font-bold mb-10 text-center section-title">5. 開発者向けツールと機能</h2>
+            <p class="text-lg mb-8 text-center max-w-3xl mx-auto">AIを活用した開発を促進するためのツールとフレームワークが多数発表されました。</p>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="card-custom p-6">
+                    <h3 class="text-xl font-bold mb-3 text-blue-700">Google AIスタジオの強化</h3>
+                    <p class="mb-4">開発者がGeminiモデルを簡単に調整・実装できるプラットフォームが大幅に拡充されました。</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-semibold">モデルチューニング:</span> 低コードでのカスタムモデル作成</li>
+                        <li><span class="font-semibold">マルチモーダルサポート:</span> 画像、音声、テキストの統合API</li>
+                        <li><span class="font-semibold">エンタープライズ統合:</span> 企業システムとの連携強化</li>
+                        <li><span class="font-semibold">UI/UX改善:</span> よりシンプルで直感的なインターフェース</li>
+                    </ul>
+                </div>
+                
+                <div class="card-custom p-6">
+                    <h3 class="text-xl font-bold mb-3 text-blue-700">AI開発フレームワーク</h3>
+                    <p class="mb-4">AIを活用したアプリケーション開発を効率化する新ツールが発表されました。</p>
+                    <ul class="space-y-2 text-sm">
+                        <li><span class="font-semibold">Android AI Toolkit:</span> モバイルアプリへのAI機能実装を簡易化</li>
+                        <li><span class="font-semibold">Project IDX:</span> AIを活用したクラウドベース開発環境</li>
+                        <li><span class="font-semibold">Firebase AI拡張:</span> アプリにGemini機能を統合するための新APIs</li>
+                        <li><span class="font-semibold">AR/VR開発ツール:</span> 空間コンピューティング向けAI統合</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="mt-10 bg-gray-50 p-6 rounded-lg max-w-3xl mx-auto">
+                <h3 class="text-xl font-bold mb-4 text-center text-blue-700">持続可能なAI開発</h3>
+                <p class="text-md mb-4">Googleは開発者向けにAIモデルのエネルギー効率と環境への影響を最小化するための新ガイドラインと取り組みを発表しました。</p>
+                <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <li class="bg-white p-3 rounded-md shadow-sm">
+                        <span class="font-semibold block">効率的なモデル設計</span>
+                        <span class="text-sm">小規模で効率的なモデルの開発支援</span>
+                    </li>
+                    <li class="bg-white p-3 rounded-md shadow-sm">
+                        <span class="font-semibold block">カーボンフットプリント測定</span>
+                        <span class="text-sm">AIトレーニングと推論の環境影響評価ツール</span>
+                    </li>
+                    <li class="bg-white p-3 rounded-md shadow-sm">
+                        <span class="font-semibold block">エッジAI最適化</span>
+                        <span class="text-sm">デバイス上での効率的なAI実行技術</span>
+                    </li>
+                    <li class="bg-white p-3 rounded-md shadow-sm">
+                        <span class="font-semibold block">クリーンエネルギー利用</span>
+                        <span class="text-sm">再生可能エネルギーを活用したAI開発</span>
+                    </li>
+                </ul>
+            </div>
+        </section>
+
+        <section id="future" class="py-16 google-gradient text-white">
+            <div class="container mx-auto px-6 text-center">
+                <h2 class="text-3xl font-bold mb-6 text-center section-title">6. Google I/Oから見るAIの未来</h2>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">Google I/O 2024の発表は、AIがますます私たちの日常生活とデジタル体験に不可欠な要素となることを示しています。</p>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">マルチモーダル処理の進化、長いコンテキスト理解の改善、そして実世界とデジタル世界の境界を曖昧にするProject Astraのようなイニシアチブは、AIの次の大きな飛躍を予感させます。</p>
+                <p class="text-lg mb-8 max-w-3xl mx-auto">同時に、Googleは責任あるAI開発と、プライバシー・セキュリティ面での取り組みも強調しており、AIの力を活用しながらも、ユーザーの権利を保護する姿勢を示しています。</p>
+                <a href="https://io.google/2024/" target="_blank" class="bg-white text-blue-600 font-bold py-3 px-8 rounded-lg text-lg shadow-md hover:shadow-lg inline-block transition-all hover:bg-blue-50">
+                    Google I/O 公式サイトを見る
+                </a>
+            </div>
+        </section>
+    </main>
+
+    <footer class="text-center py-10 bg-gray-800 text-gray-400 text-sm">
+        <div class="container mx-auto px-6">
+            <div class="w-20 h-1 bg-white mx-auto mb-6 rounded-full"></div>
+            <p class="mb-2">&copy; 2024 AIインフォグラフィックス集. All rights reserved.</p>
+            <p>このインフォグラフィックは、Google I/O 2024の主要発表をまとめたものです。</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scrollFadeElements = document.querySelectorAll('.scroll-fade-in');
+            
+            const checkScroll = function() {
+                scrollFadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    if (elementTop < windowHeight * 0.85) {
+                        element.classList.add('active');
+                    }
+                });
+            };
+            
+            // 初期チェック
+            checkScroll();
+            
+            // スクロール時にチェック
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html> 
